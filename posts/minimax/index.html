@@ -1,0 +1,426 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Simulation of QUARTO! board game and minimax algorithm - Diego Hernández Jiménez</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Kiera: A Hugo theme for creative and technical writing." />
+<meta name="author" content="Example" /><meta property="og:title" content="Simulation of QUARTO! board game and minimax algorithm" />
+<meta property="og:description" content="Final project of the &ldquo;Simulation techniques&rdquo; subject in the Master in Methodology for behavioral sciences. For this assignment we were given a short description of the QUARTO! board game rules (slightly modified) and a clear objective: to simulate it in R and to design a game strategy." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://diego-hernandez-jimenez.github.io/web/posts/minimax/" />
+<meta property="article:published_time" content="2021-04-11T00:00:00+02:00" />
+<meta property="article:modified_time" content="2021-04-11T00:00:00+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Simulation of QUARTO! board game and minimax algorithm"/>
+<meta name="twitter:description" content="Final project of the &ldquo;Simulation techniques&rdquo; subject in the Master in Methodology for behavioral sciences. For this assignment we were given a short description of the QUARTO! board game rules (slightly modified) and a clear objective: to simulate it in R and to design a game strategy."/>
+
+<meta name="generator" content="Hugo 0.74.3" />
+    
+    <link rel="shortcut icon" href="https://diego-hernandez-jimenez.github.io/web/images/Dicon.ico" />
+  
+    <script src="https://diego-hernandez-jimenez.github.io/web/js/mathjax-config.js" defer></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://diego-hernandez-jimenez.github.io/web/fontawesome/css/all.min.css" />
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  
+  
+  <link rel="stylesheet" type="text/css" href="https://diego-hernandez-jimenez.github.io/web/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://diego-hernandez-jimenez.github.io/web/">Diego Hernández Jiménez</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/Diego-Hernandez-Jimenez" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/diego-hern%c3%a1ndez-jim%c3%a9nez" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Welcome to my personal website! Here I share some of my little projects.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/tags">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Projects</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/contact/">
+                <i class="fa-li fa  fa-lg"></i><span>Contact</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Simulation of QUARTO! board game and minimax algorithm</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2021-04-11T00:00:00&#43;02:00">Apr 11, 2021</time>
+        </li>
+        
+        <li>
+            Categories:
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/categories/projects">Projects</a>
+                
+            </em>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/r">#R</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/university">#University</a>
+                
+            </em>
+        </li>
+        
+
+        <li>8 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+
+
+    <p>Final project of the &ldquo;Simulation techniques&rdquo; subject in the Master in Methodology for behavioral sciences. For this assignment we were given a short description of the QUARTO! board game rules (slightly modified) and a clear objective: to simulate it in R and to design a game strategy. The performance of the game strategy had to be better than a strategy  based on random selection of moves.</p>
+<h3 id="game-description">Game description</h3>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/quartoboardNpieces.jpg" alt="QUARTO board game and pieces"></p>
+<p>The rules of this strategy game are easy: &ldquo;The wooden pieces have four characteristics: light/dark, tall/short, square/round, or hollow/filled. Each turn, an opponent chooses which piece you play; if you form a line of four pieces with one characteristic in common, you win. If you can’t, you choose a piece for your opponent to play. The game progresses until a winner is decided or all pieces have been played.&rdquo; (<a href="https://www.hammacher.com/product/award-winning-quarto-board-game">Source:www.hammacher.com</a>)</p>
+<p>However, in our case the rules were slightly modified. The player doesn&rsquo;t choose the opponent&rsquo;s pieces, she chooses her own pieces. That change makes the game more similar to tic-tac-toe or connect 4.</p>
+<h3 id="quarto-in-code">QUARTO! in code</h3>
+<p>How can the game be represented in R?</p>
+<ul>
+<li>Pieces: There are $2^4=16$ different pieces that result from the combination of different properties (2 different properties for each of the 4 attributes). Because the specific property or attribute the piece has doesn&rsquo;t make any difference to the game, I decided to represent the set of all pieces as a 16 x 4 numeric matrix.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># expand.grid does the same but it&#39;s a bit slower</span>
+create.pieces <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(){
+   <span style="color:#a6e22e">return</span>(<span style="color:#a6e22e">cbind</span>(<span style="color:#a6e22e">rep</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2</span>,each<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>,times<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>),
+                <span style="color:#a6e22e">rep</span>(<span style="color:#ae81ff">3</span><span style="color:#f92672">:</span><span style="color:#ae81ff">4</span>,each<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>,times<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>),
+                <span style="color:#a6e22e">rep</span>(<span style="color:#ae81ff">5</span><span style="color:#f92672">:</span><span style="color:#ae81ff">6</span>,each<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,times<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>),
+                <span style="color:#a6e22e">rep</span>(<span style="color:#ae81ff">7</span><span style="color:#f92672">:</span><span style="color:#ae81ff">8</span>,each<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,times<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>)))
+}
+
+<span style="color:#a6e22e">create.pieces</span>()
+
+      [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+ [1,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">5</span>    <span style="color:#ae81ff">7</span>
+ [2,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">5</span>    <span style="color:#ae81ff">8</span>
+ [3,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">7</span>
+ [4,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">8</span>
+ [5,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">5</span>    <span style="color:#ae81ff">7</span>
+ [6,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">5</span>    <span style="color:#ae81ff">8</span>
+ [7,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">7</span>
+ [8,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">8</span>
+ [9,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">5</span>    <span style="color:#ae81ff">7</span>
+[10,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">5</span>    <span style="color:#ae81ff">8</span>
+[11,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">7</span>
+[12,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">8</span>
+[13,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">5</span>    <span style="color:#ae81ff">7</span>
+[14,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">5</span>    <span style="color:#ae81ff">8</span>
+[15,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">7</span>
+[16,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">8</span>
+</code></pre></div><ul>
+<li>Board: The board must be able to store information about position, but also about the attributes of every piece, because they are all different. For that reason I created a 3D board, an array of dimensions 4 x 4 x 4:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">board <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">array</span>(<span style="color:#ae81ff">0</span>, dim <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">4</span>))
+
+, , <span style="color:#ae81ff">1</span>
+
+     [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+[1,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[2,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[3,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[4,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+
+, , <span style="color:#ae81ff">2</span>
+
+     [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+[1,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[2,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[3,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[4,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+
+, , <span style="color:#ae81ff">3</span>
+
+     [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+[1,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[2,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[3,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[4,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+
+, , <span style="color:#ae81ff">4</span>
+
+     [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+[1,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[2,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[3,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[4,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+</code></pre></div><p>Moving a piece to a certain position in the board is now as easy as doing this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fourth_piece <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">create.pieces</span>()[4,] <span style="color:#75715e"># [1 3 6 8]</span>
+board[2,<span style="color:#ae81ff">2</span>,] <span style="color:#f92672">&lt;-</span> fourth_piece
+
+, , <span style="color:#ae81ff">1</span>
+
+     [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+[1,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[2,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[3,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[4,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+
+, , <span style="color:#ae81ff">2</span>
+
+     [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+[1,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[2,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[3,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[4,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+
+, , <span style="color:#ae81ff">3</span>
+
+     [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+[1,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[2,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">6</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[3,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[4,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+
+, , <span style="color:#ae81ff">4</span>
+
+     [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>] [,<span style="color:#ae81ff">3</span>] [,<span style="color:#ae81ff">4</span>]
+[1,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[2,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">8</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[3,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+[4,]    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>    <span style="color:#ae81ff">0</span>
+
+</code></pre></div><p>To avoid mistakes and using the same piece or position twice, we need to keep track of the available pieces and positions. We need an object for both. We saw the pieces can be stored in a matrix, and that&rsquo;s also possible with the available moves.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">pieces <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">create.pieces</span>()
+( positions <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">cbind</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">4</span>,<span style="color:#a6e22e">rep</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">4</span>,each<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>)) )
+
+      [,<span style="color:#ae81ff">1</span>] [,<span style="color:#ae81ff">2</span>]
+ [1,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">1</span>
+ [2,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">1</span>
+ [3,]    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">1</span>
+ [4,]    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">1</span>
+ [5,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">2</span>
+ [6,]    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">2</span>
+ [7,]    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">2</span>
+ [8,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">3</span>
+ [9,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">3</span>
+[10,]    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">3</span>
+[11,]    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">3</span>
+[12,]    <span style="color:#ae81ff">1</span>    <span style="color:#ae81ff">4</span>
+[13,]    <span style="color:#ae81ff">2</span>    <span style="color:#ae81ff">4</span>
+[14,]    <span style="color:#ae81ff">3</span>    <span style="color:#ae81ff">4</span>
+[15,]    <span style="color:#ae81ff">4</span>    <span style="color:#ae81ff">4</span>
+</code></pre></div><p>A complete move by one player could be like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">board <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">array</span>(<span style="color:#ae81ff">0</span>,<span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">4</span>))
+positions <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">cbind</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">4</span>,<span style="color:#a6e22e">rep</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">4</span>,each<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>)) 
+pieces <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">create.pieces</span>()
+
+<span style="color:#75715e"># choose piece and position</span>
+pos <span style="color:#f92672">&lt;-</span> positions[5,] <span style="color:#75715e"># 1 x 2 vector </span>
+piece <span style="color:#f92672">&lt;-</span> pieces[4,] <span style="color:#75715e"># 1 x 4 vector </span>
+
+<span style="color:#75715e"># move piece to position</span>
+board[pos[1],pos[2],] <span style="color:#f92672">&lt;-</span> piece
+
+<span style="color:#75715e"># update remaining pieces and positions</span>
+positions <span style="color:#f92672">&lt;-</span> positions[<span style="color:#ae81ff">-5</span>,] <span style="color:#75715e"># 15 x 2 matrix</span>
+pieces <span style="color:#f92672">&lt;-</span> pieces[<span style="color:#ae81ff">-4</span>,] <span style="color:#75715e"># 15 x 2 matrix </span>
+</code></pre></div><p>Now we are capable a simulating a complete game (link to code at the end), but the way players choose their pieces and moves is totally random at this moment.</p>
+<h3 id="game-strategy-minimax-and-alpha-beta">Game strategy: Minimax and alpha-beta</h3>
+<p>In order to create an artificial agent that plays rationally I decided to implement the minimax algorithm with alpha-beta pruning. Technically they are different algorithms, but I consider the latter as an improvement or extension of the former.</p>
+<p>And how do they work? Good explanations can be found in Russell &amp; Norvig (2020) and Wikipedia:</p>
+<ul>
+<li><strong>Minimax</strong>: &ldquo;Given a game tree, the optimal strategy can be determined from the minimax value of each state in the tree (&hellip;). The minimax value is the utility (for player A, for example) of being in the corresponding state, assuming that both players play optimally from there to the end of the game.&rdquo; The utility given by the payoff function &ldquo;indicates how good it would be for a player to reach that position&rdquo;.Obviously, &ldquo;The minimax value of a terminal state is just its utility&rdquo; (score associated with win, loss, draw or other complex states). Minimax works by choosing the next move based on these utilities.</li>
+</ul>
+<p>So, for instance, &ldquo;If player A can win in one move, his best move is that winning move. If player B knows that one move will lead to the situation where player A can win in one move, while another move will lead to the situation where player A can, at best, draw, then player B&rsquo;s best move is the one leading to a draw. Late in the game, it&rsquo;s easy to see what the &ldquo;best&rdquo; move is. The Minimax algorithm helps find the best move, by working backwards from the end of the game. At each step it assumes that player A is trying to maximize the chances of A winning, while on the next turn player B is trying to minimize the chances of A winning (i.e., to maximize B&rsquo;s own chances of winning).&rdquo;</p>
+<ul>
+<li><strong>Alpha-beta pruning</strong>: Minimax is a recursive algorithm that works by searching or exploring the states of the game tree. That becomes a problem even with moderately complex games because &ldquo;the number of game states is exponential in the depth of the tree&rdquo;. That means that &ldquo;raw&rdquo; or naïve minimax is often impractical. However, we can use the technique of alpha-beta pruning to prune (leave unexplored) &ldquo;large parts of the tree that make no difference to the outcome&rdquo;. It&rsquo;s basically the same as minimax but &ldquo;It stops evaluating a move when at least one possibility has been found that proves the move to be worse than a previously examined move. Such moves need not be evaluated further.&rdquo;</li>
+</ul>
+<p>I&rsquo;ve fundamentally based the implementation of the algorithm on the pseudocode provided by Russell &amp; Norvig (2020). However, it&rsquo;s not exactly the same. I reproduce here the pseudocode that best represents the program I designed, and again, the link to the actual code can be found at the end of the post.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">FUNCTION <span style="color:#a6e22e">AB_MINIMAX</span>(board,ply,player,positions,pieces,depth<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>,alpha<span style="color:#f92672">=-</span>infinity,beta<span style="color:#f92672">=</span>infinity)
+
+   best <span style="color:#f92672">=</span> <span style="color:#a6e22e">list</span>(value,pos,piece)
+   
+   terminal_state <span style="color:#f92672">=</span> <span style="color:#a6e22e">is_terminal</span>(board,ply<span style="color:#f92672">+</span>depth)
+   
+   IF terminal_state OR depth <span style="color:#f92672">==</span> <span style="color:#ae81ff">4</span> THEN
+      best.value <span style="color:#f92672">=</span> <span style="color:#a6e22e">payoff</span>(terminal_state,player,depth)
+      RETURN best
+   ELSE
+      IF player <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> THEN
+         v <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>infinity
+         FOR each position in positions
+            FOR each piece in pieces
+               updated <span style="color:#f92672">=</span> <span style="color:#a6e22e">result</span>(board,positions,position,pieces,piece)
+               output <span style="color:#f92672">=</span> <span style="color:#a6e22e">AB_MINIMAX</span>(updated.board,ply,<span style="color:#f92672">-</span>player,
+                                   updated.positions,updated.pieces,
+                                   depth<span style="color:#ae81ff">+1</span>,alpha,beta)
+                        
+               IF output.value <span style="color:#f92672">&gt;</span> v THEN
+                  v <span style="color:#f92672">=</span> output.value
+                  best.value <span style="color:#f92672">=</span> output.value
+                  best.pos <span style="color:#f92672">=</span> position
+                  best.piece <span style="color:#f92672">=</span> piece
+                  alpha <span style="color:#f92672">=</span> <span style="color:#a6e22e">max</span>(alpha,v)
+               ENDIF
+               
+               IF v <span style="color:#f92672">&gt;=</span> beta THEN
+                  RETURN best
+               ENDIF
+                  
+            ENDFOR
+         ENDFOR
+         
+      ELSE
+         v <span style="color:#f92672">=</span> infinity
+         FOR each position in positions
+            FOR each piece in pieces
+               updated <span style="color:#f92672">=</span> <span style="color:#a6e22e">result</span>(board,positions,position,pieces,piece)
+               output <span style="color:#f92672">=</span> <span style="color:#a6e22e">AB_MINIMAX</span>(updated.board,ply,<span style="color:#f92672">-</span>player,
+                        updated.positions,updated.pieces,
+                        depth<span style="color:#ae81ff">+1</span>,alpha,beta)
+                        
+               IF output.value <span style="color:#f92672">&lt;</span> v THEN
+                  v <span style="color:#f92672">=</span> output.value
+                  best.value <span style="color:#f92672">=</span> output.value
+                  best.pos <span style="color:#f92672">=</span> position
+                  best.piece <span style="color:#f92672">=</span> piece
+                  alpha <span style="color:#f92672">=</span> <span style="color:#a6e22e">max</span>(alpha,v)
+               ENDIF
+               
+               IF v <span style="color:#f92672">&lt;=</span> alpha THEN
+                  RETURN best
+               ENDIF
+                  
+            ENDFOR
+         ENDFOR
+         
+      ENDIF
+      
+   ENDIF
+   
+   ENDFUNCTION
+</code></pre></div><h3 id="the-issue-of-efficiency">The issue of efficiency</h3>
+<p>I originally tried to make everything in R, but I quickly noticed that the program was terribly slow. To reduce the running time I decided to take advantage of the package <code>rcpp</code> and I re-wrote almost everything in C++ code. The improvement was remarkable. Here you can see the time needed to make a move after 12 &ldquo;plies&rdquo; or turns:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">microbenchmark<span style="color:#f92672">::</span><span style="color:#a6e22e">microbenchmark</span>(
+   <span style="color:#e6db74">&#39;R&#39;</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">AB_MINIMAX_R</span>(demo<span style="color:#f92672">$</span>board,ply<span style="color:#f92672">=</span><span style="color:#ae81ff">13</span>,player<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,demo<span style="color:#f92672">$</span>positions_left,demo<span style="color:#f92672">$</span>pieces_left)},
+   <span style="color:#e6db74">&#39;C++&#39;</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">AB_MINIMAX</span>(demo<span style="color:#f92672">$</span>board,ply<span style="color:#f92672">=</span><span style="color:#ae81ff">13</span>,player<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,demo<span style="color:#f92672">$</span>positions_left,demo<span style="color:#f92672">$</span>pieces_left)}
+   )
+   
+Unit<span style="color:#f92672">:</span> microseconds
+expr    min      lq      mean      median     uq      max      neval     cld
+   R   <span style="color:#ae81ff">13242.1</span>  <span style="color:#ae81ff">14604.3</span>  <span style="color:#ae81ff">20137.87</span>  <span style="color:#ae81ff">16809.8</span>  <span style="color:#ae81ff">22100.9</span>  <span style="color:#ae81ff">57384.4</span>    <span style="color:#ae81ff">100</span>        b
+   C<span style="color:#f92672">++</span> <span style="color:#ae81ff">259.1</span>    <span style="color:#ae81ff">296.1</span>    <span style="color:#ae81ff">375.22</span>    <span style="color:#ae81ff">322.5</span>    <span style="color:#ae81ff">407.2</span>    <span style="color:#ae81ff">1144.8</span>     <span style="color:#ae81ff">100</span>        a
+</code></pre></div><p><a href="https://github.com/Diego-Hernandez-Jimenez/QUARTO-and-minimax">Link</a> to code.</p>
+<p><a href="https://diego-hernandez-jimenez.github.io/web/projects/informe_quarto.pdf">Link</a> to the report.</p>
+<h3 id="comments">Comments</h3>
+<ul>
+<li>Human vs. &ldquo;machine&rdquo;: Eventhough I didn&rsquo;t mention it, the game has been designed so that it can be played by a real human. I&rsquo;ve made a second version of the main program with an user interface that has been modified to be more &ldquo;attractive&rdquo; and less confusing (converting the 3D board to a bidimensional matrix, for example).</li>
+</ul>
+<h3 id="references">References</h3>
+<p>Russell, S. &amp; Norvig, P. (2020). Adversarial Search and Games. In S. Russell y P. Norvig, <em>Artificial
+Intelligence: a modern approach</em> (4a ed) pp.(146-180). Pearson.</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/strokecluster/"><i class="fa fa-chevron-circle-left"></i> Predicting stroke (III): Clustering</a>
+        </li>
+        
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/helpbehav/">Helping behavior during COVID-19 lockdown <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright &amp; copy; 2020 - Diego Hernández Jiménez |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://diego-hernandez-jimenez.github.io/web/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://diego-hernandez-jimenez.github.io/web/js/scripts.js"></script>
+
+</body>
+
+</html>
+

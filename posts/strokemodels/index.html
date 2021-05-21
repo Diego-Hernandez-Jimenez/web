@@ -1,0 +1,319 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Predicting stroke (I): Trying different classification algorithms - Diego Hernández Jiménez</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Kiera: A Hugo theme for creative and technical writing." />
+<meta name="author" content="Example" /><meta property="og:title" content="Predicting stroke (I): Trying different classification algorithms" />
+<meta property="og:description" content="Assignment for &ldquo;Knowledge technology&rdquo;, course in the Master in Methodology for behavioral sciences. This post correspond to the first part of the &ldquo;series&rdquo; Predicting stroke, which consists of a set of independent works in which I try to solve an applied machine learning problem: to accurately classify people who have suffered a stroke or not, based on different predictors." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://diego-hernandez-jimenez.github.io/web/posts/strokemodels/" />
+<meta property="article:published_time" content="2021-03-09T00:00:00+01:00" />
+<meta property="article:modified_time" content="2021-03-09T00:00:00+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Predicting stroke (I): Trying different classification algorithms"/>
+<meta name="twitter:description" content="Assignment for &ldquo;Knowledge technology&rdquo;, course in the Master in Methodology for behavioral sciences. This post correspond to the first part of the &ldquo;series&rdquo; Predicting stroke, which consists of a set of independent works in which I try to solve an applied machine learning problem: to accurately classify people who have suffered a stroke or not, based on different predictors."/>
+
+<meta name="generator" content="Hugo 0.74.3" />
+    
+    <link rel="shortcut icon" href="https://diego-hernandez-jimenez.github.io/web/images/Dicon.ico" />
+  
+    <script src="https://diego-hernandez-jimenez.github.io/web/js/mathjax-config.js" defer></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://diego-hernandez-jimenez.github.io/web/fontawesome/css/all.min.css" />
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  
+  
+  <link rel="stylesheet" type="text/css" href="https://diego-hernandez-jimenez.github.io/web/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://diego-hernandez-jimenez.github.io/web/">Diego Hernández Jiménez</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/Diego-Hernandez-Jimenez" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/diego-hern%c3%a1ndez-jim%c3%a9nez" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Welcome to my personal website! Here I share some of my little projects.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/tags">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Projects</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/contact/">
+                <i class="fa-li fa  fa-lg"></i><span>Contact</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Predicting stroke (I): Trying different classification algorithms</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2021-03-09T00:00:00&#43;01:00">Mar 9, 2021</time>
+        </li>
+        
+        <li>
+            Categories:
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/categories/projects">Projects</a>
+                
+            </em>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/matlab">#Matlab</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/data-analysis">#Data Analysis</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/university">#University</a>
+                
+            </em>
+        </li>
+        
+
+        <li>3 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+
+
+    <p>Assignment for &ldquo;Knowledge technology&rdquo;, course in the Master in Methodology for behavioral sciences. This post correspond to the first part of the &ldquo;series&rdquo; <em>Predicting stroke</em>, which consists of a set of independent works in which I try to solve an applied machine learning problem: to accurately classify people who have suffered a stroke or not, based on different predictors.</p>
+<h3 id="description-of-data">Description of data</h3>
+<ul>
+<li><a href="https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/blob/main/stroke2.csv"><em>stroke2.csv</em></a>.  The data used to be in Kaggle but I had to download it from a github repository of someone who had analyzed the data set before. Here you can see the data before the preprocessing.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">gender</th>
+<th align="center">age</th>
+<th align="center">hypertension</th>
+<th align="center">heart_disease</th>
+<th align="center">ever_married</th>
+<th align="center">work_type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center">Male</td>
+<td align="center">3</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="center">children</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">Male</td>
+<td align="center">58</td>
+<td align="center">Yes</td>
+<td align="center">No</td>
+<td align="center">Yes</td>
+<td align="center">Private</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">Female</td>
+<td align="center">8</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="center">No</td>
+<td align="center">Private</td>
+</tr>
+</tbody>
+</table>
+<p>&hellip; (43000 x 10)</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Residence_type</th>
+<th align="center">avg_glucose_level</th>
+<th align="center">bmi</th>
+<th align="center">smoking_status</th>
+<th align="center">stroke</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center">Rural</td>
+<td align="center">95.12</td>
+<td align="center">18</td>
+<td align="center">never smoked</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">Urban</td>
+<td align="center">87.96</td>
+<td align="center">39.2</td>
+<td align="center">never smoked</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">Urban</td>
+<td align="center">110.89</td>
+<td align="center">17.6</td>
+<td align="center">never smoked</td>
+<td align="center">No</td>
+</tr>
+</tbody>
+</table>
+<p>&hellip; (43000 x 10)</p>
+<p>The variables are self-explanatory but I had no codebook so whenever I encountered inconsistencies or &ldquo;strange&rdquo; things I had to interpret the data. For example, the third observation corresponds to a kid of 8 years old who works in the private sector. Something must be wrong but is it the age or the work type? It&rsquo;s more plausible that work type is wrong, but technically we don&rsquo;t know what is wrongly coded.</p>
+<p>One important thing to note about the data set is the frequency distribution of the outcome variable. 98% of the sample is people who haven&rsquo;t suffered a stroke. This severe imbalance can be very troublesome (<a href="https://en.wikipedia.org/wiki/Accuracy_paradox">accuracy &ldquo;paradox&rdquo;</a>: you get 98% overall accuracy but with 0% sensitivity because all instances are classified as members of the majority class) so it&rsquo;s neccesary to deal with it.</p>
+<p>For the first model I opted for the downsampling strategy. If the minority class has $n$ observations, you select a sample of $n$ from the set of instances that belong to the majority class. Now you have a new sample of $n+n$ examples and no assymmetry in the variable of interest. The problem is that you reduce the total sample size, you loose information and that you are changing the natural distribution of the variable just for convenience (the prevalence of stroke is not 50%). For those reasons I changed the strategy. In the decision tree and SVM models I used cost-sensitive learning, which involves imposing a cost matrix that weights false negatives as more serious errors. Intuitively we could say that you need to be more confident in order to classify someone as belonging to the stroke category (more details in the <a href="https://diego-hernandez-jimenez.github.io/web/projects/evalmodels.pdf">model evaluation report</a>)</p>
+<h3 id="classification-models">Classification models</h3>
+<h4 id="linear-discriminant-analysis">Linear Discriminant Analysis</h4>
+<p>Final model (quadratic discriminant function really, not linear) includes only age as predictor</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-matlab" data-lang="matlab">qda=fitcdiscr(featQDA,group, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;DiscrimType&#39;</span>,<span style="color:#e6db74">&#39;quadratic&#39;</span>, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;CrossVal&#39;</span>,<span style="color:#e6db74">&#39;on&#39;</span>, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;Cost&#39;</span>,[<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span>;<span style="color:#ae81ff">70</span> <span style="color:#ae81ff">0</span>]);
+
+</code></pre></div><p><a href="https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/tree/main/LDA">Link</a> to code.</p>
+<p><a href="https://diego-hernandez-jimenez.github.io/web/projects/informe_LDA_Diego_Hernandez.pdf">Link</a> to the report.</p>
+<h4 id="decision-tree">Decision tree</h4>
+<p>Final model includes age, bmi (both discretized), hypertension and heart disease as predictors.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-matlab" data-lang="matlab">tree=fitctree(feattree,group, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;CategoricalPredictors&#39;</span>,<span style="color:#e6db74">&#39;all&#39;</span>, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;SplitCriterion&#39;</span>,<span style="color:#e6db74">&#39;deviance&#39;</span>, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;MinLeafSize&#39;</span>,<span style="color:#ae81ff">200</span>, <span style="color:#e6db74">&#39;MinParentSize&#39;</span>,<span style="color:#ae81ff">230</span>, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;CrossVal&#39;</span>,<span style="color:#e6db74">&#39;on&#39;</span>, <span style="color:#75715e">... </span>
+    <span style="color:#e6db74">&#39;Cost&#39;</span>,[<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span>;<span style="color:#ae81ff">70</span> <span style="color:#ae81ff">0</span>]);
+</code></pre></div><p><a href="https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/tree/main/DT">Link</a> to code.</p>
+<p><a href="https://diego-hernandez-jimenez.github.io/web/projects/informe_arboles_Diego_Hernandez.pdf">Link</a> to the report.</p>
+<h4 id="support-vector-machine">Support Vector Machine</h4>
+<p>Final model includes age, avg_glucose_level, hypertension, smoking_status and heart_disease as features.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-matlab" data-lang="matlab">SVM=fitcsvm(featSVM,group, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;CategoricalPredictors&#39;</span>,{<span style="color:#e6db74">&#39;hypertension&#39;</span>,<span style="color:#e6db74">&#39;smoking_status&#39;</span>,<span style="color:#e6db74">&#39;heart_disease&#39;</span>}, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;BoxConstraint&#39;</span>, <span style="color:#ae81ff">0.24</span>, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;KernelFunction&#39;</span>,<span style="color:#e6db74">&#39;linear&#39;</span>, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;CrossVal&#39;</span>,<span style="color:#e6db74">&#39;on&#39;</span>, <span style="color:#75715e">...</span>
+    <span style="color:#e6db74">&#39;Cost&#39;</span>,[<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span>;<span style="color:#ae81ff">55</span> <span style="color:#ae81ff">0</span>]);
+</code></pre></div><p><a href="https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/tree/main/SVM">Link</a> to code.</p>
+<p><a href="https://diego-hernandez-jimenez.github.io/web/projects/informe_SVM_Diego_Henandez.pdf">Link</a> to the report.</p>
+<h3 id="comments">Comments</h3>
+<ul>
+<li>
+<p>This was my first time applying Linear Discriminant Analysis, decision trees, SVMs and also the first time using Matlab. I&rsquo;ve experimented a lot doing this project and I&rsquo;ve probably committed a lot of mistakes. The hyperparemeter tuning process was a bit like a mess and I don&rsquo;t expect them to be optimal.</p>
+</li>
+<li>
+<p>The class imbalance problem gave me a lot of headaches. I tried different approaches to overcome the problem (downsampling and cost-sensitive learning), and I finally stuck with one approach but I&rsquo;m not sure that was the best decision.</p>
+</li>
+</ul>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/anova/"><i class="fa fa-chevron-circle-left"></i> ANOVA from scratch</a>
+        </li>
+        
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/strokeeval/">Predicting stroke (II): Model selection <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright &amp; copy; 2020 - Diego Hernández Jiménez |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://diego-hernandez-jimenez.github.io/web/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://diego-hernandez-jimenez.github.io/web/js/scripts.js"></script>
+
+</body>
+
+</html>
+

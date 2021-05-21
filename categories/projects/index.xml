@@ -1,0 +1,1536 @@
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+ <channel>
+   <title>Projects on Diego Hernández Jiménez</title>
+   <link>https://diego-hernandez-jimenez.github.io/web/categories/projects/</link>
+   <description>Recent content in Projects on Diego Hernández Jiménez</description>
+   <generator>Hugo -- gohugo.io</generator>
+   <copyright>Copyright &amp; copy; 2020 - Diego Hernández Jiménez</copyright>
+   <lastBuildDate>Sun, 09 May 2021 00:00:00 +0200</lastBuildDate>
+   
+       <atom:link href="https://diego-hernandez-jimenez.github.io/web/categories/projects/index.xml" rel="self" type="application/rss+xml" />
+   
+   
+     <item>
+       <title>Simple convolutional neural network for digit recognition</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/firstconvnnet/</link>
+       <pubDate>Sun, 09 May 2021 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/firstconvnnet/</guid>
+       <description>&lt;p&gt;Assignment for &amp;ldquo;Knowledge technology&amp;rdquo;, course in the Master in Methodology for behavioral sciences.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;The purpose of the the project wasn&amp;rsquo;t to develop a sophisticaded architecture (see the image below to get a sense of what kind of network we built) or to get highest accuracy in a test set. Rather we had  to show that we had understood the fundamental concepts of convolutional networks.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/netarch.jpg&#34; alt=&#34;Simplified network architecture&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The most interesting thing about this project was the fact that I had to build my own digit data set and then use it as test set. If you want to know more about it you can check the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_cnn.pdf&#34;&gt;report&lt;/a&gt; I made. The supplementary material can be found on my &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/First_Convolutional_Net&#34;&gt;github profile&lt;/a&gt;. I also made a few ppt slides to visually represent the net architecture. Yo can view the pdf &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/arquitectura_red.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Helping behavior during COVID-19 lockdown</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/helpbehav/</link>
+       <pubDate>Thu, 29 Apr 2021 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/helpbehav/</guid>
+       <description>&lt;p&gt;This brief research project was part of the course &amp;ldquo;Linear models&amp;rdquo; in the Master in Methodology for behavioral sciences.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Why we help other people is a question psychologists have been trying to answer for decades. Researchers usually design experiments in which participants have the opportunity to help. However, a non-experimental approach can also shed some light on the issue.&lt;/p&gt;
+&lt;p&gt;Here I adopt that perspective and make use of a &lt;a href=&#34;http://www.cis.es/cis/opencm/ES/2_bancodatos/estudios/ver.jsp?estudio=14530&#34;&gt;public survey&lt;/a&gt; conducted by the spanish Center for Sociological Research (CIS) after the end of the 2020 lockdown. Because the outcome of interest, helping behavior, is described in the survey as a dichotomic variable (either you help or you don&amp;rsquo;t), I decide to fit a logistic model of the form:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\hat P(\text{help=Yes}|{\bf X})=\displaystyle \frac{1}{1+e^{\boldsymbol{-{\bf X}\beta}}}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;where ${\bf X}$ represents the design matrix of $n$ particpants x $J$ features or explanatory variables.&lt;/p&gt;
+&lt;p&gt;The model specification is partitally based on Schwartz and Howard (1984). They describe five stages in helping behavior:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;attention&lt;/strong&gt; to need,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;generation of value-based &lt;strong&gt;motivation&lt;/strong&gt;,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;awareness&lt;/strong&gt; of potential actions,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;evaluation&lt;/strong&gt; of the costs and benefits of potential actions, and&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;overt behavior or inaction&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;However, I don&amp;rsquo;t contemplate values as the main motives for helping behavior but empathy. The features finally selected were:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Type of people affected (attention),&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Purposes of change (motivation),&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Feeling of being helpful (awareness/self-efficacy),&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Grief over loss of loved one (empathy),&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Concern over loss of job (empathy) and&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Sex.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Full description of  them can be found &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/helping_behavior_reglog.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;summary-of-results&#34;&gt;Summary of results&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Cross-validated Nagelkerke&amp;rsquo;s $R^2$ is approximately 0.07. The proposed model reduces the misfit of the null model by 7%.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;From the point of view of the model&amp;rsquo;s classification performance, the results are also modest, with an AUC value of 0.62.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The profile of people with the lowest propensity to help is as follows: men who consider that the crisis has mainly affected the people who have suffered it directly, have not suffered from the loss of family, friends or employment, have not made any intention to change, and do not consider their actions to be particularly helpful. The prognosis is an odds ratio of 0.468, which implies that the probability of helping is 53.2% lower than the probability of not helping.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The indirect measures of empathy are the best predictors of helping behavior. Holding all else constant, the odds of helping is 1.715 times greater among individuals who report having suffered from the loss of a family member or friend than among those who do not report having suffered this experience. This data is consistent with that found in the sample, in which the proportion (in percentage) of people who say they help and have suffered from the loss of people is 15 points higher than that of people who say they help but have not suffered from the loss of loved ones.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The complete report can be found &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/helping_behavior_reglog.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Simulation of QUARTO! board game and minimax algorithm</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/minimax/</link>
+       <pubDate>Sun, 11 Apr 2021 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/minimax/</guid>
+       <description>&lt;p&gt;Final project of the &amp;ldquo;Simulation techniques&amp;rdquo; subject in the Master in Methodology for behavioral sciences. For this assignment we were given a short description of the QUARTO! board game rules (slightly modified) and a clear objective: to simulate it in R and to design a game strategy. The performance of the game strategy had to be better than a strategy  based on random selection of moves.&lt;/p&gt;
+&lt;h3 id=&#34;game-description&#34;&gt;Game description&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/quartoboardNpieces.jpg&#34; alt=&#34;QUARTO board game and pieces&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The rules of this strategy game are easy: &amp;ldquo;The wooden pieces have four characteristics: light/dark, tall/short, square/round, or hollow/filled. Each turn, an opponent chooses which piece you play; if you form a line of four pieces with one characteristic in common, you win. If you can’t, you choose a piece for your opponent to play. The game progresses until a winner is decided or all pieces have been played.&amp;rdquo; (&lt;a href=&#34;https://www.hammacher.com/product/award-winning-quarto-board-game&#34;&gt;Source:www.hammacher.com&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;However, in our case the rules were slightly modified. The player doesn&amp;rsquo;t choose the opponent&amp;rsquo;s pieces, she chooses her own pieces. That change makes the game more similar to tic-tac-toe or connect 4.&lt;/p&gt;
+&lt;h3 id=&#34;quarto-in-code&#34;&gt;QUARTO! in code&lt;/h3&gt;
+&lt;p&gt;How can the game be represented in R?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pieces: There are $2^4=16$ different pieces that result from the combination of different properties (2 different properties for each of the 4 attributes). Because the specific property or attribute the piece has doesn&amp;rsquo;t make any difference to the game, I decided to represent the set of all pieces as a 16 x 4 numeric matrix.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# expand.grid does the same but it&amp;#39;s a bit slower&lt;/span&gt;
+create.pieces &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(){
+   &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;cbind&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;rep&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,each&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;,times&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;),
+                &lt;span style=&#34;color:#a6e22e&#34;&gt;rep&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,each&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,times&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;),
+                &lt;span style=&#34;color:#a6e22e&#34;&gt;rep&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;,each&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,times&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;),
+                &lt;span style=&#34;color:#a6e22e&#34;&gt;rep&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;,each&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,times&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;)))
+}
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;create.pieces&lt;/span&gt;()
+
+      [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+ [1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+ [2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;
+ [3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+ [4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;
+ [5,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+ [6,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;
+ [7,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+ [8,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;
+ [9,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+[10,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;
+[11,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+[12,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;
+[13,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+[14,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;
+[15,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;
+[16,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Board: The board must be able to store information about position, but also about the attributes of every piece, because they are all different. For that reason I created a 3D board, an array of dimensions 4 x 4 x 4:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;board &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;array&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, dim &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;))
+
+, , &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+     [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+[1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+, , &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+     [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+[1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+, , &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+
+     [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+[1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+, , &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;
+
+     [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+[1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Moving a piece to a certain position in the board is now as easy as doing this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;fourth_piece &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create.pieces&lt;/span&gt;()[4,] &lt;span style=&#34;color:#75715e&#34;&gt;# [1 3 6 8]&lt;/span&gt;
+board[2,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; fourth_piece
+
+, , &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+     [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+[1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+, , &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+     [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+[1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+, , &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+
+     [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+[1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+, , &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;
+
+     [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;]
+[1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+[4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To avoid mistakes and using the same piece or position twice, we need to keep track of the available pieces and positions. We need an object for both. We saw the pieces can be stored in a matrix, and that&amp;rsquo;s also possible with the available moves.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;pieces &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create.pieces&lt;/span&gt;()
+( positions &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cbind&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,&lt;span style=&#34;color:#a6e22e&#34;&gt;rep&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,each&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)) )
+
+      [,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;] [,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;]
+ [1,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+ [2,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+ [3,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+ [4,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+ [5,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+ [6,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+ [7,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+ [8,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+ [9,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+[10,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+[11,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+[12,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;
+[13,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;
+[14,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;
+[15,]    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;A complete move by one player could be like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;board &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;array&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;))
+positions &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cbind&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,&lt;span style=&#34;color:#a6e22e&#34;&gt;rep&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,each&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)) 
+pieces &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create.pieces&lt;/span&gt;()
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# choose piece and position&lt;/span&gt;
+pos &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; positions[5,] &lt;span style=&#34;color:#75715e&#34;&gt;# 1 x 2 vector &lt;/span&gt;
+piece &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; pieces[4,] &lt;span style=&#34;color:#75715e&#34;&gt;# 1 x 4 vector &lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# move piece to position&lt;/span&gt;
+board[pos[1],pos[2],] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; piece
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# update remaining pieces and positions&lt;/span&gt;
+positions &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; positions[&lt;span style=&#34;color:#ae81ff&#34;&gt;-5&lt;/span&gt;,] &lt;span style=&#34;color:#75715e&#34;&gt;# 15 x 2 matrix&lt;/span&gt;
+pieces &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; pieces[&lt;span style=&#34;color:#ae81ff&#34;&gt;-4&lt;/span&gt;,] &lt;span style=&#34;color:#75715e&#34;&gt;# 15 x 2 matrix &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we are capable a simulating a complete game (link to code at the end), but the way players choose their pieces and moves is totally random at this moment.&lt;/p&gt;
+&lt;h3 id=&#34;game-strategy-minimax-and-alpha-beta&#34;&gt;Game strategy: Minimax and alpha-beta&lt;/h3&gt;
+&lt;p&gt;In order to create an artificial agent that plays rationally I decided to implement the minimax algorithm with alpha-beta pruning. Technically they are different algorithms, but I consider the latter as an improvement or extension of the former.&lt;/p&gt;
+&lt;p&gt;And how do they work? Good explanations can be found in Russell &amp;amp; Norvig (2020) and Wikipedia:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Minimax&lt;/strong&gt;: &amp;ldquo;Given a game tree, the optimal strategy can be determined from the minimax value of each state in the tree (&amp;hellip;). The minimax value is the utility (for player A, for example) of being in the corresponding state, assuming that both players play optimally from there to the end of the game.&amp;rdquo; The utility given by the payoff function &amp;ldquo;indicates how good it would be for a player to reach that position&amp;rdquo;.Obviously, &amp;ldquo;The minimax value of a terminal state is just its utility&amp;rdquo; (score associated with win, loss, draw or other complex states). Minimax works by choosing the next move based on these utilities.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, for instance, &amp;ldquo;If player A can win in one move, his best move is that winning move. If player B knows that one move will lead to the situation where player A can win in one move, while another move will lead to the situation where player A can, at best, draw, then player B&amp;rsquo;s best move is the one leading to a draw. Late in the game, it&amp;rsquo;s easy to see what the &amp;ldquo;best&amp;rdquo; move is. The Minimax algorithm helps find the best move, by working backwards from the end of the game. At each step it assumes that player A is trying to maximize the chances of A winning, while on the next turn player B is trying to minimize the chances of A winning (i.e., to maximize B&amp;rsquo;s own chances of winning).&amp;rdquo;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Alpha-beta pruning&lt;/strong&gt;: Minimax is a recursive algorithm that works by searching or exploring the states of the game tree. That becomes a problem even with moderately complex games because &amp;ldquo;the number of game states is exponential in the depth of the tree&amp;rdquo;. That means that &amp;ldquo;raw&amp;rdquo; or naïve minimax is often impractical. However, we can use the technique of alpha-beta pruning to prune (leave unexplored) &amp;ldquo;large parts of the tree that make no difference to the outcome&amp;rdquo;. It&amp;rsquo;s basically the same as minimax but &amp;ldquo;It stops evaluating a move when at least one possibility has been found that proves the move to be worse than a previously examined move. Such moves need not be evaluated further.&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I&amp;rsquo;ve fundamentally based the implementation of the algorithm on the pseudocode provided by Russell &amp;amp; Norvig (2020). However, it&amp;rsquo;s not exactly the same. I reproduce here the pseudocode that best represents the program I designed, and again, the link to the actual code can be found at the end of the post.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;FUNCTION &lt;span style=&#34;color:#a6e22e&#34;&gt;AB_MINIMAX&lt;/span&gt;(board,ply,player,positions,pieces,depth&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,alpha&lt;span style=&#34;color:#f92672&#34;&gt;=-&lt;/span&gt;infinity,beta&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;infinity)
+
+   best &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(value,pos,piece)
+   
+   terminal_state &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;is_terminal&lt;/span&gt;(board,ply&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;depth)
+   
+   IF terminal_state OR depth &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt; THEN
+      best.value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;payoff&lt;/span&gt;(terminal_state,player,depth)
+      RETURN best
+   ELSE
+      IF player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; THEN
+         v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;infinity
+         FOR each position in positions
+            FOR each piece in pieces
+               updated &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;(board,positions,position,pieces,piece)
+               output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AB_MINIMAX&lt;/span&gt;(updated.board,ply,&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;player,
+                                   updated.positions,updated.pieces,
+                                   depth&lt;span style=&#34;color:#ae81ff&#34;&gt;+1&lt;/span&gt;,alpha,beta)
+                        
+               IF output.value &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; v THEN
+                  v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output.value
+                  best.value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output.value
+                  best.pos &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; position
+                  best.piece &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; piece
+                  alpha &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;max&lt;/span&gt;(alpha,v)
+               ENDIF
+               
+               IF v &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; beta THEN
+                  RETURN best
+               ENDIF
+                  
+            ENDFOR
+         ENDFOR
+         
+      ELSE
+         v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; infinity
+         FOR each position in positions
+            FOR each piece in pieces
+               updated &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;(board,positions,position,pieces,piece)
+               output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;AB_MINIMAX&lt;/span&gt;(updated.board,ply,&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;player,
+                        updated.positions,updated.pieces,
+                        depth&lt;span style=&#34;color:#ae81ff&#34;&gt;+1&lt;/span&gt;,alpha,beta)
+                        
+               IF output.value &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; v THEN
+                  v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output.value
+                  best.value &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; output.value
+                  best.pos &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; position
+                  best.piece &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; piece
+                  alpha &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;max&lt;/span&gt;(alpha,v)
+               ENDIF
+               
+               IF v &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; alpha THEN
+                  RETURN best
+               ENDIF
+                  
+            ENDFOR
+         ENDFOR
+         
+      ENDIF
+      
+   ENDIF
+   
+   ENDFUNCTION
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;the-issue-of-efficiency&#34;&gt;The issue of efficiency&lt;/h3&gt;
+&lt;p&gt;I originally tried to make everything in R, but I quickly noticed that the program was terribly slow. To reduce the running time I decided to take advantage of the package &lt;code&gt;rcpp&lt;/code&gt; and I re-wrote almost everything in C++ code. The improvement was remarkable. Here you can see the time needed to make a move after 12 &amp;ldquo;plies&amp;rdquo; or turns:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;microbenchmark&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;microbenchmark&lt;/span&gt;(
+   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;R&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;{&lt;span style=&#34;color:#a6e22e&#34;&gt;AB_MINIMAX_R&lt;/span&gt;(demo&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;board,ply&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt;,player&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,demo&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;positions_left,demo&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;pieces_left)},
+   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;C++&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;{&lt;span style=&#34;color:#a6e22e&#34;&gt;AB_MINIMAX&lt;/span&gt;(demo&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;board,ply&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt;,player&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,demo&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;positions_left,demo&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;pieces_left)}
+   )
+   
+Unit&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; microseconds
+expr    min      lq      mean      median     uq      max      neval     cld
+   R   &lt;span style=&#34;color:#ae81ff&#34;&gt;13242.1&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;14604.3&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;20137.87&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;16809.8&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;22100.9&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;57384.4&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;        b
+   C&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;259.1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;296.1&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;375.22&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;322.5&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;407.2&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;1144.8&lt;/span&gt;     &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;        a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/QUARTO-and-minimax&#34;&gt;Link&lt;/a&gt; to code.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_quarto.pdf&#34;&gt;Link&lt;/a&gt; to the report.&lt;/p&gt;
+&lt;h3 id=&#34;comments&#34;&gt;Comments&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Human vs. &amp;ldquo;machine&amp;rdquo;: Eventhough I didn&amp;rsquo;t mention it, the game has been designed so that it can be played by a real human. I&amp;rsquo;ve made a second version of the main program with an user interface that has been modified to be more &amp;ldquo;attractive&amp;rdquo; and less confusing (converting the 3D board to a bidimensional matrix, for example).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
+&lt;p&gt;Russell, S. &amp;amp; Norvig, P. (2020). Adversarial Search and Games. In S. Russell y P. Norvig, &lt;em&gt;Artificial
+Intelligence: a modern approach&lt;/em&gt; (4a ed) pp.(146-180). Pearson.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Predicting stroke (III): Clustering</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/strokecluster/</link>
+       <pubDate>Thu, 11 Mar 2021 00:00:00 +0100</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/strokecluster/</guid>
+       <description>&lt;p&gt;Last part of the series &lt;em&gt;Predicting stroke&lt;/em&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;So far, all the analyses that have been performed were aimed at solving a supervised learning problem, namely, classifying individuals who suffer, or not, stroke. At all times it is known to which category each one belongs, and therefore it is possible to assess the accuracy in the classification.&lt;/p&gt;
+&lt;p&gt;However, it is also possible to pose another type of problem. Without taking into consideration the class to which each subject belongs, can we form from the predictor variables two groups that correspond to the profile of individuals who suffer stroke and the profile of those who do not suffer stroke?&lt;/p&gt;
+&lt;p&gt;That kind of question can be answered using clustering techniques such us K-means&lt;/p&gt;
+&lt;h3 id=&#34;results&#34;&gt;Results&lt;/h3&gt;
+&lt;p&gt;After performing a k-means analysis assuming $k=2$ we get the following results&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/overviewkmeans.PNG&#34; alt=&#34;Rapidminer output&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The characteristics of the of the clusters generated are pretty similar to what we could expect theoretically. The vast majority of subjects belong to cluster 0, which we can call low-risk, and a smaller percentage is categorized as high-risk. It can be observed in the characteristics of cluster 1 that both age and glucose level are more than 40% higher, which is consistent with what is known (Boehme et al, 2017). In addition, among these subjects, hypertension is clearly higher, although since it is a categorical variable, the interpretation is more useful in terms of proportions.&lt;/p&gt;
+&lt;p&gt;If you want to know more, check the full &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_nosuperv_Diego_Henandez.pdf&#34;&gt;report&lt;/a&gt;. The Rapidminer file cab found clicking on this &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/tree/main/KMEANS&#34;&gt;link&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
+&lt;p&gt;Boehme, A. K., Esenwa, C., y Elkind, M. S. (2017). Stroke risk factors, genetics, and prevention. &lt;em&gt;Circulation
+research&lt;/em&gt;, 120(3), 472-495.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Predicting stroke (II): Model selection</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/strokeeval/</link>
+       <pubDate>Wed, 10 Mar 2021 00:00:00 +0100</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/strokeeval/</guid>
+       <description>&lt;p&gt;Second part of the series &lt;em&gt;Predicting stroke&lt;/em&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;So far we&amp;rsquo;ve seen different models and approaches to the problem of classifying people in the &amp;ldquo;stroke&amp;rdquo; group and the &amp;ldquo;no-stroke&amp;rdquo; group. However, we haven&amp;rsquo;t compared them yet. In order to make a good decision about which model to choose as best, we must compare them under the most similar conditions. That&amp;rsquo;s the purpose of this project. The models are fitted and then different performance metrics are computed.&lt;/p&gt;
+&lt;h3 id=&#34;results&#34;&gt;Results&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;Model&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;accuracy&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;$F_1$&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;AUC&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Sensitivity&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Specificity&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;QDA&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,6331&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,0803&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,8396&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;strong&gt;0,8876&lt;/strong&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,6284&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;Decision tree&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;strong&gt;0,7482&lt;/strong&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;strong&gt;0,1050&lt;/strong&gt;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,8118&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,8186&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&lt;strong&gt;0,7469&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;SVM&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,7218&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,0974&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,8507&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,8314&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0,7198&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;(In bold type the highest score obtained for each statistic)&lt;/p&gt;
+&lt;p&gt;A graphical depiction of the ROC curves is also very useful&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/rocsmodelos.png&#34; alt=&#34;ROC curves&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The best model in terms of AUC, a commonly used performance measure, is the SVM. Despite that, for various reasons I finally decided to choose the decision tree model as the best one.&lt;/p&gt;
+&lt;p&gt;Report can be found &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/evalmodels.pdf&#34;&gt;here&lt;/a&gt; and the two-page &amp;ldquo;executive report&amp;rdquo; &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/executive_report.pdf&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;link to &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/blob/main/stroke2.csv&#34;&gt;data set&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;comments&#34;&gt;Comments&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;That was my first time seriously doing model comparison and model selection so I probably made a lot of mistakes. I know, for instance, that the comparison is not completely legit because the models are not totally equivalent (i.e. different number of predictors and different ones).&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Predicting stroke (I): Trying different classification algorithms</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/strokemodels/</link>
+       <pubDate>Tue, 09 Mar 2021 00:00:00 +0100</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/strokemodels/</guid>
+       <description>&lt;p&gt;Assignment for &amp;ldquo;Knowledge technology&amp;rdquo;, course in the Master in Methodology for behavioral sciences. This post correspond to the first part of the &amp;ldquo;series&amp;rdquo; &lt;em&gt;Predicting stroke&lt;/em&gt;, which consists of a set of independent works in which I try to solve an applied machine learning problem: to accurately classify people who have suffered a stroke or not, based on different predictors.&lt;/p&gt;
+&lt;h3 id=&#34;description-of-data&#34;&gt;Description of data&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/blob/main/stroke2.csv&#34;&gt;&lt;em&gt;stroke2.csv&lt;/em&gt;&lt;/a&gt;.  The data used to be in Kaggle but I had to download it from a github repository of someone who had analyzed the data set before. Here you can see the data before the preprocessing.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;gender&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;age&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;hypertension&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;heart_disease&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;ever_married&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;work_type&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Male&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;children&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Male&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;58&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Yes&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Yes&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Private&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Female&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Private&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&amp;hellip; (43000 x 10)&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Residence_type&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;avg_glucose_level&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;bmi&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;smoking_status&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;stroke&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Rural&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;95.12&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;18&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;never smoked&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Urban&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;87.96&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;39.2&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;never smoked&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Urban&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;110.89&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;17.6&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;never smoked&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&amp;hellip; (43000 x 10)&lt;/p&gt;
+&lt;p&gt;The variables are self-explanatory but I had no codebook so whenever I encountered inconsistencies or &amp;ldquo;strange&amp;rdquo; things I had to interpret the data. For example, the third observation corresponds to a kid of 8 years old who works in the private sector. Something must be wrong but is it the age or the work type? It&amp;rsquo;s more plausible that work type is wrong, but technically we don&amp;rsquo;t know what is wrongly coded.&lt;/p&gt;
+&lt;p&gt;One important thing to note about the data set is the frequency distribution of the outcome variable. 98% of the sample is people who haven&amp;rsquo;t suffered a stroke. This severe imbalance can be very troublesome (&lt;a href=&#34;https://en.wikipedia.org/wiki/Accuracy_paradox&#34;&gt;accuracy &amp;ldquo;paradox&amp;rdquo;&lt;/a&gt;: you get 98% overall accuracy but with 0% sensitivity because all instances are classified as members of the majority class) so it&amp;rsquo;s neccesary to deal with it.&lt;/p&gt;
+&lt;p&gt;For the first model I opted for the downsampling strategy. If the minority class has $n$ observations, you select a sample of $n$ from the set of instances that belong to the majority class. Now you have a new sample of $n+n$ examples and no assymmetry in the variable of interest. The problem is that you reduce the total sample size, you loose information and that you are changing the natural distribution of the variable just for convenience (the prevalence of stroke is not 50%). For those reasons I changed the strategy. In the decision tree and SVM models I used cost-sensitive learning, which involves imposing a cost matrix that weights false negatives as more serious errors. Intuitively we could say that you need to be more confident in order to classify someone as belonging to the stroke category (more details in the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/evalmodels.pdf&#34;&gt;model evaluation report&lt;/a&gt;)&lt;/p&gt;
+&lt;h3 id=&#34;classification-models&#34;&gt;Classification models&lt;/h3&gt;
+&lt;h4 id=&#34;linear-discriminant-analysis&#34;&gt;Linear Discriminant Analysis&lt;/h4&gt;
+&lt;p&gt;Final model (quadratic discriminant function really, not linear) includes only age as predictor&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-matlab&#34; data-lang=&#34;matlab&#34;&gt;qda=fitcdiscr(featQDA,group, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;DiscrimType&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;quadratic&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;CrossVal&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;on&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Cost&amp;#39;&lt;/span&gt;,[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;&lt;span style=&#34;color:#ae81ff&#34;&gt;70&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]);
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/tree/main/LDA&#34;&gt;Link&lt;/a&gt; to code.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_LDA_Diego_Hernandez.pdf&#34;&gt;Link&lt;/a&gt; to the report.&lt;/p&gt;
+&lt;h4 id=&#34;decision-tree&#34;&gt;Decision tree&lt;/h4&gt;
+&lt;p&gt;Final model includes age, bmi (both discretized), hypertension and heart disease as predictors.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-matlab&#34; data-lang=&#34;matlab&#34;&gt;tree=fitctree(feattree,group, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;CategoricalPredictors&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;all&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SplitCriterion&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;deviance&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;MinLeafSize&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;MinParentSize&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;230&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;CrossVal&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;on&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;... &lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Cost&amp;#39;&lt;/span&gt;,[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;&lt;span style=&#34;color:#ae81ff&#34;&gt;70&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/tree/main/DT&#34;&gt;Link&lt;/a&gt; to code.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_arboles_Diego_Hernandez.pdf&#34;&gt;Link&lt;/a&gt; to the report.&lt;/p&gt;
+&lt;h4 id=&#34;support-vector-machine&#34;&gt;Support Vector Machine&lt;/h4&gt;
+&lt;p&gt;Final model includes age, avg_glucose_level, hypertension, smoking_status and heart_disease as features.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-matlab&#34; data-lang=&#34;matlab&#34;&gt;SVM=fitcsvm(featSVM,group, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;CategoricalPredictors&amp;#39;&lt;/span&gt;,{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;hypertension&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;smoking_status&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;heart_disease&amp;#39;&lt;/span&gt;}, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BoxConstraint&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0.24&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;KernelFunction&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;linear&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;CrossVal&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;on&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#75715e&#34;&gt;...&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Cost&amp;#39;&lt;/span&gt;,[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;&lt;span style=&#34;color:#ae81ff&#34;&gt;55&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Predicting-stroke/tree/main/SVM&#34;&gt;Link&lt;/a&gt; to code.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_SVM_Diego_Henandez.pdf&#34;&gt;Link&lt;/a&gt; to the report.&lt;/p&gt;
+&lt;h3 id=&#34;comments&#34;&gt;Comments&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;This was my first time applying Linear Discriminant Analysis, decision trees, SVMs and also the first time using Matlab. I&amp;rsquo;ve experimented a lot doing this project and I&amp;rsquo;ve probably committed a lot of mistakes. The hyperparemeter tuning process was a bit like a mess and I don&amp;rsquo;t expect them to be optimal.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The class imbalance problem gave me a lot of headaches. I tried different approaches to overcome the problem (downsampling and cost-sensitive learning), and I finally stuck with one approach but I&amp;rsquo;m not sure that was the best decision.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>ANOVA from scratch</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/anova/</link>
+       <pubDate>Sat, 26 Dec 2020 00:00:00 +0100</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/anova/</guid>
+       <description>&lt;p&gt;Project developed for the &amp;ldquo;Computer methods&amp;rdquo; course in the Master in Methodology for behavioral sciences. Full description and examples can be found &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/aov.pdf&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/ANOVA_scratch&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;main-function&#34;&gt;Main function&lt;/h3&gt;
+&lt;p&gt;ANOVA: Perform a one- or two-way fixed-effects ANOVA.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;factor&lt;/strong&gt;: character vector of length 1 or 2 with the name of the predictors or factors. They must refer to a variable of type factor of a dataframe. In case the factor(s) are not of type factor, the function &lt;strong&gt;check_factor&lt;/strong&gt; is called to transform the dataframe variables into factor type.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;vd&lt;/strong&gt;: character vector of length 1 with the name of the outcome or dependent variable. It must refer to a numeric variable of a dataframe.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;data&lt;/strong&gt;: dataframe containing the factor or factors and the dependent variable.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;output:&lt;/p&gt;
+&lt;p&gt;Depending on the number of factors, returns the function &lt;strong&gt;one_way&lt;/strong&gt; or the function &lt;strong&gt;two_way&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;ANOVA &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(factor,vd,data){
+  
+  num_fact &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt;(factor)
+  
+  data &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;check_factor&lt;/span&gt;(factor,data)
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;switch&lt;/span&gt;(num_fact,
+         
+         &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;one_way&lt;/span&gt;(num_fact,factor,vd,data)),
+         &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;two_way&lt;/span&gt;(num_fact,factor,vd,data)))
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;auxiliary-functions&#34;&gt;Auxiliary functions&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;check_factor&lt;/strong&gt;: Checks that the predictors are type factor. If they are not, it transforms the variables into factors in the original dataframe itself and returns it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;
+check_factor &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(vars,df){
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;for &lt;/span&gt;(var in vars){
+    
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;if &lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;is.factor&lt;/span&gt;(df[,var])))
+      
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;warning&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;paste0&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;se convertira &amp;#39;&lt;/span&gt;,var,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39; en tipo factor &amp;#39;&lt;/span&gt;))
+      df[,var] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;as.factor&lt;/span&gt;(df[,var])
+  }
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(df)
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;anova_plot&lt;/strong&gt;: Returns line graph with means for each level (one-way ANOVA) or for each combination of levels (two-way ANOVA). Allows exploration of the interaction effect by visual inspection.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;anova_plot &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(num_fact,factor,vd,data,medias&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,J&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;){
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;if&lt;/span&gt;(num_fact&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;){
+    
+    labels &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;levels&lt;/span&gt;(data[,factor])
+
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;plot&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;J,medias,
+         type&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;o&amp;#39;&lt;/span&gt;, lwd&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+         ylim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;min&lt;/span&gt;(data[,vd]),&lt;span style=&#34;color:#a6e22e&#34;&gt;max&lt;/span&gt;(data[,vd])),
+         xlab&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;factor,ylab&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;vd,
+         pch&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;19&lt;/span&gt;, col&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#ff6b6b&amp;#39;&lt;/span&gt;,
+         xaxt&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;n&amp;#39;&lt;/span&gt;)
+    
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;axis&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;J,labels&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;labels) &lt;span style=&#34;color:#75715e&#34;&gt;# xticks&lt;/span&gt;
+  }
+  
+  else{
+    
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;interaction.plot&lt;/span&gt;(x.factor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data[,factor[1]], trace.factor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data[,factor[2]], 
+                 response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data[,vd], fun &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mean, 
+                 type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;b&amp;#34;&lt;/span&gt;, legend &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt;, lwd&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+                 ylim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;min&lt;/span&gt;(data[,vd]),&lt;span style=&#34;color:#a6e22e&#34;&gt;max&lt;/span&gt;(data[,vd])),
+                 xlab &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; factor[1], ylab&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;vd,trace.label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,
+                 pch&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;19&lt;/span&gt;), col &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#4ecdc4&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#ff6b6b&amp;#39;&lt;/span&gt;))
+  }
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;grid&lt;/span&gt;(col &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lightgray&amp;#34;&lt;/span&gt;, lty &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dotted&amp;#34;&lt;/span&gt;,
+         lwd &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;par&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lwd&amp;#34;&lt;/span&gt;), equilogs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;# rejilla para ver mejor&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;one_way&lt;/strong&gt; : Perform one-way fixed-effects ANOVA. The procedure is based on the chapter on one-way ANOVA in Pardo and San Martín (2015). The function provides a list with three dataframes containing the value of the F statistic, its critical level and three measures of effect size.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;
+one_way &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(num_fact,factor,vd,data){
+  
+  N &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nrow&lt;/span&gt;(data)                                   &lt;span style=&#34;color:#75715e&#34;&gt;# Tamaño muestral&lt;/span&gt;
+  J &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nlevels&lt;/span&gt;(data[,factor])                       &lt;span style=&#34;color:#75715e&#34;&gt;# Número de niveles del factor A&lt;/span&gt;
+  
+ &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Estimador variabilidad intra basado &lt;/span&gt;
+ &lt;span style=&#34;color:#75715e&#34;&gt;#                                                   en varianzas de cada nivel j del factor&lt;/span&gt;
+
+  varianzas &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aggregate&lt;/span&gt;(data[vd],
+                         by&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(data[[factor]]),
+                         FUN&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;var)[[vd]]
+  
+  n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aggregate&lt;/span&gt;(data[vd],
+                 by&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(data[[factor]]),
+                 FUN&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;length)[[vd]]
+  
+  SCE &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;((n&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;varianzas)
+  glE &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; N&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;J
+  MCE &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCE&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;glE
+  
+  &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Estimador variabilidad inter&lt;/span&gt;
+  &lt;span style=&#34;color:#75715e&#34;&gt;#                                                   basado en las medias del factor&lt;/span&gt;
+
+  medias_A_df &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aggregate&lt;/span&gt;(data[vd],
+                           by&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(data[[factor]]),
+                           FUN&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mean)
+  medias_A &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; medias_A_df[[vd]]             &lt;span style=&#34;color:#75715e&#34;&gt;# el df es para la salida&lt;/span&gt;
+  
+  media_tot &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mean&lt;/span&gt;(data[,vd])
+  SCI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;( n &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; (medias_A&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;media_tot)^2  )
+  glI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; J&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;
+  MCI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCI&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;glI
+  
+  F_stat &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; MCI&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;MCE
+  
+  p_val &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;pf&lt;/span&gt;(F_stat,glI,glE)
+  
+  &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Salida&lt;/span&gt;
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;anova_plot&lt;/span&gt;(num_fact,factor,vd,data,medias_A,J)
+
+ &lt;span style=&#34;color:#75715e&#34;&gt;# -------------------------------------------------&lt;/span&gt;
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;names&lt;/span&gt;(medias_A_df) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(factor,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;medias&amp;#39;&lt;/span&gt;)
+  
+  sumas_cuad &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SCT&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;SCI&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;SCE,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SCI&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;SCI,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SCE&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;SCE)
+  contraste &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Factores&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;factor,
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;F&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;F_stat,
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;nivel crítico&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;p_val)
+
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;medias&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;medias_A_df,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sumas cuadráticas&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;sumas_cuad,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;contraste&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;contraste,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;tamaño efecto&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;effect_size&lt;/span&gt;(num_fact,N,
+                                          glE,
+                                          glA&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;glI,F_A&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;F_stat)))
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;two_way&lt;/strong&gt; : Performs two-way ANOVA with fixed effects and assuming the same number of participants per combination of factor levels (balanced design). The procedure is based on the chapter on two-factor ANOVA in Pardo and San Martín (2015). The function provides a list with three dataframes containing the value of the F-statistic for each factor and for the interaction, the associated critical levels and three measures of effect size for each.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;
+two_way &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(num_fact,factor,vd,data){
+  
+  N &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nrow&lt;/span&gt;(data)                                 &lt;span style=&#34;color:#75715e&#34;&gt;# Tamaño muestral&lt;/span&gt;
+  J &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nlevels&lt;/span&gt;(data[,factor[1]])                  &lt;span style=&#34;color:#75715e&#34;&gt;# Número de niveles del factor A&lt;/span&gt;
+  K &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;nlevels&lt;/span&gt;(data[,factor[2]])                  &lt;span style=&#34;color:#75715e&#34;&gt;# Número de niveles del factor B&lt;/span&gt;
+  n &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; N&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(J&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;K)                                    &lt;span style=&#34;color:#75715e&#34;&gt;# Número de sujetos por combinación jk&lt;/span&gt;
+                                                  &lt;span style=&#34;color:#75715e&#34;&gt;# (se asume anova con diseño equilibrado)&lt;/span&gt;
+  
+  &lt;span style=&#34;color:#75715e&#34;&gt;# -------------------------------------------------&lt;/span&gt;
+  
+  media_tot &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mean&lt;/span&gt;(data[,vd])
+  
+  SCT &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;((data[vd]&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;media_tot)^2)
+  glT &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; N&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;
+ &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Estimador variabilidad intra &lt;/span&gt;
+ &lt;span style=&#34;color:#75715e&#34;&gt;#                                                   basado en varianzas de cada combinación jk&lt;/span&gt;
+
+  varianzas &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aggregate&lt;/span&gt;(data[vd],
+                         by&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(data[[factor[1]]],data[[factor[2]]]),
+                         FUN&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;var)[[vd]]
+  SCE &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;((n&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;varianzas)
+  glE &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; N&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;(J&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;K)
+  MCE &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCE&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;glE
+  
+ &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Estimador variabilidad inter&lt;/span&gt;
+ &lt;span style=&#34;color:#75715e&#34;&gt;#                                                   basado en medias del factor A&lt;/span&gt;
+  medias_A &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aggregate&lt;/span&gt;(data[vd],
+                        by&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(data[[factor[1]]]),
+                        FUN&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mean)[[vd]]
+  
+  SCa &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; n&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;K&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;( (medias_A&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;media_tot)^2 )
+  glA &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; J&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;
+  MCa &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCa&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;glA
+  F_stat_A &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; MCa&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;MCE
+  
+  p_val_A &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;pf&lt;/span&gt;(F_stat_A,glA,glE)
+  
+ &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Estimador variabilidad inter&lt;/span&gt;
+ &lt;span style=&#34;color:#75715e&#34;&gt;#                                                   basado en medias del factor B&lt;/span&gt;
+         
+  medias_B &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aggregate&lt;/span&gt;(data[vd],
+                        by&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(data[[factor[2]]]),
+                        FUN&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mean)[[vd]]
+  
+  SCb &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; n&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;J&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;( (medias_B&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;media_tot)^2 )
+  glB &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; K&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;
+  MCb &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCb&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;glB
+  F_stat_B &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; MCb&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;MCE
+  
+  p_val_B &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;pf&lt;/span&gt;(F_stat_B,glB,glE)
+  
+  &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Estimador variabilidad inter&lt;/span&gt;
+  &lt;span style=&#34;color:#75715e&#34;&gt;#                                                   basado en medias del factor interacción&lt;/span&gt;
+
+  medias_inter_df &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aggregate&lt;/span&gt;(data[vd],
+                        by&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(data[[factor[1]]],data[[factor[2]]]),
+                        FUN&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mean)
+  medias_inter &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; medias_inter_df[[vd]]               &lt;span style=&#34;color:#75715e&#34;&gt;# el df es para la salida&lt;/span&gt;
+  
+  SCab &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCT&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;(SCa&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;SCb&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;SCE)
+  glAB &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; (J&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;(K&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;)
+  MCab &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCab&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;glAB
+  F_stat_AB &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; MCab&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;MCE
+  
+  p_val_AB &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;pf&lt;/span&gt;(F_stat_AB,glAB,glE)
+
+  &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Ajuste condicional. Compara&lt;/span&gt;
+  &lt;span style=&#34;color:#75715e&#34;&gt;#                                                   modelo aditivo e interactivo&lt;/span&gt;
+  
+  aditiv_vs_inter &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ajuste_condicional&lt;/span&gt;(factor,vd,
+                                        SCT,SCa,SCb,SCE,
+                                        glT,glA,glB,glE)
+  
+  &lt;span style=&#34;color:#75715e&#34;&gt;# ------------------------------------------------- Salida&lt;/span&gt;
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;anova_plot&lt;/span&gt;(num_fact,factor,vd,data)
+  
+  &lt;span style=&#34;color:#75715e&#34;&gt;# -------------------------------------------------&lt;/span&gt;
+
+
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;names&lt;/span&gt;(medias_inter_df) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(factor,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;medias&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;# nombrar adecuadamente df con medias&lt;/span&gt;
+  
+  sumas_cuad &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SCT&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;SCT,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SCa&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;SCa,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SCb&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;SCb,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SCab&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;SCab,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SCE&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;SCE)
+  contraste &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Factores&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(factor,&lt;span style=&#34;color:#a6e22e&#34;&gt;paste0&lt;/span&gt;(factor[1],&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*&amp;#39;&lt;/span&gt;,factor[2])),
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;F&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(F_stat_A,F_stat_B,F_stat_AB),
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;nivel crítico&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(p_val_A,p_val_B,p_val_AB))
+  
+  tamano_efecto &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(contraste[1],
+                                       &lt;span style=&#34;color:#a6e22e&#34;&gt;effect_size&lt;/span&gt;(num_fact,N,
+                                                   glE,
+                                                   glA,F_A&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;F_stat_A,
+                                                   glB,F_B&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;F_stat_B,
+                                                   glAB,F_AB&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;F_stat_AB))
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ajuste_condicional&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;aditiv_vs_inter,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;medias&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;medias_inter_df,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sumas cuadráticas&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;sumas_cuad,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;contraste&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;contraste,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;tamaño efecto&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tamano_efecto))
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;ajuste_condicional&lt;/strong&gt;: It compares the fit of the simple model that includes only main effects (additive model) versus that of the more complex model, which includes the interaction component (interactive model). A non-statistically significant result indicates that there is no evidence that the interactive model produces a significant reduction in prediction errors compared to the simpler model. In this case a warning is given to the user, indicating that the ANOVA model generated may not be optimal. The procedure has been copied from Ato and Vallejo (2015) (p.138).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;
+ajuste_condicional &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(factor,vd,
+                               SCT,SCa,SCb,SCE,
+                               glT,glA,glB,glE){
+  
+  SCE_aditivo &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCT&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;(SCa&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;SCb)
+  glE_aditivo &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; glT&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;(glA&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;glB)
+  
+  SCE_inter &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; SCE            &lt;span style=&#34;color:#75715e&#34;&gt;# SCE de modelo inter = SCT-(SCa+SCb+SCab)&lt;/span&gt;
+  glE_inter &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; glE            &lt;span style=&#34;color:#75715e&#34;&gt;# glE de modelo inter = glT-(glA+glB+glAB)&lt;/span&gt;
+  
+  F_stat &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; ( (SCE_aditivo&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;SCE_inter)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(glE_aditivo&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;glE_inter) )&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(SCE_inter&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;glE_inter)
+  p_val &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;pf&lt;/span&gt;(F_stat,(glE_aditivo&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;glE_inter),(glE_inter))
+  
+ 
+ adit &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;paste0&lt;/span&gt;(vd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;=&amp;#39;&lt;/span&gt;,factor[1],&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;+&amp;#39;&lt;/span&gt;,factor[2])
+ inter &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;paste0&lt;/span&gt;(vd,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;=&amp;#39;&lt;/span&gt;,factor[1],&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;+&amp;#39;&lt;/span&gt;,factor[2],&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;+&amp;#39;&lt;/span&gt;,factor[1],&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;*&amp;#39;&lt;/span&gt;,factor[2])
+ 
+ comparacion &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;modelo aditivo&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;adit,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;modelo interactivo&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;inter,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;F&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;F_stat,
+                           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;nivel crítico&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;p_val)
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;if &lt;/span&gt;(p_val&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.05&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;warning&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Diferencia no significativa en grado de ajuste con 
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;                          alfa=0,05. El modelo interactivo podría no ser apropiado&amp;#39;&lt;/span&gt;)
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;modelos&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(adit,inter),
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;F&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;NA&lt;/span&gt;,F_stat),
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;nivel crítico&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;NA&lt;/span&gt;,p_val)))
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;effect_size&lt;/strong&gt; : Calculates three measures of effect size for all factors involved in the ANOVA. Depending on the type of ANOVA (with 1 or 2 factors), it returns some formulas or others. All the formulas used have been copied directly from the chapters dedicated to ANOVA in Pardo and San Martín (2015). Factors are assumed to be fixed effects.
+Problem: when comparing results with those obtained with JASP software, it is observed that $\omega^2$ of the function is higher, the discrepancy being quite large in the case of two-factor ANOVA.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;effect_size &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(num_fact,N,
+                        glE,
+                        glA,F_A,
+                        glB&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,F_B&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,
+                        glAB&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,F_AB&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;){
+  etas &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;numeric&lt;/span&gt;()
+  omegas &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;numeric&lt;/span&gt;()
+  deltas &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;numeric&lt;/span&gt;()
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;for &lt;/span&gt;(gl_F in &lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(A&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(glA,F_A), B&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(glB,F_B), AB&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(glAB,F_AB))){
+    
+      eta &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; (gl_F[1]&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;gl_F[2])&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(gl_F[1]&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;gl_F[2]&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;glE)
+      omega &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; (gl_F[1]&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;(gl_F[2]&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;))&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(gl_F[1]&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;(gl_F[2]&lt;span style=&#34;color:#ae81ff&#34;&gt;-1&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;N)
+      delta &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sqrt&lt;/span&gt;( omega&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;omega) )
+      etas &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(etas,eta); omegas &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(omegas,omega); deltas &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(deltas,delta)
+  }
+  
+  efs &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data.frame&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;delta Cohen&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; deltas,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;eta cuadrado&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; etas,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;omega cuadrado&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; omegas)
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(efs)
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;an-example-two-way-anova&#34;&gt;An example: two-way ANOVA&lt;/h1&gt;
+&lt;p&gt;This data set, &amp;ldquo;Heart Rate&amp;rdquo;, (example JASP file) provides heart rates of male and female runners and generally sedentary participants following 6 minutes exercise (800 observations). Does gender affect average heart rate? Does lifestyle (runners and non-runners) have an effect on heart rate? Is there an interactive effect of lifestyle and gender on heart rate?&lt;/p&gt;
+&lt;p&gt;Variables:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Gender&lt;/strong&gt; - Participant&amp;rsquo;s gender (Female, Male).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Group&lt;/strong&gt; - Group of &amp;lsquo;Runners&amp;rsquo; (averaging more than15 miles per week) and &amp;lsquo;Control&amp;rsquo; group (generally sedentary participant).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Heart.Rate&lt;/strong&gt; - Heart rate after six minutes of exercise.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://osf.io/5q42c/&#34;&gt;link to data&lt;/a&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;center&#34;&gt;Gender&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Group&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Heart.Rate&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;Female&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Runners&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;119&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;Female&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Runners&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;84&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;Female&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Runners&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;89&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;Female&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Runners&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;119&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;center&#34;&gt;&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ANOVA&lt;/span&gt;(factor&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Gender&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Group&amp;#39;&lt;/span&gt;),vd&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Heart.Rate&amp;#39;&lt;/span&gt;,data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;data2)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/aovplot.png&#34; alt=&#34;anova interaction plot&#34;&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;ajuste_condicional
+                               modelos        F nivel.crítico
+&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;              Heart.Rate&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Gender&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;Group       &lt;span style=&#34;color:#66d9ef&#34;&gt;NA&lt;/span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;NA&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; Heart.Rate&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Gender&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;Group&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;Gender&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;Group &lt;span style=&#34;color:#ae81ff&#34;&gt;7.409481&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;0.006629953&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;medias
+  Gender   Group  medias
+&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; Female Control &lt;span style=&#34;color:#ae81ff&#34;&gt;148.000&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;   Male Control &lt;span style=&#34;color:#ae81ff&#34;&gt;130.000&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; Female Runners &lt;span style=&#34;color:#ae81ff&#34;&gt;115.985&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;   Male Runners &lt;span style=&#34;color:#ae81ff&#34;&gt;103.975&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;sumas_cuadráticas
+       SCT      SCa      SCb     SCab      SCE
+&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;407985.9&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;45030.01&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;168432.1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1794.005&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;192729.8&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;contraste
+      Factores          F nivel.crítico
+&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       Gender &lt;span style=&#34;color:#ae81ff&#34;&gt;185.979949&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;0.000000000&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;        Group &lt;span style=&#34;color:#ae81ff&#34;&gt;695.647040&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;0.000000000&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; Gender&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;Group   &lt;span style=&#34;color:#ae81ff&#34;&gt;7.409481&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;0.006629953&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;tamaño_efecto
+      Factores delta.Cohen eta.cuadrado omega.cuadrado
+&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       Gender  &lt;span style=&#34;color:#ae81ff&#34;&gt;0.48085854&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;0.189392817&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0.187800726&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;        Group  &lt;span style=&#34;color:#ae81ff&#34;&gt;0.93183089&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;0.466361694&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0.464756575&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; Gender&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;Group  &lt;span style=&#34;color:#ae81ff&#34;&gt;0.08950894&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;0.009222546&lt;/span&gt;    &lt;span style=&#34;color:#ae81ff&#34;&gt;0.007948171&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;References&lt;/p&gt;
+&lt;p&gt;Pardo, A., &amp;amp; San Martín, R. (2015). Análisis de datos en ciencias sociales y de salud II. Editorial Síntesis.&lt;/p&gt;
+&lt;p&gt;Ato, M. &amp;amp; Vallejo, G. (2015). Diseños de investigación en Psicología. Ediciones Pirámide.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Definite integral</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/integral/</link>
+       <pubDate>Fri, 06 Nov 2020 00:00:00 +0100</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/integral/</guid>
+       <description>&lt;p&gt;This small program consists of a function that can compute the definite integral of a function over a given interval. Full description with examples can be found &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/integral.pdf&#34;&gt;here&lt;/a&gt; and the code is &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Integral-definida&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;strong&gt;integral_definida&lt;/strong&gt;: approximates the definite integral of a function over [a,b], given a number of partitions.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Arguments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;funcion&lt;/strong&gt;: Mathematical function that we want to integrate.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;a&lt;/strong&gt;: Lower limit of integration.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;b&lt;/strong&gt;: Upper limit of integration.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;n&lt;/strong&gt;: Number of partitions&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;aprox&lt;/strong&gt;: Chosen integration technique . The definite integral can be approximated by rectangles (&lt;strong&gt;&amp;lsquo;rect&amp;rsquo;&lt;/strong&gt;), the trapezoid rule (&lt;strong&gt;&amp;lsquo;trap&amp;rsquo;&lt;/strong&gt;) or by Simpson&amp;rsquo;s rule (&lt;strong&gt;&amp;lsquo;simp&amp;rsquo;&lt;/strong&gt;). The latter gives the best approximations, but when n is an even number.&lt;/p&gt;
+&lt;p&gt;Approximation by rectangles: $\small\displaystyle \int_a^b  f(x)dx = \lim_{n\rightarrow \infty}  I_n=\lim_{n\rightarrow \infty}S_n$.&lt;/p&gt;
+&lt;p&gt;$\small In=\sum_{i=1}^n f(m_i)\cdot (\frac{b-a}{n})$ ; $\small Sn=\sum_{i=1}^n f(M_i)\cdot (\frac{b-a}{n})$&lt;/p&gt;
+&lt;p&gt;Trapezoid rule:  $\small\displaystyle \int_a^b f(x) dx \approx \frac{b-a}{2n}[f(x_0) + 2f(x_1) + 2f(x_2) + 2f(x_3) + &amp;hellip; + 2f(x_{n-2}) + 2f(x_{n-1}) + f(x_n)]$&lt;/p&gt;
+&lt;p&gt;Simpson&amp;rsquo;s rule:  $\small\displaystyle \int_a^b f(x) dx \approx \frac{b-a}{3n}[f(x_0) + 4f(x_1) + 2f(x_2) + 4f(x_3) + &amp;hellip; + 2f(x_{n-2}) + 4f(x_{n-1}) + f(x_n)]$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;If &lt;strong&gt;aprox=&#39;rect&amp;rsquo;&lt;/strong&gt;: list with two elements representing the lower sum (In) and the upper sum (Sn).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If &lt;strong&gt;aprox=&#39;trap&amp;rsquo;&lt;/strong&gt; o &lt;strong&gt;aprox=&#39;simp&amp;rsquo;&lt;/strong&gt;: vector of length one representing the estimate of the definite integral over a and b.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;
+integral_definida &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(funcion,a,b,n,aprox&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;rect&amp;#39;&lt;/span&gt;){
+
+  interv &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; (b&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;a)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;n
+  
+  seg &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;seq&lt;/span&gt;(from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;a,to&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;b,by&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;interv)
+  
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;if &lt;/span&gt;(aprox&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;trap&amp;#39;&lt;/span&gt;){
+    
+    strt_end &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg[1]),&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg[n&lt;span style=&#34;color:#ae81ff&#34;&gt;+1&lt;/span&gt;]))
+    mid &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg[2&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;n])
+    
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(( (b&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;a)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;n) )&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(strt_end,mid))
+  }
+  else &lt;span style=&#34;color:#a6e22e&#34;&gt;if &lt;/span&gt;(aprox&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;simp&amp;#39;&lt;/span&gt;){
+    
+    strt_end &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg[1]),&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg[n&lt;span style=&#34;color:#ae81ff&#34;&gt;+1&lt;/span&gt;]))
+    seg_cut &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; seg[2&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;n]
+    
+    indices &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;length&lt;/span&gt;(seg_cut)
+    mid &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg_cut[indices&lt;span style=&#34;color:#f92672&#34;&gt;%%&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]),
+             &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg_cut[indices&lt;span style=&#34;color:#f92672&#34;&gt;%%&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]))
+    
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(( (b&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;a)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;n) )&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(strt_end,mid))
+  }
+  else{
+    
+    In &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;double&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    Sn &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;double&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+  
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;for &lt;/span&gt;(i in &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;n){
+      fmi &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;min&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg[i]&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;seg[i&lt;span style=&#34;color:#ae81ff&#34;&gt;+1&lt;/span&gt;]))
+      In &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; In&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;fmi&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;interv
+      fMi &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;max&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;funcion&lt;/span&gt;(seg[i]&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;seg[i&lt;span style=&#34;color:#ae81ff&#34;&gt;+1&lt;/span&gt;]))
+      Sn &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; Sn&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;fMi&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;interv
+    }
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;return&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(In&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;In,Sn&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;Sn))
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+     </item>
+   
+     <item>
+       <title>Is it normal?</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/isnormal/</link>
+       <pubDate>Tue, 20 Oct 2020 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/isnormal/</guid>
+       <description>&lt;p&gt;Function to support the Kolmogorov-Smirnov test (for normality) graphically.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;A common task for many scientists, regarding data analysis, and especially in behavioral sciences, is to test if some variable of interest is normally distributed. One of the statistical techniques that is usually used is the Kolmogorov-Smirnov test (KS).It is based on the comparison of two distribution functions, one empirical ($F(Y_i)$), estimated from the collected data, and one theoretical ($F(Y_0)$). With KS we can test the null hypothesis that the empirical distribution is equal to the theoretical distribution, in this case, the normal distribution, with the parameters that we specify.&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+H_0:F(Y_i)=F(Y_0)
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+H_1:F(Y_i)\neq F(Y_0)
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;Eventhough this technique is very useful, it can be misleading sometimes because with big samples, even small deviations from normality are deemed statistically significant. To avoid dichotomic thinking (significant=&#39;bad&amp;rsquo; and non-significant=&#39;good&amp;rsquo;), we can complement this test with some plots. Because KS is based on the comparison of two distribution functions, we can literally show this comparison by plotting the theoretical cumulative distribution function and the empirical distribution function. The goodness of fit can be assessed by looking if the two curves plotted overlap or not.&lt;/p&gt;
+&lt;h3 id=&#34;code&#34;&gt;Code&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ks_test&lt;/span&gt;(Yi,mu,sigma):
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Takes an array of values and returns its CDF and
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    its theoretical CDF if it were normal. Also returns
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    the value of the DKS statistic.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Parameters
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    ----------
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Yi : 1-D array-like (np.array or list)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        Vector of values that correspond to the observed values
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        of our variable of interest.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    mu : int or float
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        Expected value of the normal distribution we are testing.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    sigma : int or float
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        Standard deviation of the normal distribution we are testing.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Returns
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    -------
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    float.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        Value corresponding to the statistic DKS:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            DKS=max(abs(empirical_CDF - theoretical_CDF))
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+    
+    sorted_Yi&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sort(Yi)
+    emp_cdf&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(start&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,stop&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;len(Yi)&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(len(Yi))
+    theor_cdf&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;norm&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cdf(sorted_Yi,loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mu,scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;sigma)
+    DKS&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;max(abs(emp_cdf&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;theor_cdf))
+    
+    fig,ax&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;subplots()
+
+    fig&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;suptitle(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Kolmogorov-Smirnov visual test&amp;#39;&lt;/span&gt;, fontsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt;, fontweight&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bold&amp;#39;&lt;/span&gt;)
+
+    ax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;scatter(sorted_Yi,emp_cdf,
+               label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Empirical CDF&amp;#39;&lt;/span&gt;,
+               c&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#ff6b6b&amp;#39;&lt;/span&gt;,
+               edgecolor&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;black&amp;#39;&lt;/span&gt;,
+               linewidths&lt;span style=&#34;color:#f92672&#34;&gt;=.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;,
+              alpha&lt;span style=&#34;color:#f92672&#34;&gt;=.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;)
+    ax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot(sorted_Yi,emp_cdf,c&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#ff6b6b&amp;#39;&lt;/span&gt;,alpha&lt;span style=&#34;color:#f92672&#34;&gt;=.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;# just to see the &amp;#39;trajectory of the points&amp;#39;&lt;/span&gt;
+
+    ax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;scatter(sorted_Yi,theor_cdf,
+               label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Theoretical CDF&amp;#39;&lt;/span&gt;,
+               c&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#4ecdc4&amp;#39;&lt;/span&gt;,
+               edgecolor&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;black&amp;#39;&lt;/span&gt;,
+               linewidths&lt;span style=&#34;color:#f92672&#34;&gt;=.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;,
+              alpha&lt;span style=&#34;color:#f92672&#34;&gt;=.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;)
+    ax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot(sorted_Yi,theor_cdf,c&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#4ecdc4&amp;#39;&lt;/span&gt;,alpha&lt;span style=&#34;color:#f92672&#34;&gt;=.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;# just to see the &amp;#39;trajectory of the points&amp;#39;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; isinstance(Yi,pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Series):
+        ax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_xlabel(Yi&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;name)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+        ax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;$Y_i$&amp;#39;&lt;/span&gt;)
+    ax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Cumulative probability&amp;#39;&lt;/span&gt;)
+    ax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;legend(loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;center right&amp;#39;&lt;/span&gt;);
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; DKS
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;some-examples&#34;&gt;Some examples&lt;/h3&gt;
+&lt;p&gt;Imagine we want to know if newborns from mother who smoke tend to weigth less. Now imagine we can only collect data from 14 babies. It&amp;rsquo;s a very small sample, so we can&amp;rsquo;t rely on the Central Limit Theorem. Before trying to compare means or something like that, it would be necessary to check if we can assume that variable &amp;lsquo;weigth of newborns&amp;rsquo; is normally distributed. We can quickly do that with the KS &amp;lsquo;visual&amp;rsquo; test.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Weigths corresponding to the 14 babies&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+Yi&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array([&lt;span style=&#34;color:#ae81ff&#34;&gt;1.48&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1.8&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1.93&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1.98&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2.04&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2.08&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2.18&lt;/span&gt;,
+            &lt;span style=&#34;color:#ae81ff&#34;&gt;2.2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2.3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2.45&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2.47&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3.15&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3.46&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4.64&lt;/span&gt;]) &lt;span style=&#34;color:#75715e&#34;&gt;# data from Pardo &amp;amp; Ruiz (2015) pp.68&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Is the data normally distributed with mean equal to 2.5 and standard deviation equal to 1?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;ks_test(Yi,mu&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2.5&lt;/span&gt;,sigma&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/ksexample.png&#34; alt=&#34;fancy plot of CDFs&#34;&gt;&lt;/p&gt;
+&lt;p&gt;We can see that the data is clearly not normal.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s look at another example. This one is made to show what happens when the variable is normal. We have a sample of 100 observations corresponding to scores in some recently developed intelligence test.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IQ scores of 100 people&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;IQ&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;normal(loc&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;,scale&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;15&lt;/span&gt;,size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;),
+                columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;IQ Scores&amp;#39;&lt;/span&gt;])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Are the scores of our test normally distributed with mean equal to 100 and standard deviation equal to 15?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/ksexampleci.png&#34; alt=&#34;fancy plot of CDFs&#34;&gt;&lt;/p&gt;
+&lt;p&gt;There is a great overlap, so we can conclude that the variable follows a normal distribution with $\mu$=100 and $\sigma$=15.&lt;/p&gt;
+&lt;p&gt;If you want to see the complete code, you can visit my &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Kolmogorov-Smirnov-visual-test&#34;&gt;Github&lt;/a&gt; profile.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Who is the next Google&#39;s UX engineer?</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/googleux/</link>
+       <pubDate>Wed, 09 Sep 2020 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/googleux/</guid>
+       <description>&lt;p&gt;A group of colleagues and I made a hypothetical selection profile for the position
+of UX engineer at Google. We also assessed a fictional candidate based on that profile.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/UXpic.PNG&#34; alt=&#34;Ux wireframes&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;This project is part of the module Psychological Assessment, which I studied
+in the third year of Psychology.&lt;/p&gt;
+&lt;p&gt;The objective was to design a selection profile for a job from a psychometric perspective,
+or trait perspective. That means we only focused on personality or intelligence attributes.
+We also set some decision criteria based on minimum required scores, weight or relative importance of each attribute&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Finally, one person was taken as a candidate for the position and was actually evaluated on the relevant traits. A decision was made based on the decision criteria that we established in the profile.&lt;/p&gt;
+&lt;p&gt;Click &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_ux.pdf&#34;&gt;here&lt;/a&gt; if you want to know more about the UX engineer profile
+we made (in Spanish).&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Monty Hall problem simulation</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/monty_hall/</link>
+       <pubDate>Tue, 08 Sep 2020 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/monty_hall/</guid>
+       <description>&lt;p&gt;I&amp;rsquo;ve written a simple program that simulates the famous problem. To do that, I&amp;rsquo;ve taken
+advantage of some of the object-oriented features in Python.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Suppose you&amp;rsquo;re on a game show, and you&amp;rsquo;re given the choice of three doors: Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what&amp;rsquo;s behind the doors, opens another door, say No. 3, which has a goat. He then says to you, &lt;strong&gt;&amp;ldquo;Do you want to pick door No. 2?&amp;rdquo; Is it to your advantage to switch your choice?&lt;/strong&gt; &lt;a href=&#34;https://en.wikipedia.org/wiki/Monty_Hall_problem&#34;&gt;(&lt;em&gt;Source:Wikipedia&lt;/em&gt;)&lt;/a&gt;
+&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/monty.png&#34; alt=&#34;What should you do?&#34;&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It is often said that it doesn&amp;rsquo;t really matter what decision is made, because, after all, both doors have the same probability of hiding the prize, which is 1/3. However, intuition is playing tricks on us in this case, because there is indeed an optimal decision. The probabilities aren&amp;rsquo;t the same. This can be demonstrated, but, better yet, it can be shown empirically.&lt;/p&gt;
+&lt;p&gt;How? Because probability is considered the &amp;ldquo;long term&amp;rdquo; frequency of the occurrence of an event (from the frequentist view), we can simulate the game thousands of times and record the results that produce different decisions. The frequency of wins and loses when switching the choice or staying with the first choice will be
+good approximations of the real probabilities.&lt;/p&gt;
+&lt;p&gt;Go and check the complete code on my &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Monty-Hall-problem-&#34;&gt;Github&lt;/a&gt; if you want to know the answer!&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Newton method from scratch</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/newtonmet/</link>
+       <pubDate>Tue, 01 Sep 2020 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/newtonmet/</guid>
+       <description>&lt;p&gt;Attemp to implement the Newton-Raphson method in Python&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Studying calculus I found this interesting numeric method for approximating the real zeros of a function.
+That is, for estimating solutions for equations of the form $f(x)=0$. The algorithm can be described as follows &lt;a href=&#34;https://www.amazon.com/-/es/Ron-Larson/dp/1285057090&#34;&gt;(Larson &amp;amp; Edwards, 2013)&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Let $f(c)=0$. where $f$ is differentiable on an open interval containing $c$. Then, to approximate $c$, use these steps.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Make an initial estimate $x_1$ that is close to $c$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Determine a new approximation $x_{n+1}=x_n-\frac{f(x_n)}{f&amp;rsquo;(x_n)}$.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;When $|x_n-x_{n+1}|$ is within the desired accuracy, let $x_{n+1}$ serve as the final approximation. Otherwise, return to Step 2 and calculate a new approximation.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;However, this method doesn&amp;rsquo;t always yield a convergent sequence. This is an important issue. It means that there are functions whose zeros can&amp;rsquo;t be approximated using this technique. If we don&amp;rsquo;t detect those cases, we will end up applying the Newton method indefinitley without ever reaching a solution. Luckily, it can be shown that a condition sufficient to produce convergence to a zero of $f$ is that $\left|\frac{f(x)f&amp;rsquo;&#39;(x)}{[f&amp;rsquo;(x)]^2}\right|&amp;lt;1$ on an open interval containing the zero.&lt;/p&gt;
+&lt;p&gt;Now that we have all the necessary &amp;lsquo;ingredients&amp;rsquo; for our function, let&amp;rsquo;s see how it could be implemented.&lt;/p&gt;
+&lt;h3 id=&#34;code&#34;&gt;Code&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Iterative formula:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$x_{n+1}=x_n-\frac{f(x_n)}{f&amp;rsquo;(x_n)}$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;iterative_formula&lt;/span&gt;(f,x_n):
+    
+    &lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; scipy.misc &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; derivative
+    
+    x_n1&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;x_n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;(f(x_n)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;derivative(f,x_n))
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x_n1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Convergence condition&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$\left|\frac{f(x)f&amp;rsquo;&#39;(x)}{[f&amp;rsquo;(x)]^2}\right|&amp;lt;1$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;converges&lt;/span&gt;(f,x_n):
+    
+    &lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; scipy.misc &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; derivative
+    
+    numerator&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;f(x_n)&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;derivative(f,x_n,n&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;# parameter &amp;#39;n&amp;#39; for order of derivative&lt;/span&gt;
+    denominator&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;derivative(f,x_n)&lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; abs(numerator&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;denominator)&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Precision:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$|x_n-x_{n+1}|$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;precise_enough&lt;/span&gt;(x_n,x_n1,error):
+      
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; abs(x_n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;x_n1)&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt;error
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Complete algorithm:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;newton_method&lt;/span&gt;(f,x_n,error&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.01&lt;/span&gt;):
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; converges(f,x_n):
+        
+        x_n1&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;iterative_formula(f,x_n)
+
+        iters&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; precise_enough(x_n,x_n1,error):
+            x_n&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;x_n1
+            x_n1&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;iterative_formula(f,x_n)
+            iters&lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x_n1,iters
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Newton&amp;#39;s method fails to converge&amp;#34;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The code is available &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/Newton-Raphson-method&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;comments&#34;&gt;Comments&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;I tested the code with several examples (you can check it in my github) and it seems to work fine. However, there are some examples that produce strange results. In other cases, the answer is correct but slightly different from the
+obtained using other code versions of the newton method algorithm. I wouldn&amp;rsquo;t say that makes the program a failure, but it necessarily means that I&amp;rsquo;ve written a function that doesn&amp;rsquo;t capture all the elements needed to solve the problem properly.&lt;/li&gt;
+&lt;li&gt;The function doesn&amp;rsquo;t return a tuple or a list with all the real zeros, just one solution, because the output depends on the first estimate given as argument. For instance, if you pass the function $f(x)=x^2-2$ and the estimate $x_1=1$, you get as a result $\approx{1.41}$ ($+\sqrt{2}$ ), but if you pass as first approximation $x_1=-1$ you get the other zero, which is $\approx{-1.41}$ ($-\sqrt{2}$ ). This forces the user to have in advance a rough idea of the value of the solutions.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Analyzing Data with Python (edX project)</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/ibm/</link>
+       <pubDate>Sat, 20 Jun 2020 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/ibm/</guid>
+       <description>&lt;p&gt;Final assigment of the course &lt;strong&gt;IBM: DA0101EN Analyzing Data with Python.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;The goal was to analyze and predict alcohol consumption by country using features such as beer servings and wine servings.&lt;/p&gt;
+&lt;p&gt;We were given one data set&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/python-for-data-analysis-project-edx-/blob/master/world_drink_habits.csv&#34;&gt;&lt;em&gt;world_drink_habits.csv&lt;/em&gt;&lt;/a&gt;. All the data analysis was done with this data&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;country&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;beer_servings&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;spirit_servings&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;wine_servings&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;total_litres_of_pure_alcohol&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;continent&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Afghanistan&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.0&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Asia&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Albania&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;89&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;132&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;54&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;4.9&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Europe&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Algeria&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;25&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;14&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.7&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;Africa&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;hellip; (193x6)&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The specific tasks involved a bit of pre-processing, descriptive analysis and fitting and
+evaluating various regression models.&lt;/p&gt;
+&lt;p&gt;The complete code is available &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/python-for-data-analysis-project-edx-&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;comments&#34;&gt;Comments&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;We were given hints and instructions in many steps, so it wasn&amp;rsquo;t so difficult to complete. However, this project
+served very well as practice and to develop the data analyst mindset (how to structure the process of analysis)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Using Python for research (edX project)</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/edx/</link>
+       <pubDate>Mon, 01 Jun 2020 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/edx/</guid>
+       <description>&lt;p&gt;Final assigment of the course &lt;strong&gt;HarvardX: PH526x Using Python for Research.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;The goal was to develop a model that would predict the type of physical activity
+(standing, walking, climbing stairs or going down the stairs) from tri-axial smartphone accelerometer data.&lt;/p&gt;
+&lt;p&gt;We were given three files of data.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/python-for-research-project-edx-/blob/master/train_time_series.csv&#34;&gt;&lt;em&gt;train_time_series.csv&lt;/em&gt;&lt;/a&gt;. Raw accelerometer data. Used to build the model.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;timestamp&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;UTC time&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;accuracy&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;x&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;y&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;z&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;20586&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565109930787&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:45:30.787&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;unknown&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-0.0064849&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-0.9348602&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-0.0690460&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20587&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565109930887&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:45:30.887&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;unknown&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-0.0664672&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-1.0154418&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.08955383&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20588&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565109930987&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:45:30.987&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;unknown&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-0.0434875&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-1.0212554&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.17846679&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;hellip; (3744x6)&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/python-for-research-project-edx-/blob/master/train_labels.csv&#34;&gt;&lt;em&gt;train_labels.csv&lt;/em&gt;&lt;/a&gt;. The activity labels for every tenth observation in &lt;em&gt;train_time_series.csv&lt;/em&gt;. Also needed to build the model.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;timestamp&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;UTC time&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;label&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;20589&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565109931087&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:45:31.087&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20599&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565109932090&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:45:32.090&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20609&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565109933092&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:45:33.092&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;hellip; (375x3)&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/python-for-research-project-edx-/blob/master/test_time_series.csv&#34;&gt;&lt;em&gt;test_time_series.csv&lt;/em&gt;&lt;/a&gt;. We were asked to provide the activity labels predicted by our code for this test data set.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;timestamp&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;UTC time&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;accuracy&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;x&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;y&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;z&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;24330&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565110306139&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:51:46.139&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;unknown&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.0342864&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-1.5044555&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.1576232&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;24331&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565110306239&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:51:46.239&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;unknown&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.4091644&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-1.0385437&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.0309753&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;24332&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;1565110306340&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;2019-08-06T16:51:46.340&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;unknown&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-0.234390&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;-0.9845581&amp;hellip;&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.1247711&amp;hellip;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;hellip; (1250x6)&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Because it was a classification problem I tried several approaches like Knn and
+logistic regression. At the end of the course we were not given the data set with the
+actual labels but we were told our accuracy score. I achieved a very modest 46%.&lt;/p&gt;
+&lt;p&gt;The complete code is available &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/python-for-research-project-edx-&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;comments&#34;&gt;Comments&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;This was my first data science project, so my knowledge of Python (and data science) was extremely basic. I would
+definitely change some things now that I know more.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Smartphone addiction and impulsivity</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/tfg/</link>
+       <pubDate>Sat, 30 May 2020 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/tfg/</guid>
+       <description>&lt;p&gt;Bachelor&amp;rsquo;s thesis/final project (in Spanish, &amp;ldquo;Trabajo de
+Fin de Grado&amp;rdquo;). I review past research on the relationship between impulsivity and smartphone
+consumption. It&amp;rsquo;s my intention to conduct the study soon, at least with simulated data.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/smart_addic.jpg&#34; alt=&#34;chained to our devices&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;In an era of increasing interconnectivity and technological development, smartphones have become a constant in our lives, to the point of even generating dependence problems in some people. But what factors explain this abusive use?&lt;/p&gt;
+&lt;p&gt;I focus in this paper mainly on two concepts coming from behavioral economics, &lt;em&gt;delay discounting&lt;/em&gt; and level of &lt;em&gt;demand&lt;/em&gt;. These concepts are closely related to impulsivity and motivation and in the scientific literature it is common to see them associated with problems of substance addiction and gambling. However, their relationship with other addictive-type problems is not yet well explored. In this paper I propose a study to assess the predictive validity that these variables have on the abusive use of the smartphone. The technique I propose for the analysis of this relationship is OLS multiple linear regression.&lt;/p&gt;
+&lt;p&gt;If you would like to know more about this project, you can read the paper (in Spanish)
+&lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/smartadTFG.pdf&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+</description>
+     </item>
+   
+ </channel>
+</rss>

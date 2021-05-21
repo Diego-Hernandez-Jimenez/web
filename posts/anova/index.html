@@ -1,0 +1,572 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>ANOVA from scratch - Diego Hernández Jiménez</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Kiera: A Hugo theme for creative and technical writing." />
+<meta name="author" content="Example" /><meta property="og:title" content="ANOVA from scratch" />
+<meta property="og:description" content="Project developed for the &ldquo;Computer methods&rdquo; course in the Master in Methodology for behavioral sciences. Full description and examples can be found here and here.
+Main function ANOVA: Perform a one- or two-way fixed-effects ANOVA." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://diego-hernandez-jimenez.github.io/web/posts/anova/" />
+<meta property="article:published_time" content="2020-12-26T00:00:00+01:00" />
+<meta property="article:modified_time" content="2020-12-26T00:00:00+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ANOVA from scratch"/>
+<meta name="twitter:description" content="Project developed for the &ldquo;Computer methods&rdquo; course in the Master in Methodology for behavioral sciences. Full description and examples can be found here and here.
+Main function ANOVA: Perform a one- or two-way fixed-effects ANOVA."/>
+
+<meta name="generator" content="Hugo 0.74.3" />
+    
+    <link rel="shortcut icon" href="https://diego-hernandez-jimenez.github.io/web/images/Dicon.ico" />
+  
+    <script src="https://diego-hernandez-jimenez.github.io/web/js/mathjax-config.js" defer></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://diego-hernandez-jimenez.github.io/web/fontawesome/css/all.min.css" />
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  
+  
+  <link rel="stylesheet" type="text/css" href="https://diego-hernandez-jimenez.github.io/web/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://diego-hernandez-jimenez.github.io/web/">Diego Hernández Jiménez</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/Diego-Hernandez-Jimenez" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/diego-hern%c3%a1ndez-jim%c3%a9nez" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Welcome to my personal website! Here I share some of my little projects.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/tags">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Projects</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/contact/">
+                <i class="fa-li fa  fa-lg"></i><span>Contact</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>ANOVA from scratch</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2020-12-26T00:00:00&#43;01:00">Dec 26, 2020</time>
+        </li>
+        
+        <li>
+            Categories:
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/categories/coding">Coding</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/categories/projects">Projects</a>
+                
+            </em>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/university">#University</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/r">#R</a>
+                
+            </em>
+        </li>
+        
+
+        <li>7 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+
+
+    <p>Project developed for the &ldquo;Computer methods&rdquo; course in the Master in Methodology for behavioral sciences. Full description and examples can be found <a href="https://diego-hernandez-jimenez.github.io/web/projects/aov.pdf">here</a> and <a href="https://github.com/Diego-Hernandez-Jimenez/ANOVA_scratch">here</a>.</p>
+<h3 id="main-function">Main function</h3>
+<p>ANOVA: Perform a one- or two-way fixed-effects ANOVA.</p>
+<ul>
+<li>
+<p>Arguments:</p>
+<ul>
+<li>
+<p><strong>factor</strong>: character vector of length 1 or 2 with the name of the predictors or factors. They must refer to a variable of type factor of a dataframe. In case the factor(s) are not of type factor, the function <strong>check_factor</strong> is called to transform the dataframe variables into factor type.</p>
+</li>
+<li>
+<p><strong>vd</strong>: character vector of length 1 with the name of the outcome or dependent variable. It must refer to a numeric variable of a dataframe.</p>
+</li>
+<li>
+<p><strong>data</strong>: dataframe containing the factor or factors and the dependent variable.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>output:</p>
+<p>Depending on the number of factors, returns the function <strong>one_way</strong> or the function <strong>two_way</strong>.</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">ANOVA <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(factor,vd,data){
+  
+  num_fact <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">length</span>(factor)
+  
+  data <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">check_factor</span>(factor,data)
+  
+  <span style="color:#a6e22e">switch</span>(num_fact,
+         
+         <span style="color:#a6e22e">return</span>(<span style="color:#a6e22e">one_way</span>(num_fact,factor,vd,data)),
+         <span style="color:#a6e22e">return</span>(<span style="color:#a6e22e">two_way</span>(num_fact,factor,vd,data)))
+}
+
+</code></pre></div><h3 id="auxiliary-functions">Auxiliary functions</h3>
+<p><strong>check_factor</strong>: Checks that the predictors are type factor. If they are not, it transforms the variables into factors in the original dataframe itself and returns it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">
+check_factor <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(vars,df){
+  
+  <span style="color:#a6e22e">for </span>(var in vars){
+    
+    <span style="color:#a6e22e">if </span>(<span style="color:#f92672">!</span>(<span style="color:#a6e22e">is.factor</span>(df[,var])))
+      
+      <span style="color:#a6e22e">warning</span>(<span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#39;se convertira &#39;</span>,var,<span style="color:#e6db74">&#39; en tipo factor &#39;</span>))
+      df[,var] <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.factor</span>(df[,var])
+  }
+  <span style="color:#a6e22e">return</span>(df)
+}
+
+</code></pre></div><p><strong>anova_plot</strong>: Returns line graph with means for each level (one-way ANOVA) or for each combination of levels (two-way ANOVA). Allows exploration of the interaction effect by visual inspection.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">anova_plot <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(num_fact,factor,vd,data,medias<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>,J<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>){
+  
+  <span style="color:#a6e22e">if</span>(num_fact<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>){
+    
+    labels <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">levels</span>(data[,factor])
+
+    <span style="color:#a6e22e">plot</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>J,medias,
+         type<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;o&#39;</span>, lwd<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+         ylim<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#a6e22e">min</span>(data[,vd]),<span style="color:#a6e22e">max</span>(data[,vd])),
+         xlab<span style="color:#f92672">=</span>factor,ylab<span style="color:#f92672">=</span>vd,
+         pch<span style="color:#f92672">=</span><span style="color:#ae81ff">19</span>, col<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;#ff6b6b&#39;</span>,
+         xaxt<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;n&#39;</span>)
+    
+    <span style="color:#a6e22e">axis</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>J,labels<span style="color:#f92672">=</span>labels) <span style="color:#75715e"># xticks</span>
+  }
+  
+  else{
+    
+    <span style="color:#a6e22e">interaction.plot</span>(x.factor <span style="color:#f92672">=</span> data[,factor[1]], trace.factor <span style="color:#f92672">=</span> data[,factor[2]], 
+                 response <span style="color:#f92672">=</span> data[,vd], fun <span style="color:#f92672">=</span> mean, 
+                 type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;b&#34;</span>, legend <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>, lwd<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,
+                 ylim<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#a6e22e">min</span>(data[,vd]),<span style="color:#a6e22e">max</span>(data[,vd])),
+                 xlab <span style="color:#f92672">=</span> factor[1], ylab<span style="color:#f92672">=</span>vd,trace.label<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>,
+                 pch<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">19</span>), col <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#39;#4ecdc4&#39;</span>, <span style="color:#e6db74">&#39;#ff6b6b&#39;</span>))
+  }
+  
+  <span style="color:#a6e22e">grid</span>(col <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;lightgray&#34;</span>, lty <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dotted&#34;</span>,
+         lwd <span style="color:#f92672">=</span> <span style="color:#a6e22e">par</span>(<span style="color:#e6db74">&#34;lwd&#34;</span>), equilogs <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>) <span style="color:#75715e"># rejilla para ver mejor</span>
+}
+</code></pre></div><p><strong>one_way</strong> : Perform one-way fixed-effects ANOVA. The procedure is based on the chapter on one-way ANOVA in Pardo and San Martín (2015). The function provides a list with three dataframes containing the value of the F statistic, its critical level and three measures of effect size.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">
+one_way <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(num_fact,factor,vd,data){
+  
+  N <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">nrow</span>(data)                                   <span style="color:#75715e"># Tamaño muestral</span>
+  J <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">nlevels</span>(data[,factor])                       <span style="color:#75715e"># Número de niveles del factor A</span>
+  
+ <span style="color:#75715e"># ------------------------------------------------- Estimador variabilidad intra basado </span>
+ <span style="color:#75715e">#                                                   en varianzas de cada nivel j del factor</span>
+
+  varianzas <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">aggregate</span>(data[vd],
+                         by<span style="color:#f92672">=</span><span style="color:#a6e22e">list</span>(data[[factor]]),
+                         FUN<span style="color:#f92672">=</span>var)[[vd]]
+  
+  n <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">aggregate</span>(data[vd],
+                 by<span style="color:#f92672">=</span><span style="color:#a6e22e">list</span>(data[[factor]]),
+                 FUN<span style="color:#f92672">=</span>length)[[vd]]
+  
+  SCE <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sum</span>((n<span style="color:#ae81ff">-1</span>)<span style="color:#f92672">*</span>varianzas)
+  glE <span style="color:#f92672">&lt;-</span> N<span style="color:#f92672">-</span>J
+  MCE <span style="color:#f92672">&lt;-</span> SCE<span style="color:#f92672">/</span>glE
+  
+  <span style="color:#75715e"># ------------------------------------------------- Estimador variabilidad inter</span>
+  <span style="color:#75715e">#                                                   basado en las medias del factor</span>
+
+  medias_A_df <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">aggregate</span>(data[vd],
+                           by<span style="color:#f92672">=</span><span style="color:#a6e22e">list</span>(data[[factor]]),
+                           FUN<span style="color:#f92672">=</span>mean)
+  medias_A <span style="color:#f92672">&lt;-</span> medias_A_df[[vd]]             <span style="color:#75715e"># el df es para la salida</span>
+  
+  media_tot <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">mean</span>(data[,vd])
+  SCI <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sum</span>( n <span style="color:#f92672">*</span> (medias_A<span style="color:#f92672">-</span>media_tot)^2  )
+  glI <span style="color:#f92672">&lt;-</span> J<span style="color:#ae81ff">-1</span>
+  MCI <span style="color:#f92672">&lt;-</span> SCI<span style="color:#f92672">/</span>glI
+  
+  F_stat <span style="color:#f92672">&lt;-</span> MCI<span style="color:#f92672">/</span>MCE
+  
+  p_val <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#a6e22e">pf</span>(F_stat,glI,glE)
+  
+  <span style="color:#75715e"># ------------------------------------------------- Salida</span>
+  
+  <span style="color:#a6e22e">anova_plot</span>(num_fact,factor,vd,data,medias_A,J)
+
+ <span style="color:#75715e"># -------------------------------------------------</span>
+  
+  <span style="color:#a6e22e">names</span>(medias_A_df) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(factor,<span style="color:#e6db74">&#39;medias&#39;</span>)
+  
+  sumas_cuad <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(<span style="color:#e6db74">&#39;SCT&#39;</span><span style="color:#f92672">=</span>SCI<span style="color:#f92672">+</span>SCE,
+                           <span style="color:#e6db74">&#39;SCI&#39;</span><span style="color:#f92672">=</span>SCI,
+                           <span style="color:#e6db74">&#39;SCE&#39;</span><span style="color:#f92672">=</span>SCE)
+  contraste <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(<span style="color:#e6db74">&#39;Factores&#39;</span><span style="color:#f92672">=</span>factor,
+                          <span style="color:#e6db74">&#39;F&#39;</span><span style="color:#f92672">=</span>F_stat,
+                          <span style="color:#e6db74">&#39;nivel crítico&#39;</span><span style="color:#f92672">=</span>p_val)
+
+  <span style="color:#a6e22e">return</span>(<span style="color:#a6e22e">list</span>(<span style="color:#e6db74">&#39;medias&#39;</span><span style="color:#f92672">=</span>medias_A_df,
+              <span style="color:#e6db74">&#39;sumas cuadráticas&#39;</span><span style="color:#f92672">=</span>sumas_cuad,
+              <span style="color:#e6db74">&#39;contraste&#39;</span><span style="color:#f92672">=</span>contraste,
+              <span style="color:#e6db74">&#39;tamaño efecto&#39;</span><span style="color:#f92672">=</span><span style="color:#a6e22e">effect_size</span>(num_fact,N,
+                                          glE,
+                                          glA<span style="color:#f92672">=</span>glI,F_A<span style="color:#f92672">=</span>F_stat)))
+}
+
+</code></pre></div><p><strong>two_way</strong> : Performs two-way ANOVA with fixed effects and assuming the same number of participants per combination of factor levels (balanced design). The procedure is based on the chapter on two-factor ANOVA in Pardo and San Martín (2015). The function provides a list with three dataframes containing the value of the F-statistic for each factor and for the interaction, the associated critical levels and three measures of effect size for each.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">
+two_way <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(num_fact,factor,vd,data){
+  
+  N <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">nrow</span>(data)                                 <span style="color:#75715e"># Tamaño muestral</span>
+  J <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">nlevels</span>(data[,factor[1]])                  <span style="color:#75715e"># Número de niveles del factor A</span>
+  K <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">nlevels</span>(data[,factor[2]])                  <span style="color:#75715e"># Número de niveles del factor B</span>
+  n <span style="color:#f92672">&lt;-</span> N<span style="color:#f92672">/</span>(J<span style="color:#f92672">*</span>K)                                    <span style="color:#75715e"># Número de sujetos por combinación jk</span>
+                                                  <span style="color:#75715e"># (se asume anova con diseño equilibrado)</span>
+  
+  <span style="color:#75715e"># -------------------------------------------------</span>
+  
+  media_tot <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">mean</span>(data[,vd])
+  
+  SCT <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sum</span>((data[vd]<span style="color:#f92672">-</span>media_tot)^2)
+  glT <span style="color:#f92672">&lt;-</span> N<span style="color:#ae81ff">-1</span>
+ <span style="color:#75715e"># ------------------------------------------------- Estimador variabilidad intra </span>
+ <span style="color:#75715e">#                                                   basado en varianzas de cada combinación jk</span>
+
+  varianzas <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">aggregate</span>(data[vd],
+                         by<span style="color:#f92672">=</span><span style="color:#a6e22e">list</span>(data[[factor[1]]],data[[factor[2]]]),
+                         FUN<span style="color:#f92672">=</span>var)[[vd]]
+  SCE <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sum</span>((n<span style="color:#ae81ff">-1</span>)<span style="color:#f92672">*</span>varianzas)
+  glE <span style="color:#f92672">&lt;-</span> N<span style="color:#f92672">-</span>(J<span style="color:#f92672">*</span>K)
+  MCE <span style="color:#f92672">&lt;-</span> SCE<span style="color:#f92672">/</span>glE
+  
+ <span style="color:#75715e"># ------------------------------------------------- Estimador variabilidad inter</span>
+ <span style="color:#75715e">#                                                   basado en medias del factor A</span>
+  medias_A <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">aggregate</span>(data[vd],
+                        by<span style="color:#f92672">=</span><span style="color:#a6e22e">list</span>(data[[factor[1]]]),
+                        FUN<span style="color:#f92672">=</span>mean)[[vd]]
+  
+  SCa <span style="color:#f92672">&lt;-</span> n<span style="color:#f92672">*</span>K<span style="color:#f92672">*</span><span style="color:#a6e22e">sum</span>( (medias_A<span style="color:#f92672">-</span>media_tot)^2 )
+  glA <span style="color:#f92672">&lt;-</span> J<span style="color:#ae81ff">-1</span>
+  MCa <span style="color:#f92672">&lt;-</span> SCa<span style="color:#f92672">/</span>glA
+  F_stat_A <span style="color:#f92672">&lt;-</span> MCa<span style="color:#f92672">/</span>MCE
+  
+  p_val_A <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#a6e22e">pf</span>(F_stat_A,glA,glE)
+  
+ <span style="color:#75715e"># ------------------------------------------------- Estimador variabilidad inter</span>
+ <span style="color:#75715e">#                                                   basado en medias del factor B</span>
+         
+  medias_B <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">aggregate</span>(data[vd],
+                        by<span style="color:#f92672">=</span><span style="color:#a6e22e">list</span>(data[[factor[2]]]),
+                        FUN<span style="color:#f92672">=</span>mean)[[vd]]
+  
+  SCb <span style="color:#f92672">&lt;-</span> n<span style="color:#f92672">*</span>J<span style="color:#f92672">*</span><span style="color:#a6e22e">sum</span>( (medias_B<span style="color:#f92672">-</span>media_tot)^2 )
+  glB <span style="color:#f92672">&lt;-</span> K<span style="color:#ae81ff">-1</span>
+  MCb <span style="color:#f92672">&lt;-</span> SCb<span style="color:#f92672">/</span>glB
+  F_stat_B <span style="color:#f92672">&lt;-</span> MCb<span style="color:#f92672">/</span>MCE
+  
+  p_val_B <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#a6e22e">pf</span>(F_stat_B,glB,glE)
+  
+  <span style="color:#75715e"># ------------------------------------------------- Estimador variabilidad inter</span>
+  <span style="color:#75715e">#                                                   basado en medias del factor interacción</span>
+
+  medias_inter_df <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">aggregate</span>(data[vd],
+                        by<span style="color:#f92672">=</span><span style="color:#a6e22e">list</span>(data[[factor[1]]],data[[factor[2]]]),
+                        FUN<span style="color:#f92672">=</span>mean)
+  medias_inter <span style="color:#f92672">&lt;-</span> medias_inter_df[[vd]]               <span style="color:#75715e"># el df es para la salida</span>
+  
+  SCab <span style="color:#f92672">&lt;-</span> SCT<span style="color:#f92672">-</span>(SCa<span style="color:#f92672">+</span>SCb<span style="color:#f92672">+</span>SCE)
+  glAB <span style="color:#f92672">&lt;-</span> (J<span style="color:#ae81ff">-1</span>)<span style="color:#f92672">*</span>(K<span style="color:#ae81ff">-1</span>)
+  MCab <span style="color:#f92672">&lt;-</span> SCab<span style="color:#f92672">/</span>glAB
+  F_stat_AB <span style="color:#f92672">&lt;-</span> MCab<span style="color:#f92672">/</span>MCE
+  
+  p_val_AB <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#a6e22e">pf</span>(F_stat_AB,glAB,glE)
+
+  <span style="color:#75715e"># ------------------------------------------------- Ajuste condicional. Compara</span>
+  <span style="color:#75715e">#                                                   modelo aditivo e interactivo</span>
+  
+  aditiv_vs_inter <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">ajuste_condicional</span>(factor,vd,
+                                        SCT,SCa,SCb,SCE,
+                                        glT,glA,glB,glE)
+  
+  <span style="color:#75715e"># ------------------------------------------------- Salida</span>
+  
+  <span style="color:#a6e22e">anova_plot</span>(num_fact,factor,vd,data)
+  
+  <span style="color:#75715e"># -------------------------------------------------</span>
+
+
+  <span style="color:#a6e22e">names</span>(medias_inter_df) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(factor,<span style="color:#e6db74">&#39;medias&#39;</span>) <span style="color:#75715e"># nombrar adecuadamente df con medias</span>
+  
+  sumas_cuad <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(<span style="color:#e6db74">&#39;SCT&#39;</span><span style="color:#f92672">=</span>SCT,
+                           <span style="color:#e6db74">&#39;SCa&#39;</span><span style="color:#f92672">=</span>SCa,
+                           <span style="color:#e6db74">&#39;SCb&#39;</span><span style="color:#f92672">=</span>SCb,
+                           <span style="color:#e6db74">&#39;SCab&#39;</span><span style="color:#f92672">=</span>SCab,
+                           <span style="color:#e6db74">&#39;SCE&#39;</span><span style="color:#f92672">=</span>SCE)
+  contraste <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(<span style="color:#e6db74">&#39;Factores&#39;</span><span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(factor,<span style="color:#a6e22e">paste0</span>(factor[1],<span style="color:#e6db74">&#39;*&#39;</span>,factor[2])),
+                          <span style="color:#e6db74">&#39;F&#39;</span><span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(F_stat_A,F_stat_B,F_stat_AB),
+                          <span style="color:#e6db74">&#39;nivel crítico&#39;</span><span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(p_val_A,p_val_B,p_val_AB))
+  
+  tamano_efecto <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(contraste[1],
+                                       <span style="color:#a6e22e">effect_size</span>(num_fact,N,
+                                                   glE,
+                                                   glA,F_A<span style="color:#f92672">=</span>F_stat_A,
+                                                   glB,F_B<span style="color:#f92672">=</span>F_stat_B,
+                                                   glAB,F_AB<span style="color:#f92672">=</span>F_stat_AB))
+  <span style="color:#a6e22e">return</span>(<span style="color:#a6e22e">list</span>(<span style="color:#e6db74">&#39;ajuste_condicional&#39;</span><span style="color:#f92672">=</span>aditiv_vs_inter,
+              <span style="color:#e6db74">&#39;medias&#39;</span><span style="color:#f92672">=</span>medias_inter_df,
+              <span style="color:#e6db74">&#39;sumas cuadráticas&#39;</span><span style="color:#f92672">=</span>sumas_cuad,
+              <span style="color:#e6db74">&#39;contraste&#39;</span><span style="color:#f92672">=</span>contraste,
+              <span style="color:#e6db74">&#39;tamaño efecto&#39;</span><span style="color:#f92672">=</span>tamano_efecto))
+}
+
+</code></pre></div><p><strong>ajuste_condicional</strong>: It compares the fit of the simple model that includes only main effects (additive model) versus that of the more complex model, which includes the interaction component (interactive model). A non-statistically significant result indicates that there is no evidence that the interactive model produces a significant reduction in prediction errors compared to the simpler model. In this case a warning is given to the user, indicating that the ANOVA model generated may not be optimal. The procedure has been copied from Ato and Vallejo (2015) (p.138).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">
+ajuste_condicional <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(factor,vd,
+                               SCT,SCa,SCb,SCE,
+                               glT,glA,glB,glE){
+  
+  SCE_aditivo <span style="color:#f92672">&lt;-</span> SCT<span style="color:#f92672">-</span>(SCa<span style="color:#f92672">+</span>SCb)
+  glE_aditivo <span style="color:#f92672">&lt;-</span> glT<span style="color:#f92672">-</span>(glA<span style="color:#f92672">+</span>glB)
+  
+  SCE_inter <span style="color:#f92672">&lt;-</span> SCE            <span style="color:#75715e"># SCE de modelo inter = SCT-(SCa+SCb+SCab)</span>
+  glE_inter <span style="color:#f92672">&lt;-</span> glE            <span style="color:#75715e"># glE de modelo inter = glT-(glA+glB+glAB)</span>
+  
+  F_stat <span style="color:#f92672">&lt;-</span> ( (SCE_aditivo<span style="color:#f92672">-</span>SCE_inter)<span style="color:#f92672">/</span>(glE_aditivo<span style="color:#f92672">-</span>glE_inter) )<span style="color:#f92672">/</span>(SCE_inter<span style="color:#f92672">/</span>glE_inter)
+  p_val <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#a6e22e">pf</span>(F_stat,(glE_aditivo<span style="color:#f92672">-</span>glE_inter),(glE_inter))
+  
+ 
+ adit <span style="color:#f92672">&lt;-</span>  <span style="color:#a6e22e">paste0</span>(vd,<span style="color:#e6db74">&#39;=&#39;</span>,factor[1],<span style="color:#e6db74">&#39;+&#39;</span>,factor[2])
+ inter <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">paste0</span>(vd,<span style="color:#e6db74">&#39;=&#39;</span>,factor[1],<span style="color:#e6db74">&#39;+&#39;</span>,factor[2],<span style="color:#e6db74">&#39;+&#39;</span>,factor[1],<span style="color:#e6db74">&#39;*&#39;</span>,factor[2])
+ 
+ comparacion <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(<span style="color:#e6db74">&#39;modelo aditivo&#39;</span><span style="color:#f92672">=</span>adit,
+                           <span style="color:#e6db74">&#39;modelo interactivo&#39;</span><span style="color:#f92672">=</span>inter,
+                           <span style="color:#e6db74">&#39;F&#39;</span><span style="color:#f92672">=</span>F_stat,
+                           <span style="color:#e6db74">&#39;nivel crítico&#39;</span><span style="color:#f92672">=</span>p_val)
+  
+  <span style="color:#a6e22e">if </span>(p_val<span style="color:#f92672">&gt;</span><span style="color:#ae81ff">0.05</span>) <span style="color:#a6e22e">warning</span>(<span style="color:#e6db74">&#39;Diferencia no significativa en grado de ajuste con 
+</span><span style="color:#e6db74">                          alfa=0,05. El modelo interactivo podría no ser apropiado&#39;</span>)
+  
+  <span style="color:#a6e22e">return</span>(<span style="color:#a6e22e">data.frame</span>(<span style="color:#e6db74">&#39;modelos&#39;</span><span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(adit,inter),
+                    <span style="color:#e6db74">&#39;F&#39;</span><span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#66d9ef">NA</span>,F_stat),
+                    <span style="color:#e6db74">&#39;nivel crítico&#39;</span><span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#66d9ef">NA</span>,p_val)))
+}
+</code></pre></div><p><strong>effect_size</strong> : Calculates three measures of effect size for all factors involved in the ANOVA. Depending on the type of ANOVA (with 1 or 2 factors), it returns some formulas or others. All the formulas used have been copied directly from the chapters dedicated to ANOVA in Pardo and San Martín (2015). Factors are assumed to be fixed effects.
+Problem: when comparing results with those obtained with JASP software, it is observed that $\omega^2$ of the function is higher, the discrepancy being quite large in the case of two-factor ANOVA.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">effect_size <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(num_fact,N,
+                        glE,
+                        glA,F_A,
+                        glB<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>,F_B<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>,
+                        glAB<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>,F_AB<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span>){
+  etas <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">numeric</span>()
+  omegas <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">numeric</span>()
+  deltas <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">numeric</span>()
+  
+  <span style="color:#a6e22e">for </span>(gl_F in <span style="color:#a6e22e">list</span>(A<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(glA,F_A), B<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(glB,F_B), AB<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(glAB,F_AB))){
+    
+      eta <span style="color:#f92672">&lt;-</span> (gl_F[1]<span style="color:#f92672">*</span>gl_F[2])<span style="color:#f92672">/</span>(gl_F[1]<span style="color:#f92672">*</span>gl_F[2]<span style="color:#f92672">+</span>glE)
+      omega <span style="color:#f92672">&lt;-</span> (gl_F[1]<span style="color:#f92672">*</span>(gl_F[2]<span style="color:#ae81ff">-1</span>))<span style="color:#f92672">/</span>(gl_F[1]<span style="color:#f92672">*</span>(gl_F[2]<span style="color:#ae81ff">-1</span>)<span style="color:#f92672">+</span>N)
+      delta <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">sqrt</span>( omega<span style="color:#f92672">/</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>omega) )
+      etas <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(etas,eta); omegas <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(omegas,omega); deltas <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(deltas,delta)
+  }
+  
+  efs <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">data.frame</span>(<span style="color:#e6db74">&#39;delta Cohen&#39;</span> <span style="color:#f92672">=</span> deltas,
+                    <span style="color:#e6db74">&#39;eta cuadrado&#39;</span> <span style="color:#f92672">=</span> etas,
+                    <span style="color:#e6db74">&#39;omega cuadrado&#39;</span> <span style="color:#f92672">=</span> omegas)
+  
+  <span style="color:#a6e22e">return</span>(efs)
+}
+
+</code></pre></div><h1 id="an-example-two-way-anova">An example: two-way ANOVA</h1>
+<p>This data set, &ldquo;Heart Rate&rdquo;, (example JASP file) provides heart rates of male and female runners and generally sedentary participants following 6 minutes exercise (800 observations). Does gender affect average heart rate? Does lifestyle (runners and non-runners) have an effect on heart rate? Is there an interactive effect of lifestyle and gender on heart rate?</p>
+<p>Variables:</p>
+<p><strong>Gender</strong> - Participant&rsquo;s gender (Female, Male).</p>
+<p><strong>Group</strong> - Group of &lsquo;Runners&rsquo; (averaging more than15 miles per week) and &lsquo;Control&rsquo; group (generally sedentary participant).</p>
+<p><strong>Heart.Rate</strong> - Heart rate after six minutes of exercise.</p>
+<p><a href="https://osf.io/5q42c/">link to data</a></p>
+<table>
+<thead>
+<tr>
+<th align="center">Gender</th>
+<th align="center">Group</th>
+<th align="center">Heart.Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Female</td>
+<td align="center">Runners</td>
+<td align="center">119</td>
+</tr>
+<tr>
+<td align="center">Female</td>
+<td align="center">Runners</td>
+<td align="center">84</td>
+</tr>
+<tr>
+<td align="center">Female</td>
+<td align="center">Runners</td>
+<td align="center">89</td>
+</tr>
+<tr>
+<td align="center">Female</td>
+<td align="center">Runners</td>
+<td align="center">119</td>
+</tr>
+<tr>
+<td align="center">&hellip;</td>
+<td align="center">&hellip;</td>
+<td align="center">&hellip;</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">ANOVA</span>(factor<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#39;Gender&#39;</span>,<span style="color:#e6db74">&#39;Group&#39;</span>),vd<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Heart.Rate&#39;</span>,data<span style="color:#f92672">=</span>data2)
+</code></pre></div><p><img src="https://diego-hernandez-jimenez.github.io/web/images/aovplot.png" alt="anova interaction plot"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#f92672">$</span>ajuste_condicional
+                               modelos        F nivel.crítico
+<span style="color:#ae81ff">1</span>              Heart.Rate<span style="color:#f92672">=</span>Gender<span style="color:#f92672">+</span>Group       <span style="color:#66d9ef">NA</span>            <span style="color:#66d9ef">NA</span>
+<span style="color:#ae81ff">2</span> Heart.Rate<span style="color:#f92672">=</span>Gender<span style="color:#f92672">+</span>Group<span style="color:#f92672">+</span>Gender<span style="color:#f92672">*</span>Group <span style="color:#ae81ff">7.409481</span>   <span style="color:#ae81ff">0.006629953</span>
+
+<span style="color:#f92672">$</span>medias
+  Gender   Group  medias
+<span style="color:#ae81ff">1</span> Female Control <span style="color:#ae81ff">148.000</span>
+<span style="color:#ae81ff">2</span>   Male Control <span style="color:#ae81ff">130.000</span>
+<span style="color:#ae81ff">3</span> Female Runners <span style="color:#ae81ff">115.985</span>
+<span style="color:#ae81ff">4</span>   Male Runners <span style="color:#ae81ff">103.975</span>
+
+<span style="color:#f92672">$</span>sumas_cuadráticas
+       SCT      SCa      SCb     SCab      SCE
+<span style="color:#ae81ff">1</span> <span style="color:#ae81ff">407985.9</span> <span style="color:#ae81ff">45030.01</span> <span style="color:#ae81ff">168432.1</span> <span style="color:#ae81ff">1794.005</span> <span style="color:#ae81ff">192729.8</span>
+
+<span style="color:#f92672">$</span>contraste
+      Factores          F nivel.crítico
+<span style="color:#ae81ff">1</span>       Gender <span style="color:#ae81ff">185.979949</span>   <span style="color:#ae81ff">0.000000000</span>
+<span style="color:#ae81ff">2</span>        Group <span style="color:#ae81ff">695.647040</span>   <span style="color:#ae81ff">0.000000000</span>
+<span style="color:#ae81ff">3</span> Gender<span style="color:#f92672">*</span>Group   <span style="color:#ae81ff">7.409481</span>   <span style="color:#ae81ff">0.006629953</span>
+
+<span style="color:#f92672">$</span>tamaño_efecto
+      Factores delta.Cohen eta.cuadrado omega.cuadrado
+<span style="color:#ae81ff">1</span>       Gender  <span style="color:#ae81ff">0.48085854</span>  <span style="color:#ae81ff">0.189392817</span>    <span style="color:#ae81ff">0.187800726</span>
+<span style="color:#ae81ff">2</span>        Group  <span style="color:#ae81ff">0.93183089</span>  <span style="color:#ae81ff">0.466361694</span>    <span style="color:#ae81ff">0.464756575</span>
+<span style="color:#ae81ff">3</span> Gender<span style="color:#f92672">*</span>Group  <span style="color:#ae81ff">0.08950894</span>  <span style="color:#ae81ff">0.009222546</span>    <span style="color:#ae81ff">0.007948171</span>
+</code></pre></div><p>References</p>
+<p>Pardo, A., &amp; San Martín, R. (2015). Análisis de datos en ciencias sociales y de salud II. Editorial Síntesis.</p>
+<p>Ato, M. &amp; Vallejo, G. (2015). Diseños de investigación en Psicología. Ediciones Pirámide.</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/integral/"><i class="fa fa-chevron-circle-left"></i> Definite integral</a>
+        </li>
+        
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/strokemodels/">Predicting stroke (I): Trying different classification algorithms <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright &amp; copy; 2020 - Diego Hernández Jiménez |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://diego-hernandez-jimenez.github.io/web/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://diego-hernandez-jimenez.github.io/web/js/scripts.js"></script>
+
+</body>
+
+</html>
+
