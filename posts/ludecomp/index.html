@@ -3,19 +3,22 @@
 <html lang="en">
 
 <head>
-  <title>Coding - Diego Hernández Jiménez</title>
+  <title>LU decomposition from scratch - Diego Hernández Jiménez</title>
   <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="Kiera: A Hugo theme for creative and technical writing." />
-<meta name="author" content="Example" /><link rel="alternate" type="application/rss+xml+xml" href="https://diego-hernandez-jimenez.github.io/web/categories/coding/index.xml" title="Diego Hernández Jiménez" /><meta property="og:title" content="Coding" />
-<meta property="og:description" content="Kiera: A Hugo theme for creative and technical writing." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://diego-hernandez-jimenez.github.io/web/categories/coding/" />
-<meta property="og:updated_time" content="2021-07-24T00:00:00+02:00" />
+<meta name="author" content="Example" /><meta property="og:title" content="LU decomposition from scratch" />
+<meta property="og:description" content="Implementation of the LU factorization in Python.
+Description Linear systems of the form ${\bf Ax}={\bf b}$ are essential in Linear Algebra and they appear in multiple applied contexts. When ${\bf A}$ is an $n \times n$ matrix, we know the $n \times 1$ solution vector ${\bf x}$ is unique, but that doesn&rsquo;t mean it&rsquo;s easy to find." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://diego-hernandez-jimenez.github.io/web/posts/ludecomp/" />
+<meta property="article:published_time" content="2021-07-24T00:00:00+02:00" />
+<meta property="article:modified_time" content="2021-07-24T00:00:00+02:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Coding"/>
-<meta name="twitter:description" content="Kiera: A Hugo theme for creative and technical writing."/>
+<meta name="twitter:title" content="LU decomposition from scratch"/>
+<meta name="twitter:description" content="Implementation of the LU factorization in Python.
+Description Linear systems of the form ${\bf Ax}={\bf b}$ are essential in Linear Algebra and they appear in multiple applied contexts. When ${\bf A}$ is an $n \times n$ matrix, we know the $n \times 1$ solution vector ${\bf x}$ is unique, but that doesn&rsquo;t mean it&rsquo;s easy to find."/>
 
 <meta name="generator" content="Hugo 0.74.3" />
     
@@ -98,61 +101,77 @@
 
 
 
-<section id="list">
+<article>
+
+    <h1>LU decomposition from scratch</h1>
 
     
-        <h2>Coding</h2>
-    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2021-07-24T00:00:00&#43;02:00">Jul 24, 2021</time>
+        </li>
+        
+        <li>
+            Categories:
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/categories/coding">Coding</a>
+                
+            </em>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/for-fun">#For fun</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/python">#Python</a>
+                
+            </em>
+        </li>
+        
+
+        <li>One minute read</li>
+    </ul>
+</aside>
 
     
 
     
 
-    <h3>2020</h3>
+
+    <p>Implementation of the LU factorization in Python.</p>
+<h3 id="description">Description</h3>
+<p>Linear systems of the form ${\bf Ax}={\bf b}$ are essential in Linear Algebra and they appear in multiple applied contexts. When ${\bf A}$ is an $n \times n$ matrix, we know the $n \times 1$ solution vector ${\bf x}$ is unique, but that doesn&rsquo;t mean it&rsquo;s easy to find. We can use Gaussian elimination or find the inverse matrix ${\bf A}^{-1}$, but those methods are not feasible when $n$ is large.</p>
+<p>A more efficient strategy (commonly used by computer software) consists of decomposing ${\bf A}$ into the product of a lower triangular matrix ${\bf L}$ and an upper triangular matrix ${\bf U}$. This new system $({\bf LU}){\bf x}={\bf b}$ is much easier to solve, eventhough it requires to first solve ${\bf L}{\bf y}={\bf b}$ and then ${\bf U}{\bf x}={\bf y}$ (See <a href="https://www.amazon.com/Linear-Algebra-Step-Kuldeep-Singh/dp/0199654441">Singh (2013)</a> for details).</p>
+<p>Following the theory explained in Singh (2013), I decided to implement the method from scratch. The complete code can be found <a href="https://github.com/Diego-Hernandez-Jimenez/LU_decomposition/tree/main">here</a></p>
+<h3 id="references">References</h3>
+<p>Singh, K. (2013).  Linear algebra: step by step. Oxford University Press.</p>
+
+
+</article>
+
+
+<section class="post-nav">
     <ul>
         
         <li>
-            <a href="https://diego-hernandez-jimenez.github.io/web/posts/isnormal/">Is it normal?</a>
-            <time class="date-meta">Oct 20</time>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/firstconvnnet/"><i class="fa fa-chevron-circle-left"></i> Simple convolutional neural network for digit recognition</a>
         </li>
         
-        <li>
-            <a href="https://diego-hernandez-jimenez.github.io/web/posts/monty_hall/">Monty Hall problem simulation</a>
-            <time class="date-meta">Sep 8</time>
-        </li>
-        
-        <li>
-            <a href="https://diego-hernandez-jimenez.github.io/web/posts/newtonmet/">Newton method from scratch</a>
-            <time class="date-meta">Sep 1</time>
-        </li>
         
     </ul>
-
-    
-
 </section>
-
-
-<ul class="pagination">
-  <li class="page-item">
-    <a href="https://diego-hernandez-jimenez.github.io/web/categories/coding/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a href="https://diego-hernandez-jimenez.github.io/web/categories/coding/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a class="page-link" href="https://diego-hernandez-jimenez.github.io/web/categories/coding/">1</a>
-  </li>
-  <li class="page-item active">
-    <a class="page-link" href="https://diego-hernandez-jimenez.github.io/web/categories/coding/page/2/">2</a>
-  </li>
-  <li class="page-item disabled">
-    <a  class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-  </li>
-  <li class="page-item">
-    <a href="https://diego-hernandez-jimenez.github.io/web/categories/coding/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-  </li>
-</ul>
+  
+    
+    
+  
 
 
 
