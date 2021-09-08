@@ -6,10 +6,29 @@
    <description>Recent content in Categories on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2020 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Sat, 24 Jul 2021 00:00:00 +0200</lastBuildDate>
+   <lastBuildDate>Mon, 06 Sep 2021 00:00:00 +0200</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/categories/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Titanic: Machine Learning from Disaster</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/kaggletitanic/</link>
+       <pubDate>Mon, 06 Sep 2021 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/kaggletitanic/</guid>
+       <description>&lt;p&gt;Famous Kaggle project for beginners in machine learning.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Eventhough nearly a year has passed since I started studying seriously data analysis and two since I learned Python, I&amp;rsquo;ve never tried doing the famous kaggle project of Titanic. I can still be considered beginner so this project suits me.&lt;/p&gt;
+&lt;p&gt;There is a good description of the competition (data sets used, attributes&amp;hellip;) in the &lt;a href=&#34;https://www.kaggle.com/c/titanic&#34;&gt;web&lt;/a&gt;, here I&amp;rsquo;ll write briefly about my approach to the project.&lt;/p&gt;
+&lt;h3 id=&#34;workflow&#34;&gt;Workflow&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/workflow.jpg&#34; alt=&#34;steps&#34;&gt;&lt;/p&gt;
+&lt;p&gt;I tried to follow the typical machine learning workflow but given that my main objective was to practice with the python library sklearn I focused more on the model selection phase. I was aware that doing more feature engineering would have improved my final model, but I was fine with that. In my future projects I&amp;rsquo;ll spend more time on that part of the process.&lt;/p&gt;
+&lt;p&gt;Most of the algorithm building is data-driven, meaning that the choice of the imputing method, scaling method&amp;hellip; was made based on cross-validation scores. I ended up with three algorithms that performed similar: logistic regression model, K-nearest neighbors classifier and decision tree classifier. I &amp;ldquo;combined&amp;rdquo; them using a simple voting classifier to form the final model.&lt;/p&gt;
+&lt;p&gt;The accuracy obtainded in the test set was approximately 0.78&lt;/p&gt;
+&lt;p&gt;The jupyter notebook with more detailed description of the steps can be found &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/titanic&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>LU decomposition from scratch</title>
@@ -57,7 +76,7 @@
 \end{aligned}
 $$&lt;/p&gt;
 &lt;p&gt;where ${\bf x}_i$ represents the vector of $J$ features or explanatory variables of the ith subject.&lt;/p&gt;
-&lt;p&gt;The model specification is partitally based on Schwartz and Howard (1984). They describe five stages in helping behavior:&lt;/p&gt;
+&lt;p&gt;The model specification is partially based on Schwartz and Howard (1984). They describe five stages in helping behavior:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;attention&lt;/strong&gt; to need,&lt;/p&gt;
