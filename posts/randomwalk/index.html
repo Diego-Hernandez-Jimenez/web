@@ -1,0 +1,196 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Random walks and decision making - Diego Hernández Jiménez</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Kiera: A Hugo theme for creative and technical writing." />
+<meta name="author" content="Example" /><meta property="og:title" content="Random walks and decision making" />
+<meta property="og:description" content="What do the motion of particles in a medium (Brownian motion) and decision making have in common? Surprisingly enough, both phenomena can be mathematically modeled in the same way, as stochastic diffusion processes." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://diego-hernandez-jimenez.github.io/web/posts/randomwalk/" />
+<meta property="article:published_time" content="2022-02-25T00:00:00+01:00" />
+<meta property="article:modified_time" content="2022-02-25T00:00:00+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Random walks and decision making"/>
+<meta name="twitter:description" content="What do the motion of particles in a medium (Brownian motion) and decision making have in common? Surprisingly enough, both phenomena can be mathematically modeled in the same way, as stochastic diffusion processes."/>
+
+<meta name="generator" content="Hugo 0.74.3" />
+    
+    <link rel="shortcut icon" href="https://diego-hernandez-jimenez.github.io/web/images/Dicon.ico" />
+  
+    <script src="https://diego-hernandez-jimenez.github.io/web/js/mathjax-config.js" defer></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://diego-hernandez-jimenez.github.io/web/fontawesome/css/all.min.css" />
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  
+  
+  <link rel="stylesheet" type="text/css" href="https://diego-hernandez-jimenez.github.io/web/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://diego-hernandez-jimenez.github.io/web/">Diego Hernández Jiménez</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/Diego-Hernandez-Jimenez" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/diego-hern%c3%a1ndez-jim%c3%a9nez" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Welcome to my personal website! Here I share some of my little projects.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/tags">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Projects</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/contact/">
+                <i class="fa-li fa  fa-lg"></i><span>Contact</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Random walks and decision making</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2022-02-25T00:00:00&#43;01:00">Feb 25, 2022</time>
+        </li>
+        
+        <li>
+            Categories:
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/categories/projects">Projects</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/categories/coding">Coding</a>
+                
+            </em>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/for-fun">#For fun</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/r">#R</a>
+                
+            </em>
+        </li>
+        
+
+        <li>4 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+
+
+    <p>What do the motion of particles in a medium (Brownian motion) and decision making have in common? Surprisingly enough, both phenomena can be mathematically modeled in the same way, as stochastic diffusion processes.</p>
+<p>In psychology, the conceptual framework is more or less like this: A binary choice problem is presented to a decision maker, e.g., choose between candidate A and candidate B. We assume that the decision making process involves sequentially examining data samples (Wang &amp; Busemeyer, 2021). We don&rsquo;t know what kind of data is actually using the decision maker, but they serve as evidence favoring one or other alternative. In our voting example, we are assuming that the person is gathering information about the candidates, either explicitly and consciously (assessing the arguments given by each one) or implicitly and in a non-conscious way (being affected by peripheral cues such as attractiveness (see <a href="https://dictionary.apa.org/peripheral-cue">https://dictionary.apa.org/peripheral-cue</a>)). It&rsquo;s important to note that, obviously, we can&rsquo;t observe the cognitive processes happening, so we cannot know what data the agent is assessing nor the value of the increment (incremented preference for A/B). However we can consider it as a process that varies randomly and model it probabilistically.</p>
+<p>&ldquo;<em>The critical idea is that the decision-maker accumulates  these evidence increments across time until the cumulative evidence becomes sufficiently strong (&hellip;)</em>&rdquo; (Wang &amp; Busemeyer, 2021 p.122-23). Here, sufficiently strong means that the value representing the cumulative evidence reaches a threshold or decision criteria, so that a decision is finally made. After some time $t$ our voter will have enough information favoring A (or B) to choose A (or B).</p>
+<p>State-of-the-art models are rather complex and I just started learning about stochastic processes, but I find this area very interesting, so I decided to develop a very simple model, a random walk model. The algorithm is very basic. At every moment $t$, the agent can increment the &ldquo;valence&rdquo; for the alternative A by 1 point, increment the valence for B by 1 point (decrement the valence for A by -1) or stay the same. What really ends up happening every timestep depends on the probability of each possibility.  At the same time, those probabilities are conditioned by some extra parameters. Specifically, the probability of encountering or sampling a piece of information that favors A depends on a sampling bias. Psychologically speaking, this could be some kind of memory bias. The bigger the bias, the more likely to encounter evidence that increments the valence. However, not every piece of information is accepted, the information can favor A, but we don&rsquo;t necessarily consider it valid. The probability of accepting the evidence and updating the value of the valence is controlled by a acceptance bias. The bigger it is, the easier to accept the information as valid. A low bias might indicate some form of &ldquo;reticence&rdquo; or conservatism. The details are given in the report. But here are some results of simulating different &ldquo;profiles&rdquo;.</p>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/randomwalks.jpg" alt="random walk examples"></p>
+<p>As we can see, when there is some preference for one of the alternatives, less time is needed to make a decision. Also, when the decision threshold is set significantly higher (in absolute value) comparing to other people, the response time increases.</p>
+<p>From this random walk model we can make some interesting predictions. After some calculations we can obtain a formula that can let us predict the mean time needed to make a choice under some fixed conditions. If you want to know more, you can check the report.</p>
+<p>Finally, one of the things I found most exciting about these stochastic models, is that you can simulate something like the &ldquo;development of the preference&rdquo;. Imagine our decision maker has the decision boundary for A at 10, and the decision boundary at -10. That means that in order to choose A she needs accumulate evidence with a valence of 10. The same goes for B. In our model, that means there are 20+1 possible states or values of valence (counting 0). If we treat our random walk process as a Markov chain we can achieve some interesting predictions like knowing the probability of being in each state (valence) at any time. In the gif below we can see how this probabilities change as time goes on. Because the person simulated has some bias towards A, the probability distribution slowly shifts to the right, where valence for A is higher. By time $t=100$, the valence of 10 has the highest probability, indicating a clear preference and that the person have probably chosen A by that that time.</p>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/animation.gif" alt="markov chain evolution"></p>
+<p>Full details of the algorithm, some of the mathematical details of the Markov chains and the R code can be found <a href="https://diego-hernandez-jimenez.github.io/web/projects/randomwalks_report.pdf">here</a></p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/firstdataexperience/"><i class="fa fa-chevron-circle-left"></i> My first internship: data mining in a real world setting</a>
+        </li>
+        
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright &amp; copy; 2020 - Diego Hernández Jiménez |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://diego-hernandez-jimenez.github.io/web/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://diego-hernandez-jimenez.github.io/web/js/scripts.js"></script>
+
+</body>
+
+</html>
+
