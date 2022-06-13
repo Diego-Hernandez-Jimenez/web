@@ -155,7 +155,7 @@ Description Why we help other people is a question psychologists have been tryin
 <p>Here I adopt that perspective and make use of a <a href="http://www.cis.es/cis/opencm/ES/2_bancodatos/estudios/ver.jsp?estudio=14530">public survey</a> conducted by the spanish Center for Sociological Research (CIS) after the end of the 2020 lockdown. Because the outcome of interest, helping behavior, is described in the survey as a dichotomic variable (either you help or you don&rsquo;t), I decide to fit a logistic model of the form:</p>
 <p>$$
 \begin{aligned}
-\hat P(help_i=\text{Yes}|{\bf x}_i)=\frac{1}{1+e^{\boldsymbol{-\beta}\cdot {\bf x}_i}}
+\hat P(help_i=\text{Yes}|{\bf x}_i)=\frac{1}{1+e^{-(\beta_0+{\boldsymbol{\beta}^\intercal\cdot {\bf x}_i})}}
 \end{aligned}
 $$</p>
 <p>where ${\bf x}_i$ represents the vector of $J$ features or explanatory variables of the ith subject.</p>

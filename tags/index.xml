@@ -6,10 +6,52 @@
    <description>Recent content in Tags on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2020 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Fri, 25 Feb 2022 00:00:00 +0100</lastBuildDate>
+   <lastBuildDate>Sun, 12 Jun 2022 00:00:00 +0200</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/tags/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Recognizing facial expression with eigenfaces</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/eigenfaces/</link>
+       <pubDate>Sun, 12 Jun 2022 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/eigenfaces/</guid>
+       <description>&lt;p&gt;Building of a simple facial expression recognition system based on Singular Value Decomposition.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Convolutional neural networks are the state of the art in virtually all tasks related with object recognition. However it&amp;rsquo;s worth visiting some of the older techniques used in this area.&lt;/p&gt;
+&lt;p&gt;In 1991, Turk &amp;amp; Pentland proposed the &amp;ldquo;eigenface&amp;rdquo; approach, which is based on matrix factorization, specifically the Singular Value Decomposition (SVD), one the fundamental matrix factorization techniques in linear algebra. And also one of the most widely used.&lt;/p&gt;
+&lt;p&gt;In this project I&amp;rsquo;ve tried to implement that strategy. I&amp;rsquo;ve added an additional goal. The aim is to recognize facial expressions, not just faces as a whole.The dataset I&amp;rsquo;m using for this purpose was created by Ebner et al. (2010).&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve covered the details in this &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/eigfaces_R.pdf&#34;&gt;report&lt;/a&gt;, but the main ideas are the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Edit the photos. Here that means converting them to grayscale (so that when we transform them in matrices we have only two dimensions), reducing the resolution (smaller images, less computational cost) and cropping them (in order to remove uninteresting parts, like the background or the hair).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/origVSproc.jpg&#34; alt=&#34;original vs processed&#34;&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Reshape each image into a p $\times$ 1 vector (p = width · height). We can arrange the n pictures to form the matrix ${\bf X}_{p\times n}$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Split the data into train and test set. In this case, every person took two photos. We have a version of every facial expression of each person, so the split is easy and we get two equivalent sets.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Perform SVD (details in the report) on the training data. In essence, it will decompose the original matrix into 3 matrices. In this case, the first one contains the eigenvectors (eigenfaces). &amp;ldquo;These eigenvectors can be thought of as a set of features that together characterize the variation between face images.&amp;rdquo; (Turk &amp;amp; Pentland, 1991). &amp;ldquo;Some principal components may capture the most common features shared among all human faces, while other principal components will be more useful for distinguishing between individuals. Additional principal components may capture differences in lighting angles.&amp;rdquo; (Brunton &amp;amp; Kutz, 2020). The choice of the number of principal components/eigenfaces to keep depends on the analyst. I chose to keep 10 (out of 36)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Here are some examples of the eigenfaces generated (when reshaped and converted back to images)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/eigfaces1to3.jpg&#34; alt=&#34;first eigenfaces&#34;&gt;&lt;/p&gt;
+&lt;p&gt;I know, it&amp;rsquo;s a bit creepy.&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;Create a classifier. In order to do that, we project all the images in the new low-dimensional space of faces. That basically means obtaining their representation in the new space. We do the same with a new image. We then compare this representation  with each of the projected train images (with the euclidean distance). The decision rule is to match the new presented image with the most similar image from the training set.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The results were: accuracy of 1 when the task was to match persons (ignoring everything else), accuracy of 0.61 when the correct match of facial expression was evaluated. The results are not that bad, considering the small sample size and that the expected accuracy for the facial expression matching task when choosing at random is 1/6 (approx. 0.16)&lt;/p&gt;
+&lt;p&gt;In the report I add some extra information if you want to know more. The code is available &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/eigenfaces&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
+&lt;p&gt;Brunton, S. L., &amp;amp; Kutz, J. N. (2020). Singular Value Decomposition (SVD). In S.L. Brunton &amp;amp; J.N. Kutz, &lt;em&gt;Data-driven science and engineering: Machine learning, dynamical systems, and control&lt;/em&gt;, (pp. 1-47). Cambridge University Press.&lt;/p&gt;
+&lt;p&gt;Ebner, N., Riediger, M., &amp;amp; Lindenberger, U. (2010). FACES—A database of facial expressions in young, middle-aged, and older women and men: Development and validation. &lt;em&gt;Behavior research Methods&lt;/em&gt;, 42, 351-362. doi:10.3758/BRM.42.1.351.&lt;/p&gt;
+&lt;p&gt;Turk, M., &amp;amp; Pentland, A. (1991). Eigenfaces for recognition. &lt;em&gt;Journal of cognitive neuroscience&lt;/em&gt;, 3(1), 71-86.&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>Random walks and decision making</title>
@@ -103,9 +145,9 @@
        <guid>https://diego-hernandez-jimenez.github.io/web/posts/firstconvnnet/</guid>
        <description>&lt;p&gt;Assignment for &amp;ldquo;Knowledge technology&amp;rdquo;, course in the Master in Methodology for behavioral sciences.&lt;/p&gt;
 &lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
-&lt;p&gt;The purpose of the the project wasn&amp;rsquo;t to develop a sophisticaded architecture (see the image below to get a sense of what kind of network we built) or to get highest accuracy in a test set. Rather we had  to show that we had understood the fundamental concepts of convolutional networks.&lt;/p&gt;
+&lt;p&gt;The purpose of the the project wasn&amp;rsquo;t to develop a sophisticated architecture (see the image below to get a sense of what kind of network we built) or to get highest accuracy in a test set. Rather we had  to show that we had understood the fundamental concepts of convolutional networks.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/netarch.jpg&#34; alt=&#34;Simplified network architecture&#34;&gt;&lt;/p&gt;
-&lt;p&gt;The most interesting thing about this project was the fact that I had to build my own digit data set and then use it as test set. If you want to know more about it you can check the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_cnn.pdf&#34;&gt;report&lt;/a&gt; I made. The supplementary material can be found on my &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/First_Convolutional_Net&#34;&gt;github profile&lt;/a&gt;. I also made a few ppt slides to visually represent the net architecture. Yo can view the pdf &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/arquitectura_red.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The most interesting thing about this project was the fact that I had to build my own digit data set and then use it as test set. If you want to know more about it you can check the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/informe_cnn.pdf&#34;&gt;report&lt;/a&gt; I made. The supplementary material can be found on my &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/First_Convolutional_Net&#34;&gt;github profile&lt;/a&gt;. I also made a few ppt slides to visually represent the net architecture. You can view the pdf &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/arquitectura_red.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
      </item>
    
@@ -121,7 +163,7 @@
 &lt;p&gt;Here I adopt that perspective and make use of a &lt;a href=&#34;http://www.cis.es/cis/opencm/ES/2_bancodatos/estudios/ver.jsp?estudio=14530&#34;&gt;public survey&lt;/a&gt; conducted by the spanish Center for Sociological Research (CIS) after the end of the 2020 lockdown. Because the outcome of interest, helping behavior, is described in the survey as a dichotomic variable (either you help or you don&amp;rsquo;t), I decide to fit a logistic model of the form:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{aligned}
-\hat P(help_i=\text{Yes}|{\bf x}_i)=\frac{1}{1+e^{\boldsymbol{-\beta}\cdot {\bf x}_i}}
+\hat P(help_i=\text{Yes}|{\bf x}_i)=\frac{1}{1+e^{-(\beta_0+{\boldsymbol{\beta}^\intercal\cdot {\bf x}_i})}}
 \end{aligned}
 $$&lt;/p&gt;
 &lt;p&gt;where ${\bf x}_i$ represents the vector of $J$ features or explanatory variables of the ith subject.&lt;/p&gt;
