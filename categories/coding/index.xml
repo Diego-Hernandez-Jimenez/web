@@ -54,6 +54,59 @@
      </item>
    
      <item>
+       <title>Distinguishing between real and imagined memories with Bayesian logistic regression</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/bayesianregression/</link>
+       <pubDate>Sun, 01 May 2022 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/bayesianregression/</guid>
+       <description>&lt;p&gt;This brief research project was part of the course &amp;ldquo;Bayesian data analysis&amp;rdquo; in the Master in Methodology for behavioral sciences.&lt;/p&gt;
+&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;In 2020, Sap et al. made an study in which they analyzed the content of real and imagined stories with Natural Language Processing techniques. The paper is quite interesting, but it is also possible to study the difference between the type of event (real/recalled or imagined) from a more conventional analytical approach. Here I propose to study the relationship between type of event and two of the variables collected, distraction during the writing of the story and the importance attributed to the event described.&lt;/p&gt;
+&lt;p&gt;A positive relationship is hypothesized between distraction and the probability that the narrated event will be remembered. In principle, creating a story should involve greater cognitive effort. Similarly, among those who write the event while being more distracted, it is expected that there will be a higher proportion of recalled events.
+On the other hand, the existence of a positive relationship between importance and the probability that the event is real is suggested. This hypothesis is based on the intuitive idea that it is more reasonable to attribute relevance to events or memories that are real, rather than simply imagined.&lt;/p&gt;
+&lt;p&gt;A convenient way to test our hypotheses is by fitting a logistic regression model. However, we are going to doing from a Bayesian perspective. Among other things that means we are going to consider the effects as random variables, not fixed constants. One benefit is that we can build probability (not confidence) intervals around the parameters. We will see later examples of this.&lt;/p&gt;
+&lt;p&gt;The complete model specification:&lt;/p&gt;
+&lt;p&gt;Each observation $i$ can correspond either to a a real event (${\bf y}_i=1$) or an imagined event (${\bf y}_i=0$) with probabilities $\boldsymbol{\pi}_i$ and $1-\boldsymbol{\pi}_i$ respectively. Note here that ${\bf y}$ and $\boldsymbol{\pi}$ are n-dimensional vectors because we have $n$ observations in the dataset. 
+$$
+{\bf y}_i \sim Bernoulli(\boldsymbol{\pi}_i)
+$$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Likelihood&lt;/strong&gt;
+The probability of the type of event can be modeled by the logistic function. The predictors are ${\bf z}_1$ and ${\bf z}_2$, the standardized values of the attributes distraction and importance.&lt;/p&gt;
+&lt;p&gt;$$
+\boldsymbol{\pi}_i \sim Logistic({\bf z}_1^{(i)},{\bf z}_2^{(i)};\boldsymbol{\beta}_0,\boldsymbol{\beta}_1,\boldsymbol{\beta}_2)
+$$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Priors&lt;/strong&gt;
+The specification of the prior beliefs about the parameters involved in regression is what makes the Bayesian approach different. Here I follow the recommendations of Gelman et al. (2008) to define weak informative prior distributions for the effect/slope of each variable and the intercept. It&amp;rsquo;s important to note that the scale parameter is a standard deviation, not a precision (the reciprocal).&lt;/p&gt;
+&lt;p&gt;$$
+\beta_0 \sim Cauchy(0,10) 
+$$&lt;/p&gt;
+&lt;p&gt;$$
+\beta_1 \sim Cauchy(0,2.5) 
+$$&lt;/p&gt;
+&lt;p&gt;$$
+\beta_2 \sim Cauchy(0,2.5) 
+$$&lt;/p&gt;
+&lt;h3 id=&#34;parameter-estimation-simplistic-explanation&#34;&gt;Parameter estimation (simplistic explanation)&lt;/h3&gt;
+&lt;p&gt;In essence, Bayesian reasoning is about updating prior beliefs as more data is gathered. In our case, we want to update the different beliefs $p(\beta_j)$ to the posterior beliefs $p(\beta_j|data)$. One way to estimate this posterior distribution is by using Markov Chain Monte Carlo (MCMC) methods.They are approximate only&lt;/p&gt;
+&lt;p&gt;To see more about how MCMC was implemented you can check the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/bayeslogistic.pdf&#34;&gt;report&lt;/a&gt; I made.&lt;/p&gt;
+&lt;h3 id=&#34;summary-of-results&#34;&gt;Summary of results&lt;/h3&gt;
+&lt;p&gt;The result of the Bayesian inference can be easily visualized. In the next plot we see the case of the distraction effect. The blue curve represents prior &amp;ldquo;allocation of credibility across possibilities&amp;rdquo; (Kruschke, 2015). We chose a weakly informative prior, meaning that we didn&amp;rsquo;t assign much weight to any of the values possible for the effect of the distraction. However, after seeing the data, our belief about that variable changes. The red line represents the posterior density function, after the reallocation of credibility. Most probable values are around 0.2.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/pripostbeta1ENG.jpg&#34; alt=&#34;prior vs posterior&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;In fact the 95% credible interval (see report) tells us that the effect of distraction lies, with a probability of 0.95, between 0.195 and 0.326, with mean 0.259. And what does mean? It indicates that the actual event odds increase 1.295 points for each extra z-score on the distraction variable, keeping the importance variable constant. For example, knowing that a subject scores very high on that trait (let us assume it is one standard deviation above the mean), we predict an average increase of 30% in the odds that the event described is real with respect to the &amp;ldquo;base&amp;rdquo; odds where we assume a mean value on distraction.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;With respect to $\beta_2$, it has a much larger average magnitude (1.382), with a 95% credible interval of (1.298, 1.469). Holding distraction constant, the odds of actual event increases by a factor of 3.982 for each standard deviation increase in the importance variable. Knowing that a subject considers the narrated story very important to him/her (scoring one standard deviation above the mean, for example), the probability goes from being approximately 0.5 (having assumed mean score in importance) to 0.79. All this considering the average value of $\beta_2$.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In terms of classification performance, the accuracy obtained was 0.73. But that value might not be reliable enough. It was computed using all the data available and taking the mean parameter values. The risk of overfitting is high. Assessing the performance of the model wasn&amp;rsquo;t the main goal though. In any case, this is the plot generated with some of the decision boundaries we would get with different values for the regression coefficients.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/decbound_bayesEN.jpg&#34; alt=&#34;decision boundaries&#34;&gt;&lt;/p&gt;
+&lt;p&gt;I know I&amp;rsquo;ve left out important information and results but you can check the complete report &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/bayeslogistic.pdf&#34;&gt;here&lt;/a&gt;. Also the appendix with the code and figures can be found &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/appendixbayes.pdf&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
        <title>Random walks and decision making</title>
        <link>https://diego-hernandez-jimenez.github.io/web/posts/randomwalk/</link>
        <pubDate>Fri, 25 Feb 2022 00:00:00 +0100</pubDate>
