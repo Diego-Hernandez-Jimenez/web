@@ -166,7 +166,7 @@ $$</p>
 <p><strong>Likelihood</strong>
 The probability of the type of event can be modeled by the logistic function. The predictors are ${\bf z}_1$ and ${\bf z}_2$, the standardized values of the attributes distraction and importance.</p>
 <p>$$
-\boldsymbol{\pi}_i \sim Logistic({\bf z}_1^{(i)},{\bf z}_2^{(i)};\boldsymbol{\beta}_0,\boldsymbol{\beta}_1,\boldsymbol{\beta}_2)
+\boldsymbol{\pi}_i \sim Logistic({\bf z}_1^{(i)},{\bf z}_2^{(i)};\beta_0,\beta_1,\beta_2)
 $$</p>
 <p><strong>Priors</strong>
 The specification of the prior beliefs about the parameters involved in regression is what makes the Bayesian approach different. Here I follow the recommendations of Gelman et al. (2008) to define weak informative prior distributions for the effect/slope of each variable and the intercept. It&rsquo;s important to note that the scale parameter is a standard deviation, not a precision (the reciprocal).</p>
