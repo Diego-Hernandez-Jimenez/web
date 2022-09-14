@@ -6,10 +6,40 @@
    <description>Recent content in Projects on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2020 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Sun, 12 Jun 2022 00:00:00 +0200</lastBuildDate>
+   <lastBuildDate>Mon, 12 Sep 2022 00:00:00 +0200</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/categories/projects/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>SQL and Python to explore IMDb movies</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/sql_imdb/</link>
+       <pubDate>Mon, 12 Sep 2022 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/sql_imdb/</guid>
+       <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Knowing SQL is a must if you want to become a data scientist. From what I&amp;rsquo;ve seen in LinkedIn data-related job posts, the majority of employers are looking for people skilled in the use of SQL. I started learning SQL in 2020, but up to date I&amp;rsquo;ve never completed a project involving only SQL.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m changing that now. In the present project I&amp;rsquo;ve created a database from the &lt;a href=&#34;https://www.imdb.com/interfaces/&#34;&gt;imdb datasets&lt;/a&gt; using SQLite. I&amp;rsquo;ve written some queries to answer some basic but nonetheless interesting questions about cinema (e.g. which decade of the 20th century has movies with better ratings on average?) and finally I&amp;rsquo;ve translated some of this results into plots with the help of python and seaborn. To make things more challenging for me, I&amp;rsquo;ve developed the first part of the project (gathering the data and creating the database) using only the command line interface in a ubuntu &amp;ldquo;virtual machine&amp;rdquo; (the Windows Subsytem for Linux to be precise), without relying on GUIs.&lt;/p&gt;
+&lt;p&gt;Here is the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/imdb_insights.pdf&#34;&gt;executive report&lt;/a&gt; I made showing all the project stages.&lt;/p&gt;
+&lt;h2 id=&#34;an-example-stanley-kubrick-filmography&#34;&gt;An example: Stanley Kubrick filmography&lt;/h2&gt;
+&lt;p&gt;To get the films and ratings I had to use all 5 tables contained in the database (more info about each table in the imdb link):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;SELECT&lt;/span&gt; title, titleType, startYear &lt;span style=&#34;color:#66d9ef&#34;&gt;AS&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;year&lt;/span&gt;, averageRating &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; rating
+&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt; crew
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;INNER&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;JOIN&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;names&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;ON&lt;/span&gt; crew.directors &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;names&lt;/span&gt;.nconst
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;INNER&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;JOIN&lt;/span&gt; ratings &lt;span style=&#34;color:#66d9ef&#34;&gt;ON&lt;/span&gt; crew.tconst &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ratings.tconst
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;INNER&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;JOIN&lt;/span&gt; akas &lt;span style=&#34;color:#66d9ef&#34;&gt;ON&lt;/span&gt; ratings.tconst &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; akas.titleId
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;LEFT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;JOIN&lt;/span&gt; basics &lt;span style=&#34;color:#66d9ef&#34;&gt;ON&lt;/span&gt; akas.titleId &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; basics.tconst &lt;span style=&#34;color:#75715e&#34;&gt;-- left join to avoid losing data
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WHERE&lt;/span&gt; primaryName &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Stanley Kubrick&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;AND&lt;/span&gt; isOriginalTitle &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; 
+&lt;span style=&#34;color:#66d9ef&#34;&gt;ORDER&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;BY&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;year&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;ASC&lt;/span&gt;;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The resulting table had missing data as can be seen in the next image:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/kubrick_titles.jpg&#34; alt=&#34;table_kubrick_titles&#34;&gt;&lt;/p&gt;
+&lt;p&gt;But at least it allowed me to make a simple plot showing the evolution of the director in terms of ratings and popularity (number of votes is used as a proxy for popularity)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/kubrick_ratings.jpg&#34; alt=&#34;kubrick_ratings&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/kubrick_votes.jpg&#34; alt=&#34;kubrick_votes&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This is just a snippet. If you want to see more check my github repository &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/sql_imdb&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>Recognizing facial expression with eigenfaces</title>
@@ -73,7 +103,7 @@ $$&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Likelihood&lt;/strong&gt;
 The probability of the type of event can be modeled by the logistic function. The predictors are ${\bf z}_1$ and ${\bf z}_2$, the standardized values of the attributes distraction and importance.&lt;/p&gt;
 &lt;p&gt;$$
-\boldsymbol{\pi}_i \sim Logistic({\bf z}_1^{(i)},{\bf z}_2^{(i)};\boldsymbol{\beta}_0,\boldsymbol{\beta}_1,\boldsymbol{\beta}_2)
+\boldsymbol{\pi}_i \sim Logistic({\bf z}_1^{(i)},{\bf z}_2^{(i)};\beta_0,\beta_1,\beta_2)
 $$&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Priors&lt;/strong&gt;
 The specification of the prior beliefs about the parameters involved in regression is what makes the Bayesian approach different. Here I follow the recommendations of Gelman et al. (2008) to define weak informative prior distributions for the effect/slope of each variable and the intercept. It&amp;rsquo;s important to note that the scale parameter is a standard deviation, not a precision (the reciprocal).&lt;/p&gt;

@@ -1,14 +1,14 @@
 
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
  <channel>
-   <title>Coding on Diego Hernández Jiménez</title>
-   <link>https://diego-hernandez-jimenez.github.io/web/categories/coding/</link>
-   <description>Recent content in Coding on Diego Hernández Jiménez</description>
+   <title>SQL on Diego Hernández Jiménez</title>
+   <link>https://diego-hernandez-jimenez.github.io/web/tags/sql/</link>
+   <description>Recent content in SQL on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2020 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Fri, 25 Feb 2022 00:00:00 +0100</lastBuildDate>
+   <lastBuildDate>Mon, 12 Sep 2022 00:00:00 +0200</lastBuildDate>
    
-       <atom:link href="https://diego-hernandez-jimenez.github.io/web/categories/coding/index.xml" rel="self" type="application/rss+xml" />
+       <atom:link href="https://diego-hernandez-jimenez.github.io/web/tags/sql/index.xml" rel="self" type="application/rss+xml" />
    
    
      <item>
