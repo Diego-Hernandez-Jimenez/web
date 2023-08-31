@@ -158,7 +158,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>Knowing SQL is a must if you want to become a data scientist. From what I&rsquo;ve seen in LinkedIn data-related job posts, the majority of employers are looking for people skilled in the use of SQL. I started learning SQL in 2020, but up to date I&rsquo;ve never completed a project involving only SQL.</p>
 <p>I&rsquo;m changing that now. In the present project I&rsquo;ve created a database from the <a href="https://www.imdb.com/interfaces/">imdb datasets</a> using SQLite. I&rsquo;ve written some queries to answer some basic but nonetheless interesting questions about cinema (e.g. which decade of the 20th century has movies with better ratings on average?) and finally I&rsquo;ve translated some of this results into plots with the help of python and seaborn. To make things more challenging for me, I&rsquo;ve developed the first part of the project (gathering the data and creating the database) using only the command line interface in a ubuntu &ldquo;virtual machine&rdquo; (the Windows Subsytem for Linux to be precise), without relying on GUIs.</p>
 <p>Here is the <a href="https://diego-hernandez-jimenez.github.io/web/projects/imdb_insights.pdf">executive report</a> I made showing all the project stages.</p>
-<h2 id="an-example-stanley-kubrick-filmography">An example: Stanley Kubrick filmography</h2>
+<h3 id="an-example-stanley-kubricks-filmography">An example: Stanley Kubrick&rsquo;s filmography</h3>
 <p>To get the films and ratings I had to use all 5 tables contained in the database (more info about each table in the imdb link):</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">SELECT</span> title, titleType, startYear <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">year</span>, averageRating <span style="color:#66d9ef">as</span> rating
 <span style="color:#66d9ef">FROM</span> crew
@@ -187,6 +187,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <a href="https://diego-hernandez-jimenez.github.io/web/posts/eigenfaces/"><i class="fa fa-chevron-circle-left"></i> Recognizing facial expression with eigenfaces</a>
         </li>
         
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment2/">NLP with distrowatch reviews. Part II: Sentiment classification <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
         
     </ul>
 </section>

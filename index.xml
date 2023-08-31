@@ -6,10 +6,206 @@
    <description>Recent content on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2020 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Mon, 12 Sep 2022 00:00:00 +0200</lastBuildDate>
+   <lastBuildDate>Sun, 06 Aug 2023 00:00:00 +0200</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>NLP with distrowatch reviews. Part I: Web scraping</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment1/</link>
+       <pubDate>Sun, 06 Aug 2023 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment1/</guid>
+       <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Some time ago, I contemplated transitioning to a Linux-based operating system, driven by my curiosity about the realm of free software and Linux culture. During my exploration, I stumbled upon the &lt;a href=&#34;https://distrowatch.com/&#34;&gt;Distrowatch&lt;/a&gt; website (an invaluable resource offering information about numerous Linux distributions, including reviews). The organized and very structured layout of these reviews, coupled with the inclusion of numerical scores, sparked an idea within me. I envisioned gathering a substantial collection of these reviews—ranging from tens to potentially thousands—and subjecting them to analysis through Natural Language Processing (NLP). Eventually, this idea materialized into a tangible project, the outcome of which can be accessed here.&lt;/p&gt;
+&lt;p&gt;The project consists of three parts: Web scraping, supervised and unsupervised learning for sentiment analysis. Let&amp;rsquo;s start with web scraping and data collection.&lt;/p&gt;
+&lt;h2 id=&#34;inspecting-the-website&#34;&gt;Inspecting the website&lt;/h2&gt;
+&lt;p&gt;If we go to this site &lt;code&gt;https://distrowatch.com/dwres.php?resource=ratings&amp;amp;distro={distro_of_choice}&lt;/code&gt;, we&amp;rsquo;ll see reviews like this one:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/ej_review_distro.png&#34; alt=&#34;review_example&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Just by seeing it, one has the feeling that the underlying html is going to be clearly structured and that is going to be relatively easy to access all of its parts. This is in fact what we see when we inspect elements:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/review_inspect.png&#34; alt=&#34;review_html&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The code I used to extract each part is relatively simple, although, to be honest, I needed quite some time to get it because I&amp;rsquo;m not at all expert in web scraping.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;total_reviews &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xpath(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;//td[@class = &amp;#34;News1&amp;#34;]//table[1]//td[2]/b[2]/text()&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extract()
+avg_rating &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xpath(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;//td[@class = &amp;#34;News1&amp;#34;]//table[1]//td[2]/div/text()&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extract()
+project &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xpath(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;//td[@class = &amp;#34;News1&amp;#34;]//table[2]//tr/td[1]/text()[3]&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extract()
+version &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xpath(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;//td[@class = &amp;#34;News1&amp;#34;]//table[2]//tr/td[1]/text()[4]&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extract()
+rating &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xpath(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;//td[@class = &amp;#34;News1&amp;#34;]//table[2]//tr/td[1]/text()[5]&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extract()
+date_review &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xpath(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;//td[@class = &amp;#34;News1&amp;#34;]//table[2]//tr/td[1]/text()[6]&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extract()
+votes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xpath(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;//td[@class = &amp;#34;News1&amp;#34;]//table[2]//tr/td[1]/text()[7]&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extract()
+reviews &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xpath(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;//td[@class = &amp;#34;News1&amp;#34;]//table[2]//tr/td[2]/text()&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extract()
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;There was a little problem, however. Notice the space between paragraphs in the hmtl from picture above? That was inconvenient because in the extracted reviews, different paragraphs were separated by &lt;code&gt;/r&lt;/code&gt;, but different reviews are separated by \n. The subparts of the review (paragraphs) had to be joined together. Also, there was another &lt;code&gt;\n&lt;/code&gt; character at the beggining of the next review. In order to split the reviews correctly I firstly &amp;ldquo;glued&amp;rdquo; all reviews and then used the pattern &amp;lsquo;\n\n&amp;rsquo; to separate texts.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# the first reviews before processing&lt;/span&gt;
+
+[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Ubuntu was the first distribution I used on Linux. Then I was a distrohopper for 4 years and learned everything about Debian/Ubuntu, Arch, Gentoo, Opensuse and other alternatives like Void, Slakware, etc.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;I always come back to Ubuntu. I don&amp;#39;t like snaps or the continuous error in the snap-store, but I feel that it is the most stable, modern and efficient distro.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;When I want to learn about Linux, I use other distributions, but when I want to work with Linux, I always go back to Ubuntu. I use flatpak because I like it better, nobody prevents it even if you don&amp;#39;t have flatpak pre-installed.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Oh! and Ubuntu is the only distro I&amp;#39;ve installed on all types of hardware (old imac, new hardware, old hardware) and it always works. It just all works.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;I have used Ubuntu Linux for years, and I have had good experiences with it most time.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Firstly, it&amp;#39;s user friendly. For someone switching from Windows to Linux, Ubuntu is a good start, not with a deep learning curve.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;,
+ &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Secondly, it&amp;#39;s supported by many popular software: alternative web browsers, VPN client tools, RDP tools, software development tools, etc.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;reviews &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(reviews)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;split(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; len(reviews) &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; len(rating) &lt;span style=&#34;color:#75715e&#34;&gt;# to maje sure now we have the correct number of reviews&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And that was pretty much all. I also retrieved the names of all distributions from other page of the web and faced other problems (limited number of reviews that could be accessed), but the heavy part was that.&lt;/p&gt;
+&lt;h2 id=&#34;dataset-creation&#34;&gt;Dataset creation&lt;/h2&gt;
+&lt;p&gt;To create a dataset for posterior analysis I choose a simple method. I basically iterated over all the distros available and created a dataframe for each one with their information. Then I just concatenated all the dataframes. Each dataframe was defined as:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;df_distro &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame({&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;date&amp;#39;&lt;/span&gt;:date_review,
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;project&amp;#39;&lt;/span&gt;:project,
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;version&amp;#39;&lt;/span&gt;:version,
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;rating&amp;#39;&lt;/span&gt;:rating,
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;votes&amp;#39;&lt;/span&gt;:votes,
+                          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;review&amp;#39;&lt;/span&gt;:reviews})
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In the final &lt;code&gt;df&lt;/code&gt; I made some modifications to avoid problems later and I saved it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (
+    df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;assign(date&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_datetime(df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;date&amp;#39;&lt;/span&gt;]),
+              votes&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_numeric(df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;votes&amp;#39;&lt;/span&gt;]),
+              rating&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_numeric(df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;rating&amp;#39;&lt;/span&gt;]))
+    &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;reset_index(drop&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
+)
+
+df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_csv(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distrowatch.csv&amp;#39;&lt;/span&gt;)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;That&amp;rsquo;s how a review looked:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/review_final.png&#34; alt=&#34;processed_review&#34;&gt;&lt;/p&gt;
+&lt;p&gt;If you want to know more about the project, check the part II and III. All the code can be found &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/nlp_distrowatch/tree/main&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>NLP with distrowatch reviews. Part II: Sentiment classification</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment2/</link>
+       <pubDate>Sun, 06 Aug 2023 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment2/</guid>
+       <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Some time ago, I contemplated transitioning to a Linux-based operating system, driven by my curiosity about the realm of free software and Linux culture. During my exploration, I stumbled upon the &lt;a href=&#34;https://distrowatch.com/&#34;&gt;Distrowatch&lt;/a&gt; website (an invaluable resource offering information about numerous Linux distributions, including reviews). The organized and very structured layout of these reviews, coupled with the inclusion of numerical scores, sparked an idea within me. I envisioned gathering a substantial collection of these reviews—ranging from tens to potentially thousands—and subjecting them to analysis through Natural Language Processing (NLP). Eventually, this idea materialized into a tangible project, the outcome of which can be accessed here.&lt;/p&gt;
+&lt;p&gt;The project consists of three parts: Web scraping, supervised and unsupervised learning for sentiment analysis. We&amp;rsquo;ve already seen part I, let&amp;rsquo;s continue with sentiment analysis.&lt;/p&gt;
+&lt;h2 id=&#34;problem-definition&#34;&gt;Problem definition&lt;/h2&gt;
+&lt;p&gt;The idea is to predict the rating given by a user using only his/her review as input. However, this might not be as simple as it sounds, We need to clarify one basic assumption: we&amp;rsquo;re going to treat the prediction problem as a classification problem. If we had ratings with scores on a continuous scale with a greater range like 1-100, instead of 1-10, we could think about regression. Another thing to make clear is that, by default, we&amp;rsquo;re going to ignore the order present in ratings (i.e.: 10&amp;gt;8). In the notebook I explore one option to take order into account.&lt;/p&gt;
+&lt;h2 id=&#34;basic-data-exploration&#34;&gt;Basic data exploration&lt;/h2&gt;
+&lt;p&gt;Usually, we&amp;rsquo;d first split the data but because there is no risk of data leakage (I think), we can take a look at the distribution of ratings in the full dataset:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/class_balance.png&#34; alt=&#34;class_distribution&#34;&gt;&lt;/p&gt;
+&lt;p&gt;We&amp;rsquo;ve got 10 unique values and a very skewed distribution, most of the reviews we&amp;rsquo;ve collected are above 8. This translates into the problem of class imbalance.I don&amp;rsquo;t think I have enough expertise or data to treat this problem properly, so we&amp;rsquo;re going to make another assumption to simplify the problem. Given the relative prominence of extreme ratings, we could maybe assume scores are representing some underlying sentiment: negative, positive and maybe neutral. This means that there subsets of scores that belong to the same category (sentiment), but how can we group ratings? Here I&amp;rsquo;ll take a naïve approach and follow &amp;ldquo;common sense&amp;rdquo; (in part III I try other strategies). Here I show three possible options.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/target_encodings.png&#34; alt=&#34;target_encodings&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The first one seems reasonable and let us use binary classification algorithms (in the notebook I compare the performance using different target encoding)&lt;/p&gt;
+&lt;h2 id=&#34;text-pre-processing&#34;&gt;Text pre-processing&lt;/h2&gt;
+&lt;p&gt;Now we&amp;rsquo;re entering the realm of NLP. This is one of my first projects using NLP techniques, so I&amp;rsquo;ll keep it simple.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Tokenization:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The tokens (&amp;ldquo;building blocks&amp;rdquo;) of the reviews are the words, more especifically unigrams and bigrams, that is, &lt;em&gt;frustrating&lt;/em&gt; can be part of the vocabulary, but also the bigram &lt;em&gt;very frustrating&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Uppercase words are respected in some cases (not acronyms, for instance), because they can denote emphasis.&lt;/li&gt;
+&lt;li&gt;Digits cannot be tokens (software versions, for example, are not deemed non-informative) except when presented in a format like &lt;em&gt;8/10&lt;/em&gt;, because explicit ratings can be very discriminative.&lt;/li&gt;
+&lt;li&gt;Neither stemming nor lemmatization was applied. As I said, I wanted to keep it simple.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;preproc_tokenize&lt;/span&gt;(review):
+  text_rating &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; re&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;findall(&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;\d\/10&amp;#39;&lt;/span&gt;,review)
+  review_modif &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; re&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sub(&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;(\b[A-Z]{4,}\b)&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;upperc\1&amp;#39;&lt;/span&gt;,review)
+  review_modif &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; re&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sub(&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;\d+\.?&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;,review_modif)
+  tokens &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; re&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;findall(&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;(?u)\b\w\w+\b|[!|?]&amp;#39;&lt;/span&gt;,review_modif&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lower()) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; text_rating
+  &lt;span style=&#34;color:#75715e&#34;&gt;# stemmed_tokens = [SnowballStemmer(&amp;#39;english&amp;#39;).stem(w) for w in tokens]&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; tokens
+
+ex &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;xdistrox version 2.04 is a great distro! 8/10. It works in my OS VERY nicely. Why nobody is talking about it??&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(ex)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(preproc_tokenize(ex))
+  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;xdistrox version 2.04 is a great distro! 8/10. It works in my OS VERY nicely. Why nobody is talking about it??
+[&#39;xdistrox&#39;, &#39;version&#39;, &#39;is&#39;, &#39;great&#39;, &#39;distro&#39;, &#39;!&#39;, &#39;it&#39;, &#39;works&#39;, &#39;in&#39;, &#39;my&#39;, &#39;os&#39;, &#39;uppercvery&#39;, &#39;nicely&#39;, &#39;why&#39;, &#39;nobody&#39;, &#39;is&#39;, &#39;talking&#39;, &#39;about&#39;, &#39;it&#39;, &#39;?&#39;, &#39;?&#39;, &#39;8/10&#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Stop words&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Some specific words of this context are removed: &lt;em&gt;OS&lt;/em&gt;, &lt;em&gt;distro&lt;/em&gt;, &lt;em&gt;version&lt;/em&gt;, the name of the distributions&amp;hellip;The idea is to reduce the vocabulary size by discarding (supposedly) non-informative words.&lt;/li&gt;
+&lt;li&gt;I keep some words like &lt;em&gt;very&lt;/em&gt; or &lt;em&gt;most&lt;/em&gt;, because they can be useful when expessing emotions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+to_keep &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;all&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;any&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;both&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;each&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;few&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;most&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;more&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;only&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;too&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;very&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#75715e&#34;&gt;# not&lt;/span&gt;
+stop &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [w &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; w &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; stopwords&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;words(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;english&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; w &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; to_keep]
+
+extra_stop &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;OS&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;distro&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;LTS&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;version&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Linux&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;USB&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;PC&amp;#39;&lt;/span&gt;]
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# names were obtained from distrowatch.com using web scraping, see notebook for part 1&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;distro_names&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;rb&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; f:
+  distro_names &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; load(f)
+
+stop&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extend(extra_stop)
+stop&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;extend(distro_names)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# stopwords need to be processed as any other token&lt;/span&gt;
+stop_tokens &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; preproc_tokenize(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(stop))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Vectorization&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Bag of Words: reviews are represented as vectors of counts with dimension equal to the total number of tokens in the dataset: the vocabulary size. The $i$-th entry of the vector for review $j$ stores the frequency of the $i$-th token of the vocabulary in the review $j$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Our Bag of Words vectorizer&lt;/span&gt;
+bow_vectorizer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; CountVectorizer(
+    lowercase&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;False, &lt;span style=&#34;color:#75715e&#34;&gt;# transformation to lowercase is done in preproc_tokenize&lt;/span&gt;
+    tokenizer&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;preproc_tokenize, &lt;span style=&#34;color:#75715e&#34;&gt;# custom preprocessing and tokenizing function&lt;/span&gt;
+    stop_words&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;stop_tokens, &lt;span style=&#34;color:#75715e&#34;&gt;# custom set of stop words&lt;/span&gt;
+    token_pattern&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;None, &lt;span style=&#34;color:#75715e&#34;&gt;# ignore, preproc_tokenize takes care&lt;/span&gt;
+    ngram_range&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;), &lt;span style=&#34;color:#75715e&#34;&gt;# unigrams and bigrams&lt;/span&gt;
+    analyzer&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;word&amp;#39;&lt;/span&gt;,
+    max_df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.8&lt;/span&gt;,
+    min_df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# tokens have to appear at least in 20 documents -&amp;gt; this reduces the number of features drastically&lt;/span&gt;
+)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Our token distribution looks like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/token_dist.png&#34; alt=&#34;token_distribution_by_class&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;model-training-and-selection&#34;&gt;Model training and selection&lt;/h2&gt;
+&lt;p&gt;For this section I haven&amp;rsquo;t done a careful search to find the best algorithm. I wanted to try the Naïve Bayes model because its simplicity and because it doesn&amp;rsquo;t require hyper-parameter tuning.&lt;/p&gt;
+&lt;p&gt;Classification rule: $\hat c=\underset{c\in K}{\operatorname{argmax}} P(c)\prod_{i=1}^{|V|} P(w_i|c)$&lt;/p&gt;
+&lt;p&gt;Where $c$ represents each of the $k$ classes, $w_i$ is the $i$-th token of the vocabulary set $V$, with size $|V|$&lt;/p&gt;
+&lt;p&gt;I compared the basic version, Multinomial Naïve Bayes Classifier (MNB), and the Complement Naïve Bayes Classifier (CNB), which is something like a improved version of MNB. I performed 5-cross-validation and used balanced accuracy for model selection, because it&amp;rsquo;s less misguiding in the presence of class imbalance than accuracy (or even AUC, as I&amp;rsquo;ve seen in other projects). With an average balanced accuracy of 0.813, CNB beat MNB, which obtained 0.801, so I chose the former as the final model.&lt;/p&gt;
+&lt;p&gt;However, those are cross-validation performance scores, and we need to see how well the final model performs on unseen data. The results for the test set are the following.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/confmat_test.png&#34; alt=&#34;confusion_matrix&#34;&gt;&lt;/p&gt;
+&lt;p&gt;With global accuracy of 0.867 and balanced accuracy of 0.85.&lt;/p&gt;
+&lt;p&gt;Not bad, but far from excellent, a non-negiglible 18% of &amp;ldquo;negative&amp;rdquo; reviews are predicted as positive (maybe because of reviews on the border, those with rating of 5 or 6).&lt;/p&gt;
+&lt;h2 id=&#34;which-tokens-are-most-relevant-for-classification&#34;&gt;Which tokens are most relevant for classification?&lt;/h2&gt;
+&lt;p&gt;The probability of a class is given by the review $d$ is&lt;/p&gt;
+&lt;p&gt;$P(c|d)=P(c)\prod_{i=1}^{|V_d|} P(w_i|c)$&lt;/p&gt;
+&lt;p&gt;where $w_i$ now represents the tokens present in review $d$ with vocabulary $V_d$, a subset of $V$&lt;/p&gt;
+&lt;p&gt;If we take the log:&lt;/p&gt;
+&lt;p&gt;$\log P(c|d)=\log P(c)+\sum_{i=1}^{|V_d|} \log P(w_i|c)$&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s easier to see now that, as happens with linear regression, the bigger the value of $\log P(w_i|c)$, the greater importance the token $w_i$ has for predictions.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;top_tokens &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;15&lt;/span&gt;
+neg_prob_sorted &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; final_model[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;clf&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;feature_log_prob_[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, :]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;argsort()[::&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]
+pos_prob_sorted &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; final_model[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;clf&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;feature_log_prob_[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, :]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;argsort()[::&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;negative reviews&amp;#39;&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;take(final_model[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;vectorizer&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_feature_names_out(), neg_prob_sorted[:top_tokens]),&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;positive reviews&amp;#39;&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;take(final_model[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;vectorizer&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_feature_names_out(), pos_prob_sorted[:top_tokens]))
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;negative reviews
+[&#39;worst&#39; &#39;sad&#39; &#39;terrible&#39; &#39;tried install&#39; &#39;way too&#39; &#39;shame&#39; &#39;asks&#39;
+ &#39;asking&#39; &#39;pass&#39; &#39;previous versions&#39; &#39;problematic&#39; &#39;tries&#39; &#39;failure&#39;
+ &#39;parts&#39; &#39;get things&#39;] 
+
+positive reviews
+[&#39;configurable&#39; &#39;pleased&#39; &#39;charm&#39; &#39;well done&#39; &#39;snapshots&#39; &#39;upgraded&#39;
+ &#39;intel core&#39; &#39;enjoying&#39; &#39;unix&#39; &#39;underrated&#39; &#39;impressive&#39; &#39;period&#39;
+ &#39;most stable&#39; &#39;much easier&#39; &#39;favourite&#39;]
+ 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Very revealing indeed. For example, when a user mentions problems with the installation process or mentions previous versions of the software, the review is probably going to be negative. On the other hand, comments about how configurable and stable is the linux distribution predict positive reviews.&lt;/p&gt;
+&lt;p&gt;If you want to know more about the project, check the part I and III. All the code can be found &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/nlp_distrowatch/tree/main&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>SQL and Python to explore IMDb movies</title>
@@ -21,7 +217,7 @@
 &lt;p&gt;Knowing SQL is a must if you want to become a data scientist. From what I&amp;rsquo;ve seen in LinkedIn data-related job posts, the majority of employers are looking for people skilled in the use of SQL. I started learning SQL in 2020, but up to date I&amp;rsquo;ve never completed a project involving only SQL.&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;m changing that now. In the present project I&amp;rsquo;ve created a database from the &lt;a href=&#34;https://www.imdb.com/interfaces/&#34;&gt;imdb datasets&lt;/a&gt; using SQLite. I&amp;rsquo;ve written some queries to answer some basic but nonetheless interesting questions about cinema (e.g. which decade of the 20th century has movies with better ratings on average?) and finally I&amp;rsquo;ve translated some of this results into plots with the help of python and seaborn. To make things more challenging for me, I&amp;rsquo;ve developed the first part of the project (gathering the data and creating the database) using only the command line interface in a ubuntu &amp;ldquo;virtual machine&amp;rdquo; (the Windows Subsytem for Linux to be precise), without relying on GUIs.&lt;/p&gt;
 &lt;p&gt;Here is the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/imdb_insights.pdf&#34;&gt;executive report&lt;/a&gt; I made showing all the project stages.&lt;/p&gt;
-&lt;h2 id=&#34;an-example-stanley-kubrick-filmography&#34;&gt;An example: Stanley Kubrick filmography&lt;/h2&gt;
+&lt;h3 id=&#34;an-example-stanley-kubricks-filmography&#34;&gt;An example: Stanley Kubrick&amp;rsquo;s filmography&lt;/h3&gt;
 &lt;p&gt;To get the films and ratings I had to use all 5 tables contained in the database (more info about each table in the imdb link):&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;SELECT&lt;/span&gt; title, titleType, startYear &lt;span style=&#34;color:#66d9ef&#34;&gt;AS&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;year&lt;/span&gt;, averageRating &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; rating
 &lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt; crew
@@ -255,7 +451,7 @@ analysis: A tutorial with R, JAGS, and Stan (pp. 16-31). Elsevier.&lt;/p&gt;
 \hat P(help_i=\text{Yes}|{\bf x}_i)=\frac{1}{1+e^{-(\beta_0+{\boldsymbol{\beta}^\intercal\cdot {\bf x}_i})}}
 \end{aligned}
 $$&lt;/p&gt;
-&lt;p&gt;where ${\bf x}_i$ represents the vector of $J$ features or explanatory variables of the ith subject.&lt;/p&gt;
+&lt;p&gt;where ${\bf x}_i$ represents the vector of $J$ features or explanatory variables of the $i$-th subject. Read the equation as: the estimated probability of helping for person $i$, given a set of features that person has, is modeled as a (logistic) function of a linear combination of those features.&lt;/p&gt;
 &lt;p&gt;The model specification is partially based on Schwartz and Howard (1984). They describe five stages in helping behavior:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;

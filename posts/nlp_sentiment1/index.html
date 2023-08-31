@@ -1,0 +1,249 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M72HGJH');</script>
+
+  <title>NLP with distrowatch reviews. Part I: Web scraping - Diego Hernández Jiménez</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Kiera: A Hugo theme for creative and technical writing." />
+<meta name="author" content="Example" /><meta property="og:title" content="NLP with distrowatch reviews. Part I: Web scraping" />
+<meta property="og:description" content="Description Some time ago, I contemplated transitioning to a Linux-based operating system, driven by my curiosity about the realm of free software and Linux culture. During my exploration, I stumbled upon the Distrowatch website (an invaluable resource offering information about numerous Linux distributions, including reviews)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment1/" />
+<meta property="article:published_time" content="2023-08-06T00:00:00+02:00" />
+<meta property="article:modified_time" content="2023-08-06T00:00:00+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="NLP with distrowatch reviews. Part I: Web scraping"/>
+<meta name="twitter:description" content="Description Some time ago, I contemplated transitioning to a Linux-based operating system, driven by my curiosity about the realm of free software and Linux culture. During my exploration, I stumbled upon the Distrowatch website (an invaluable resource offering information about numerous Linux distributions, including reviews)."/>
+
+<meta name="generator" content="Hugo 0.74.3" />
+    
+    <link rel="shortcut icon" href="https://diego-hernandez-jimenez.github.io/web/images/Dicon.ico" />
+  
+    <script src="https://diego-hernandez-jimenez.github.io/web/js/mathjax-config.js" defer></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://diego-hernandez-jimenez.github.io/web/fontawesome/css/all.min.css" />
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  
+  
+  <link rel="stylesheet" type="text/css" href="https://diego-hernandez-jimenez.github.io/web/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="https://diego-hernandez-jimenez.github.io/web/">Diego Hernández Jiménez</a>
+            </h1>
+
+      <ul id="social-media">
+             <li>
+               <a href="https://github.com/Diego-Hernandez-Jimenez" title="GitHub">
+               <i class="fab fa-github fa-lg"></i>
+               </a>
+             </li>
+             <li>
+               <a href="https://linkedin.com/in/diego-hern%c3%a1ndez-jim%c3%a9nez" title="LinkedIn">
+               <i class="fab fa-linkedin fa-lg"></i>
+               </a>
+             </li>
+      </ul>
+      
+      <p><em>Welcome to my personal website! Here I share some of my little projects.</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/tags">
+                <i class="fa-li fa  fa-lg"></i><span>Tags</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/posts/">
+                <i class="fa-li fa  fa-lg"></i><span>Projects</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About</span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="" href="https://diego-hernandez-jimenez.github.io/web/contact/">
+                <i class="fa-li fa  fa-lg"></i><span>Contact</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>NLP with distrowatch reviews. Part I: Web scraping</h1>
+
+    
+      <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2023-08-06T00:00:00&#43;02:00">Aug 6, 2023</time>
+        </li>
+        
+        <li>
+            Categories:
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/categories/projects">Projects</a>
+                
+            </em>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/python">#Python</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/data-analysis">#Data Analysis</a>
+                
+                    , 
+                    <a href="https://diego-hernandez-jimenez.github.io/web/tags/for-fun">#For fun</a>
+                
+            </em>
+        </li>
+        
+
+        <li>4 minutes read</li>
+    </ul>
+</aside>
+
+    
+
+    
+
+
+    <h3 id="description">Description</h3>
+<p>Some time ago, I contemplated transitioning to a Linux-based operating system, driven by my curiosity about the realm of free software and Linux culture. During my exploration, I stumbled upon the <a href="https://distrowatch.com/">Distrowatch</a> website (an invaluable resource offering information about numerous Linux distributions, including reviews). The organized and very structured layout of these reviews, coupled with the inclusion of numerical scores, sparked an idea within me. I envisioned gathering a substantial collection of these reviews—ranging from tens to potentially thousands—and subjecting them to analysis through Natural Language Processing (NLP). Eventually, this idea materialized into a tangible project, the outcome of which can be accessed here.</p>
+<p>The project consists of three parts: Web scraping, supervised and unsupervised learning for sentiment analysis. Let&rsquo;s start with web scraping and data collection.</p>
+<h2 id="inspecting-the-website">Inspecting the website</h2>
+<p>If we go to this site <code>https://distrowatch.com/dwres.php?resource=ratings&amp;distro={distro_of_choice}</code>, we&rsquo;ll see reviews like this one:</p>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/ej_review_distro.png" alt="review_example"></p>
+<p>Just by seeing it, one has the feeling that the underlying html is going to be clearly structured and that is going to be relatively easy to access all of its parts. This is in fact what we see when we inspect elements:</p>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/review_inspect.png" alt="review_html"></p>
+<p>The code I used to extract each part is relatively simple, although, to be honest, I needed quite some time to get it because I&rsquo;m not at all expert in web scraping.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">total_reviews <span style="color:#f92672">=</span> sel<span style="color:#f92672">.</span>xpath(<span style="color:#e6db74">&#39;//td[@class = &#34;News1&#34;]//table[1]//td[2]/b[2]/text()&#39;</span>)<span style="color:#f92672">.</span>extract()
+avg_rating <span style="color:#f92672">=</span> sel<span style="color:#f92672">.</span>xpath(<span style="color:#e6db74">&#39;//td[@class = &#34;News1&#34;]//table[1]//td[2]/div/text()&#39;</span>)<span style="color:#f92672">.</span>extract()
+project <span style="color:#f92672">=</span> sel<span style="color:#f92672">.</span>xpath(<span style="color:#e6db74">&#39;//td[@class = &#34;News1&#34;]//table[2]//tr/td[1]/text()[3]&#39;</span>)<span style="color:#f92672">.</span>extract()
+version <span style="color:#f92672">=</span> sel<span style="color:#f92672">.</span>xpath(<span style="color:#e6db74">&#39;//td[@class = &#34;News1&#34;]//table[2]//tr/td[1]/text()[4]&#39;</span>)<span style="color:#f92672">.</span>extract()
+rating <span style="color:#f92672">=</span> sel<span style="color:#f92672">.</span>xpath(<span style="color:#e6db74">&#39;//td[@class = &#34;News1&#34;]//table[2]//tr/td[1]/text()[5]&#39;</span>)<span style="color:#f92672">.</span>extract()
+date_review <span style="color:#f92672">=</span> sel<span style="color:#f92672">.</span>xpath(<span style="color:#e6db74">&#39;//td[@class = &#34;News1&#34;]//table[2]//tr/td[1]/text()[6]&#39;</span>)<span style="color:#f92672">.</span>extract()
+votes <span style="color:#f92672">=</span> sel<span style="color:#f92672">.</span>xpath(<span style="color:#e6db74">&#39;//td[@class = &#34;News1&#34;]//table[2]//tr/td[1]/text()[7]&#39;</span>)<span style="color:#f92672">.</span>extract()
+reviews <span style="color:#f92672">=</span> sel<span style="color:#f92672">.</span>xpath(<span style="color:#e6db74">&#39;//td[@class = &#34;News1&#34;]//table[2]//tr/td[2]/text()&#39;</span>)<span style="color:#f92672">.</span>extract()
+
+</code></pre></div><p>There was a little problem, however. Notice the space between paragraphs in the hmtl from picture above? That was inconvenient because in the extracted reviews, different paragraphs were separated by <code>/r</code>, but different reviews are separated by \n. The subparts of the review (paragraphs) had to be joined together. Also, there was another <code>\n</code> character at the beggining of the next review. In order to split the reviews correctly I firstly &ldquo;glued&rdquo; all reviews and then used the pattern &lsquo;\n\n&rsquo; to separate texts.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># the first reviews before processing</span>
+
+[<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Ubuntu was the first distribution I used on Linux. Then I was a distrohopper for 4 years and learned everything about Debian/Ubuntu, Arch, Gentoo, Opensuse and other alternatives like Void, Slakware, etc.</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#39;</span>,
+ <span style="color:#e6db74">&#34;I always come back to Ubuntu. I don&#39;t like snaps or the continuous error in the snap-store, but I feel that it is the most stable, modern and efficient distro.</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#34;</span>,
+ <span style="color:#e6db74">&#34;When I want to learn about Linux, I use other distributions, but when I want to work with Linux, I always go back to Ubuntu. I use flatpak because I like it better, nobody prevents it even if you don&#39;t have flatpak pre-installed.</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#34;</span>,
+ <span style="color:#e6db74">&#34;Oh! and Ubuntu is the only distro I&#39;ve installed on all types of hardware (old imac, new hardware, old hardware) and it always works. It just all works.</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#34;</span>,
+ <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#39;</span>,
+ <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>,
+ <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">I have used Ubuntu Linux for years, and I have had good experiences with it most time.</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#39;</span>,
+ <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#39;</span>,
+ <span style="color:#e6db74">&#34;Firstly, it&#39;s user friendly. For someone switching from Windows to Linux, Ubuntu is a good start, not with a deep learning curve.</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#34;</span>,
+ <span style="color:#e6db74">&#34;Secondly, it&#39;s supported by many popular software: alternative web browsers, VPN client tools, RDP tools, software development tools, etc.</span><span style="color:#ae81ff">\r</span><span style="color:#e6db74">&#34;</span>]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">reviews <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(reviews)<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+<span style="color:#66d9ef">assert</span> len(reviews) <span style="color:#f92672">==</span> len(rating) <span style="color:#75715e"># to maje sure now we have the correct number of reviews</span>
+</code></pre></div><p>And that was pretty much all. I also retrieved the names of all distributions from other page of the web and faced other problems (limited number of reviews that could be accessed), but the heavy part was that.</p>
+<h2 id="dataset-creation">Dataset creation</h2>
+<p>To create a dataset for posterior analysis I choose a simple method. I basically iterated over all the distros available and created a dataframe for each one with their information. Then I just concatenated all the dataframes. Each dataframe was defined as:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_distro <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#39;date&#39;</span>:date_review,
+                          <span style="color:#e6db74">&#39;project&#39;</span>:project,
+                          <span style="color:#e6db74">&#39;version&#39;</span>:version,
+                          <span style="color:#e6db74">&#39;rating&#39;</span>:rating,
+                          <span style="color:#e6db74">&#39;votes&#39;</span>:votes,
+                          <span style="color:#e6db74">&#39;review&#39;</span>:reviews})
+
+</code></pre></div><p>In the final <code>df</code> I made some modifications to avoid problems later and I saved it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df <span style="color:#f92672">=</span> (
+    df<span style="color:#f92672">.</span>assign(date<span style="color:#f92672">=</span>pd<span style="color:#f92672">.</span>to_datetime(df[<span style="color:#e6db74">&#39;date&#39;</span>]),
+              votes<span style="color:#f92672">=</span>pd<span style="color:#f92672">.</span>to_numeric(df[<span style="color:#e6db74">&#39;votes&#39;</span>]),
+              rating<span style="color:#f92672">=</span>pd<span style="color:#f92672">.</span>to_numeric(df[<span style="color:#e6db74">&#39;rating&#39;</span>]))
+    <span style="color:#f92672">.</span>reset_index(drop<span style="color:#f92672">=</span>True)
+)
+
+df<span style="color:#f92672">.</span>to_csv(<span style="color:#e6db74">&#39;distrowatch.csv&#39;</span>)
+
+</code></pre></div><p>That&rsquo;s how a review looked:</p>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/review_final.png" alt="processed_review"></p>
+<p>If you want to know more about the project, check the part II and III. All the code can be found <a href="https://github.com/Diego-Hernandez-Jimenez/nlp_distrowatch/tree/main">here</a>.</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment2/"><i class="fa fa-chevron-circle-left"></i> NLP with distrowatch reviews. Part II: Sentiment classification</a>
+        </li>
+        
+        
+    </ul>
+</section>
+  
+    
+    
+  
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright &amp; copy; 2020 - Diego Hernández Jiménez |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="https://diego-hernandez-jimenez.github.io/web/index.xml">Subscribe </a></h6>
+    </footer>
+</div>
+<script src="https://diego-hernandez-jimenez.github.io/web/js/scripts.js"></script>
+
+</body>
+
+</html>
+
