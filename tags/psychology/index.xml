@@ -5,7 +5,7 @@
    <link>https://diego-hernandez-jimenez.github.io/web/tags/psychology/</link>
    <description>Recent content in Psychology on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
-   <copyright>Copyright &amp; copy; 2020 - Diego Hernández Jiménez</copyright>
+   <copyright>Copyright &amp; copy; 2023 - Diego Hernández Jiménez</copyright>
    <lastBuildDate>Thu, 29 Apr 2021 00:00:00 +0200</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/tags/psychology/index.xml" rel="self" type="application/rss+xml" />
@@ -204,6 +204,98 @@ positive reviews
  
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Very revealing indeed. For example, when a user mentions problems with the installation process or mentions previous versions of the software, the review is probably going to be negative. On the other hand, comments about how configurable and stable is the linux distribution predict positive reviews.&lt;/p&gt;
 &lt;p&gt;If you want to know more about the project, check the part I and III. All the code can be found &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/nlp_distrowatch/tree/main&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>NLP with distrowatch reviews. Part III: Sentiment classification</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment3/</link>
+       <pubDate>Sun, 06 Aug 2023 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment3/</guid>
+       <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;Some time ago, I contemplated transitioning to a Linux-based operating system, driven by my curiosity about the realm of free software and Linux culture. During my exploration, I stumbled upon the &lt;a href=&#34;https://distrowatch.com/&#34;&gt;Distrowatch&lt;/a&gt; website (an invaluable resource offering information about numerous Linux distributions, including reviews). The organized and very structured layout of these reviews, coupled with the inclusion of numerical scores, sparked an idea within me. I envisioned gathering a substantial collection of these reviews—ranging from tens to potentially thousands—and subjecting them to analysis through Natural Language Processing (NLP). Eventually, this idea materialized into a tangible project, the outcome of which can be accessed here.&lt;/p&gt;
+&lt;p&gt;The project consists of three parts: Web scraping, supervised and unsupervised learning for sentiment analysis. We&amp;rsquo;ve already seen part I and II, let&amp;rsquo;s end with unsupervised learning.&lt;/p&gt;
+&lt;h2 id=&#34;problem-definition&#34;&gt;Problem definition&lt;/h2&gt;
+&lt;p&gt;In Part II, we categorized ratings using our intuition in order to differentiate between positive and negative reviews. However, this approach has a significant drawback, as it heavily depends on the subjectivity of the analyst, which in this case is me. Moreover, it introduces the potential for bias. Consequently, we will now explore alternative strategies for defining our target variable, mainly using unsupervised techniques.&lt;/p&gt;
+&lt;h2 id=&#34;agglomerative-clustering&#34;&gt;Agglomerative clustering&lt;/h2&gt;
+&lt;p&gt;What if we were to group categories/ratings based on the similarity of their features? To achieve this, we can generate a &lt;em&gt;prototype&lt;/em&gt; exemplar for each rating and then apply a hierarchical clustering algorithm to group these representative members of each category. One relatively straightforward (although potentially simplistic) approach to creating a &lt;em&gt;prototype&lt;/em&gt; for a rating/class $K$ is by calculating the average value of each feature across all instances with rating $K$.&lt;/p&gt;
+&lt;p&gt;The result of applying hierarchical clustering using cosine similarity and complete linkage is the following:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/dendro_nlp.png&#34; alt=&#34;dendrogram&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, with this solution, we find ourselves in a situation where it makes sense to create two groups, roughly corresponding to positive reviews (ratings 8-10) and negative reviews (ratings 1-7). However, it&amp;rsquo;s worth noting that this classification is only approximate because intuitively, one might not consider a rating of 6 or 7 as entirely negative.&lt;/p&gt;
+&lt;p&gt;Using the two clusters as classes of the target variable, we can now train a model as we did in part II (same approach for text processing and data partition). Using Complement Naïve Bayes we get a global accuracy score of 0.844 and balanced accuracy of 0.828.&lt;/p&gt;
+&lt;h2 id=&#34;k-means&#34;&gt;K-means&lt;/h2&gt;
+&lt;p&gt;So far, in one way or another, the original rating data has been used to create the target variable. However, it is possible to take a completely unsupervised approach and generate the classes from the clusters that naturally emerge in the data. This can be achieved with K-means. Using this algorithm we can partition the dataset into a number of predefined groups and use the clusters ids as categories for supervised classification.&lt;/p&gt;
+&lt;p&gt;I decided to fit a model with two clusters because the elbow method didn&amp;rsquo;t help me choose the number of groups.The resulting clusters were completely (and therefore our target variable) new so I thought it would be reasonable to repeat the process of cross-validation for model selection. This time I introduced new models in the competetion: logistic regression and linear Support Vector Machine (SVM). The 5-cross-validation average balanced accuracy scores are show next:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Model&lt;/th&gt;
+&lt;th align=&#34;center&#34;&gt;Score&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Complement Naïve Bayes&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.638&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Logistic regression&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.876&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;Support Vector Machine&lt;/td&gt;
+&lt;td align=&#34;center&#34;&gt;0.956&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Of course I chose SVM as the final model. In terms of test performance, this is what I got:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/confmat_test_svm.png&#34; alt=&#34;confusion_matrix&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Pretty amazing, right? What happened here? What do the clusters represent? The model can be extremely good discriminating between classes, but if we don&amp;rsquo;t know the meaning of those classes, then the model is not useful at all. We hoped the categories could represent sentiment, is that really the case? Take a look at the distribution of ratings:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/dist_by_cluster.png&#34; alt=&#34;distribution_by_cluster&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Mmm&amp;hellip; I&amp;rsquo;m not sure. Yes, there is a higher proportion of low ratings (more evident with ratings of 1) in cluster 1 and a higher portion of very good reviews (8 or 9) in cluster 0, but the groups do not seem to be that distinct.&lt;/p&gt;
+&lt;p&gt;What about term frequency?&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/token_dist_km.png&#34; alt=&#34;token_distribution_by_cluster&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Not very clear.&lt;/p&gt;
+&lt;p&gt;Finally, taking advantage of the fact that we fit a linear classifier (they are usually easier to interpret), I examined the coefficients of the SVM&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+coefs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array(model[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;clf&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;coef_&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;todense())
+cl0_coefs,cl1_coefs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; coefs[coefs&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;],coefs[coefs&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+top_cl0_tok,top_cl1_tok &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cl0_coefs&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;argsort()[:&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;],np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;flip(cl1_coefs&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;argsort()[&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;:])
+toks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;vectorizer&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_feature_names_out()
+
+pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame({
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;token cluster 0&amp;#39;&lt;/span&gt;:toks[top_cl0_tok],
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;coef cluster 0&amp;#39;&lt;/span&gt;:cl0_coefs[top_cl0_tok],
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;token cluster 1&amp;#39;&lt;/span&gt;:toks[top_cl1_tok],
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;coef cluster 1&amp;#39;&lt;/span&gt;:cl1_coefs[top_cl1_tok],
+})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/svm_coefs.png&#34; alt=&#34;svm_coefficients&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This is more interesting. Words like &lt;em&gt;mail&lt;/em&gt; or &lt;em&gt;adds&lt;/em&gt; have a strong influence on the decision boundary, meaning that the model relies more on them to classify the review, specifically into cluster 0. Generally, negative coefficients exhibit greater magnitude, which implies an emphasis on the &amp;ldquo;negative class&amp;rdquo;, which is cluster 0. This results in a skewed decision boundary favoring this class, which happens to be the minority class, by the way.&lt;/p&gt;
+&lt;p&gt;Still, I find difficult to give meaning to the clusters.&lt;/p&gt;
+&lt;h2 id=&#34;vader&#34;&gt;VADER&lt;/h2&gt;
+&lt;p&gt;The last strategy to be considered involves the use of VADER (Valence Aware Dictionary and sEntiment Reasoner, consider checking the &lt;a href=&#34;https://sensorpro.net/ml/vader.pdf&#34;&gt;original paper&lt;/a&gt; or the &lt;a href=&#34;https://www.nltk.org/_modules/nltk/sentiment/vader.html&#34;&gt;implementation in nltk&lt;/a&gt;). This is a completely different approach, as VADER is a rule-based model that can itself be used as a classifier. It assigns scores to texts on a sentiment polarity scale ranging from -1 to 1 (-1 being the most negative, 1 being the most positive). Typically, a score of 0.5 or higher is considered to indicate positive sentiment, while a score of -0.5 or lower indicates negative sentiment, with the remaining scores reflecting neutrality.&lt;/p&gt;
+&lt;p&gt;When I applied it the first time I noticed a problem, however. It was clearly failing with many reviews. How do I know that? Well, remember that we had the real ratings given by the users. Now, let&amp;rsquo;s take a look at the distribution of scores in each category resulting from applying VADER:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/dist_by_vader.png&#34; alt=&#34;distributions_by_vader_sent&#34;&gt;&lt;/p&gt;
+&lt;p&gt;It doesn&amp;rsquo;t seem logical that such a high proportion of ratings of 10 are classified as negative. Similarly, it&amp;rsquo;s also puzzling to find extreme cases (scores of 1 or 10) in reviews categorized as neutral.&lt;/p&gt;
+&lt;p&gt;For this reason, I then adopted a mixed approach where I utilized VADER but also took into consideration the information provided by the ratings. Specifically, VADER was only applied to reviews with ratings between 3 and 8. For the rest, which were clearly positive or negative, their scores were scaled to fit within the range of [-1, 1], and then the &lt;code&gt;tag_review&lt;/code&gt; function was applied (see below). For VADER-rated reviews, the final sentiment score didn&amp;rsquo;t solely rely on VADER itself; it was a weighted combination of the VADER score and the scaled rating score:&lt;/p&gt;
+&lt;p&gt;$sentiment=\text{tag_review}(w\cdot VADER+(1-w)\cdot rating)$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tag_review&lt;/span&gt;(compound_score):
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; compound_score &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.5&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pos&amp;#39;&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; compound_score &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.5&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;neg&amp;#39;&lt;/span&gt;
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;neu&amp;#39;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The new distributions seem more like what we would expect:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/dist_by_vader2.png&#34; alt=&#34;distributions_by_vader_sent&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Then I repeated the model selection step. The results of the final Complement Naïve Bayes are shown next:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/confmat_test_vader.png&#34; alt=&#34;confusion_matrix&#34;&gt;&lt;/p&gt;
+&lt;p&gt;An unacceptable 68% of what we considered neutral reviews were classified as negative, and 24% were classified as positive reviews. This category caused considerable difficulty, so I considered reverting to the binary scenario. This was accomplished by simply altering the decision rule of VADER, that is, the &lt;code&gt;tag_review&lt;/code&gt; function: scores $\geq$ 0 were positive, the rest, negative.&lt;/p&gt;
+&lt;p&gt;This lead to a new model that achieved 0.843 accuracy and 0.807 balanced accuracy, similar performance to what we saw earlier.&lt;/p&gt;
+&lt;p&gt;If you want to know more about the project, check the part I and II. All the code can be found &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/nlp_distrowatch/tree/main&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
      </item>
    
