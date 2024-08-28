@@ -6,10 +6,20 @@
    <description>Recent content in Python on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2023 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Sun, 06 Aug 2023 00:00:00 +0200</lastBuildDate>
+   <lastBuildDate>Sat, 10 Aug 2024 00:00:00 +0200</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/tags/python/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Prototype-based learning. Part I: GMLVQ from scratch</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/lvq1/</link>
+       <pubDate>Sat, 10 Aug 2024 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/lvq1/</guid>
+       <description>&lt;p&gt;Coming Soon&amp;hellip;&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>NLP with distrowatch reviews. Part I: Web scraping</title>
