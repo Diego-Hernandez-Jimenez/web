@@ -6,7 +6,7 @@
    <description>Recent content in Projects on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2023 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Sat, 10 Aug 2024 00:00:00 +0200</lastBuildDate>
+   <lastBuildDate>Sat, 17 Aug 2024 00:00:00 +0200</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/categories/projects/index.xml" rel="self" type="application/rss+xml" />
    
@@ -14,10 +14,68 @@
      <item>
        <title>Prototype-based learning. Part I: GMLVQ from scratch</title>
        <link>https://diego-hernandez-jimenez.github.io/web/posts/lvq1/</link>
-       <pubDate>Sat, 10 Aug 2024 00:00:00 +0200</pubDate>
+       <pubDate>Sat, 17 Aug 2024 00:00:00 +0200</pubDate>
        
        <guid>https://diego-hernandez-jimenez.github.io/web/posts/lvq1/</guid>
+       <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;In my journey to bridge psychology and data science, I discovered Learning Vector Quantization (LVQ) and immediately saw its potential connection to human category learning. This realization led me to dive deeper, implementing LVQ from scratch, initially by coding all the operations using PyTorch, and then by abstracting the optimization and learning processes to fully leverage PyTorch&amp;rsquo;s features.&lt;/p&gt;
+&lt;h3 id=&#34;problem&#34;&gt;Problem&lt;/h3&gt;
+&lt;p&gt;Human category learning has been a subject of extensive study, with two predominant approaches: exemplar-based learning and prototype-based learning. Prototype learning, in particular, posits &amp;ldquo;that a category of things in the world (objects, animals, shapes, etc.) can be represented in the mind by a prototype. A prototype is a cognitive representation that captures the regularities and commonalities among category members and can help a perceiver distinguish category members from non-members&amp;rdquo; (Minda &amp;amp; Smith, 2011)&lt;/p&gt;
+&lt;p&gt;And what about LVQ? Well, this model learns prototypes and classifies new examples based on comparisons with these prototypes, which makes it a very promising model for human learning.&lt;/p&gt;
+&lt;h3 id=&#34;what-is-different-and-interesting&#34;&gt;What is different and interesting?&lt;/h3&gt;
+&lt;p&gt;One of the compelling aspects of LVQ is its flexibility in learning prototypes. Unlike traditional prototype models, which often rely on a single, average prototype per category, LVQ allows for multiple prototypes per category. These prototypes are not merely averages but can be more complex summaries of the data.&lt;/p&gt;
+&lt;p&gt;Furthermore, the similarity function in LVQ can be learned and adapted. Besides, this function doesn&amp;rsquo;t have to be unique; each prototype can have its own similarity function. This flexibility enables some LVQ models to handle not only linearly separable categories but also those that are non-linearly separable —a significant improvement over standard prototype models, which struggle with non-linear separations.&lt;/p&gt;
+&lt;h4 id=&#34;objective&#34;&gt;Objective&lt;/h4&gt;
+&lt;p&gt;While LVQ shows promise as a cognitive model, validating it against human experimental data is beyond my current means due to a lack of access to such data. Therefore, my focus will be on evaluating LVQ&amp;rsquo;s effectiveness as a machine learning classifier. In this first part, I aim to replicate the results of a foundational paper in the LVQ field—the very paper that introduced me to this family of models (Schneider et al., 2009).&lt;/p&gt;
+&lt;h4 id=&#34;how-to-translate-the-model-into-code&#34;&gt;How to translate the model into code?&lt;/h4&gt;
+&lt;p&gt;I&amp;rsquo;ve documented all the process in this report &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/lvq_scratch.pdf&#34;&gt;here&lt;/a&gt; and gathered all the code in  &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/prototype_learning_LVQ/blob/main/GMLVQ_from_scratch.ipynb&#34;&gt;this notebook&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Essentially, a trained LVQ model works by comparing an unseen exemplar ${\bf x}$ to each of the learned prototypes stored in memory ${\bf w}_1,&amp;hellip;,{\bf w}_C$. There may be one for each of the $C$ classes, as here, or more than one. The comparison is done using a dissimilarity function $d$ defined as (assuming the use of row vectors instead of conventional column vectors):&lt;/p&gt;
+&lt;p&gt;$$
+d({\bf x},{\bf w}_k,{\bf Q})=({\bf x}-{\bf w}_k) {\bf R} ({\bf x}-{\bf w}_k)^\intercal
+$$&lt;/p&gt;
+&lt;p&gt;Here, ${\bf R}$ is relevance matrix. In GMLVQ, it&amp;rsquo;s a dense symmetric matrix of relevance/attention weights given to features  where $tr({\bf R}) = 1$. If diagonal, the model will be Relevance LVQ (RLVQ) and won&amp;rsquo;t account for correlations between features. If identity matrix, we have the Generalized LVQ (GLVQ). When there is one matrix per prototype, we are working with localized versions of the model. In this first part of the project only GMLVQ and LGMLVQ are implemented. Also, this relevance matrix (or matrices) are expressed as ${\bf R}={\bf Q}^\intercal{\bf Q}$, so the dissimilarity becomes:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+d({\bf x},{\bf w}_k,{\bf Q})&amp;amp;=({\bf x}-{\bf w}_k) {\bf Q}^\intercal{\bf Q} ({\bf x}-{\bf w}_k)^\intercal \ 
+&amp;amp;=\lVert {\bf Q}({\bf x}-{\bf w}_k)^\intercal \rVert_2^2
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;The decision rule is to assign to the exemplar the class corresponding to the closest prototype:&lt;/p&gt;
+&lt;p&gt;$$
+\hat c=\underset{k\in C}{\operatorname{argmin}}\ d({\bf x},{\bf w}_k,{\bf R})
+$$&lt;/p&gt;
+&lt;p&gt;LVQ models learn the prototypes and the relevance matrix (or matrices) using gradient descent by minimizing the following relative distance loss:&lt;/p&gt;
+&lt;p&gt;$$
+\mathcal{L}(d^+,d^-)=\phi\Bigl( \frac{d^+-d^-}{d^++d^-} \Bigr)
+$$&lt;/p&gt;
+&lt;p&gt;where $\phi$ is a function that can add an additional transformation. Here we are going to assume, as in the paper I&amp;rsquo;m using as reference, that $\phi(x)=x$, but in the second part we&amp;rsquo;ll try some other functions such as the sigmoid or ReLU. Notice that we have $d^+$ and $d^-$. Those distances are the distance of the data point from the closest prototype with the &lt;em&gt;correct&lt;/em&gt; label (${\bf w}^+$) and the distance of the data point from the closest prototype with the &lt;em&gt;incorrect&lt;/em&gt; label (${\bf w}^-$), respectively (from the energy-based model learning point of view, the latter would correspond to the &amp;ldquo;most offending answer&amp;rdquo;, a name that I found quite funny). In the &amp;ldquo;localized&amp;rdquo; model scenario, we would also have ${\bf R}^+$ and ${\bf R}^-$.&lt;/p&gt;
+&lt;p&gt;The tricky part when you implement a ML algorithm like this is that you need to code everything from scratch, including the derivatives (gradients) that are used for the parameter updates, so you need to understand very well how the model works. To save space, I won&amp;rsquo;t write here all the functions I created. If interested, check the report and/or notebook mentioned above.&lt;/p&gt;
+&lt;h4 id=&#34;validation-with-artificial-data&#34;&gt;Validation with artificial data&lt;/h4&gt;
+&lt;p&gt;After having programmed the model, we&amp;rsquo;re ready to test it. In this first part we&amp;rsquo;ve only used a fake dataset with the same properties as the one generated in Schneider et al. (2009). It looks like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/SchneiderGMLVQ_data.png&#34; alt=&#34;fake data with non-linearly separable classes&#34;&gt;&lt;/p&gt;
+&lt;p&gt;If we instantiate a GMLVQ model and train it for 25 epochs (way less that in the original paper, but there was no need of more epochs) we achieve around 0.8 accuracy which is pretty close to the one obtained in the paper. If we visualize the results we can see why tho model fails achieve higher accuracy.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/GMLVQ_decision_area.png&#34; alt=&#34;decision area for GMLVQ&#34;&gt;&lt;/p&gt;
+&lt;p&gt;As said before (and much better explained in the paper, GMLVQ is at the end a linear classifier).&lt;/p&gt;
+&lt;p&gt;However, when we allow multiple relavance matrices with LGMLVQ, we obtain 0.91 accuracy and this is what we get.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/LGMLVQ_decision_area.png&#34; alt=&#34;decision area for LGMLVQ&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Nice, just as expected!&lt;/p&gt;
+&lt;p&gt;However, despite the success (I was very proud when I finally made it work), this was only the beginning, the code in this proof of concept was very rigid and didn&amp;rsquo;t allow for many changes. For that reason, just after I finished this I started working on a better version. Check it out in the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/posts/lvq2/&#34;&gt;second part&lt;/a&gt;
+!&lt;/p&gt;
+&lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
+&lt;p&gt;Minda, J.P. &amp;amp; Smith, D. (2011). Prototype models of categorization: basic formulation, predictions, and limitations. In E.M. Pothos, N. Chater &amp;amp; P. Hines, &lt;em&gt;Formal Approaches in Categorization&lt;/em&gt; (pp. 40-65)&lt;/p&gt;
+&lt;p&gt;Schneider, P., Biehl, M. &amp;amp; Hammer, B. (2009). Adaptive relevance matrices in Learning Vector
+Quantization, &lt;em&gt;Neural computation&lt;/em&gt;, 21(12), 3532-3561.&lt;/p&gt;
+</description>
+     </item>
+   
+     <item>
+       <title>Prototype-based learning. Part II: LVQ family of models in Pytorch</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/lvq2/</link>
+       <pubDate>Sat, 17 Aug 2024 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/lvq2/</guid>
        <description>&lt;p&gt;Coming Soon&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Link to code &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/prototype_learning_LVQ/blob/main/LVQ_pytorch.ipynb&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
      </item>
    

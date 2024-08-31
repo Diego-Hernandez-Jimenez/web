@@ -15,15 +15,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="Kiera: A Hugo theme for creative and technical writing." />
 <meta name="author" content="Example" /><meta property="og:title" content="Prototype-based learning. Part I: GMLVQ from scratch" />
-<meta property="og:description" content="Coming Soon&hellip;" />
+<meta property="og:description" content="Description In my journey to bridge psychology and data science, I discovered Learning Vector Quantization (LVQ) and immediately saw its potential connection to human category learning. This realization led me to dive deeper, implementing LVQ from scratch, initially by coding all the operations using PyTorch, and then by abstracting the optimization and learning processes to fully leverage PyTorch&rsquo;s features." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://diego-hernandez-jimenez.github.io/web/posts/lvq1/" />
-<meta property="article:published_time" content="2024-08-10T00:00:00+02:00" />
-<meta property="article:modified_time" content="2024-08-10T00:00:00+02:00" />
+<meta property="article:published_time" content="2024-08-17T00:00:00+02:00" />
+<meta property="article:modified_time" content="2024-08-17T00:00:00+02:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Prototype-based learning. Part I: GMLVQ from scratch"/>
-<meta name="twitter:description" content="Coming Soon&hellip;"/>
+<meta name="twitter:description" content="Description In my journey to bridge psychology and data science, I discovered Learning Vector Quantization (LVQ) and immediately saw its potential connection to human category learning. This realization led me to dive deeper, implementing LVQ from scratch, initially by coding all the operations using PyTorch, and then by abstracting the optimization and learning processes to fully leverage PyTorch&rsquo;s features."/>
 
 <meta name="generator" content="Hugo 0.74.3" />
     
@@ -114,7 +114,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <aside>
     <ul>
         <li>
-            <time class="post-date" datetime="2024-08-10T00:00:00&#43;02:00">Aug 10, 2024</time>
+            <time class="post-date" datetime="2024-08-17T00:00:00&#43;02:00">Aug 17, 2024</time>
         </li>
         
         <li>
@@ -145,7 +145,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </li>
         
 
-        <li>One minute read</li>
+        <li>5 minutes read</li>
     </ul>
 </aside>
 
@@ -154,7 +154,54 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     
 
 
-    <p>Coming Soon&hellip;</p>
+    <h3 id="description">Description</h3>
+<p>In my journey to bridge psychology and data science, I discovered Learning Vector Quantization (LVQ) and immediately saw its potential connection to human category learning. This realization led me to dive deeper, implementing LVQ from scratch, initially by coding all the operations using PyTorch, and then by abstracting the optimization and learning processes to fully leverage PyTorch&rsquo;s features.</p>
+<h3 id="problem">Problem</h3>
+<p>Human category learning has been a subject of extensive study, with two predominant approaches: exemplar-based learning and prototype-based learning. Prototype learning, in particular, posits &ldquo;that a category of things in the world (objects, animals, shapes, etc.) can be represented in the mind by a prototype. A prototype is a cognitive representation that captures the regularities and commonalities among category members and can help a perceiver distinguish category members from non-members&rdquo; (Minda &amp; Smith, 2011)</p>
+<p>And what about LVQ? Well, this model learns prototypes and classifies new examples based on comparisons with these prototypes, which makes it a very promising model for human learning.</p>
+<h3 id="what-is-different-and-interesting">What is different and interesting?</h3>
+<p>One of the compelling aspects of LVQ is its flexibility in learning prototypes. Unlike traditional prototype models, which often rely on a single, average prototype per category, LVQ allows for multiple prototypes per category. These prototypes are not merely averages but can be more complex summaries of the data.</p>
+<p>Furthermore, the similarity function in LVQ can be learned and adapted. Besides, this function doesn&rsquo;t have to be unique; each prototype can have its own similarity function. This flexibility enables some LVQ models to handle not only linearly separable categories but also those that are non-linearly separable —a significant improvement over standard prototype models, which struggle with non-linear separations.</p>
+<h4 id="objective">Objective</h4>
+<p>While LVQ shows promise as a cognitive model, validating it against human experimental data is beyond my current means due to a lack of access to such data. Therefore, my focus will be on evaluating LVQ&rsquo;s effectiveness as a machine learning classifier. In this first part, I aim to replicate the results of a foundational paper in the LVQ field—the very paper that introduced me to this family of models (Schneider et al., 2009).</p>
+<h4 id="how-to-translate-the-model-into-code">How to translate the model into code?</h4>
+<p>I&rsquo;ve documented all the process in this report <a href="https://diego-hernandez-jimenez.github.io/web/projects/lvq_scratch.pdf">here</a> and gathered all the code in  <a href="https://github.com/Diego-Hernandez-Jimenez/prototype_learning_LVQ/blob/main/GMLVQ_from_scratch.ipynb">this notebook</a>.</p>
+<p>Essentially, a trained LVQ model works by comparing an unseen exemplar ${\bf x}$ to each of the learned prototypes stored in memory ${\bf w}_1,&hellip;,{\bf w}_C$. There may be one for each of the $C$ classes, as here, or more than one. The comparison is done using a dissimilarity function $d$ defined as (assuming the use of row vectors instead of conventional column vectors):</p>
+<p>$$
+d({\bf x},{\bf w}_k,{\bf Q})=({\bf x}-{\bf w}_k) {\bf R} ({\bf x}-{\bf w}_k)^\intercal
+$$</p>
+<p>Here, ${\bf R}$ is relevance matrix. In GMLVQ, it&rsquo;s a dense symmetric matrix of relevance/attention weights given to features  where $tr({\bf R}) = 1$. If diagonal, the model will be Relevance LVQ (RLVQ) and won&rsquo;t account for correlations between features. If identity matrix, we have the Generalized LVQ (GLVQ). When there is one matrix per prototype, we are working with localized versions of the model. In this first part of the project only GMLVQ and LGMLVQ are implemented. Also, this relevance matrix (or matrices) are expressed as ${\bf R}={\bf Q}^\intercal{\bf Q}$, so the dissimilarity becomes:</p>
+<p>$$
+\begin{aligned}
+d({\bf x},{\bf w}_k,{\bf Q})&amp;=({\bf x}-{\bf w}_k) {\bf Q}^\intercal{\bf Q} ({\bf x}-{\bf w}_k)^\intercal \ 
+&amp;=\lVert {\bf Q}({\bf x}-{\bf w}_k)^\intercal \rVert_2^2
+\end{aligned}
+$$</p>
+<p>The decision rule is to assign to the exemplar the class corresponding to the closest prototype:</p>
+<p>$$
+\hat c=\underset{k\in C}{\operatorname{argmin}}\ d({\bf x},{\bf w}_k,{\bf R})
+$$</p>
+<p>LVQ models learn the prototypes and the relevance matrix (or matrices) using gradient descent by minimizing the following relative distance loss:</p>
+<p>$$
+\mathcal{L}(d^+,d^-)=\phi\Bigl( \frac{d^+-d^-}{d^++d^-} \Bigr)
+$$</p>
+<p>where $\phi$ is a function that can add an additional transformation. Here we are going to assume, as in the paper I&rsquo;m using as reference, that $\phi(x)=x$, but in the second part we&rsquo;ll try some other functions such as the sigmoid or ReLU. Notice that we have $d^+$ and $d^-$. Those distances are the distance of the data point from the closest prototype with the <em>correct</em> label (${\bf w}^+$) and the distance of the data point from the closest prototype with the <em>incorrect</em> label (${\bf w}^-$), respectively (from the energy-based model learning point of view, the latter would correspond to the &ldquo;most offending answer&rdquo;, a name that I found quite funny). In the &ldquo;localized&rdquo; model scenario, we would also have ${\bf R}^+$ and ${\bf R}^-$.</p>
+<p>The tricky part when you implement a ML algorithm like this is that you need to code everything from scratch, including the derivatives (gradients) that are used for the parameter updates, so you need to understand very well how the model works. To save space, I won&rsquo;t write here all the functions I created. If interested, check the report and/or notebook mentioned above.</p>
+<h4 id="validation-with-artificial-data">Validation with artificial data</h4>
+<p>After having programmed the model, we&rsquo;re ready to test it. In this first part we&rsquo;ve only used a fake dataset with the same properties as the one generated in Schneider et al. (2009). It looks like this:</p>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/SchneiderGMLVQ_data.png" alt="fake data with non-linearly separable classes"></p>
+<p>If we instantiate a GMLVQ model and train it for 25 epochs (way less that in the original paper, but there was no need of more epochs) we achieve around 0.8 accuracy which is pretty close to the one obtained in the paper. If we visualize the results we can see why tho model fails achieve higher accuracy.</p>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/GMLVQ_decision_area.png" alt="decision area for GMLVQ"></p>
+<p>As said before (and much better explained in the paper, GMLVQ is at the end a linear classifier).</p>
+<p>However, when we allow multiple relavance matrices with LGMLVQ, we obtain 0.91 accuracy and this is what we get.</p>
+<p><img src="https://diego-hernandez-jimenez.github.io/web/images/LGMLVQ_decision_area.png" alt="decision area for LGMLVQ"></p>
+<p>Nice, just as expected!</p>
+<p>However, despite the success (I was very proud when I finally made it work), this was only the beginning, the code in this proof of concept was very rigid and didn&rsquo;t allow for many changes. For that reason, just after I finished this I started working on a better version. Check it out in the <a href="https://diego-hernandez-jimenez.github.io/web/posts/lvq2/">second part</a>
+!</p>
+<h3 id="references">References</h3>
+<p>Minda, J.P. &amp; Smith, D. (2011). Prototype models of categorization: basic formulation, predictions, and limitations. In E.M. Pothos, N. Chater &amp; P. Hines, <em>Formal Approaches in Categorization</em> (pp. 40-65)</p>
+<p>Schneider, P., Biehl, M. &amp; Hammer, B. (2009). Adaptive relevance matrices in Learning Vector
+Quantization, <em>Neural computation</em>, 21(12), 3532-3561.</p>
 
 
 </article>
@@ -164,7 +211,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <ul>
         
         <li>
-            <a href="https://diego-hernandez-jimenez.github.io/web/posts/nlp_sentiment1/"><i class="fa fa-chevron-circle-left"></i> NLP with distrowatch reviews. Part I: Web scraping</a>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/lvq2/"><i class="fa fa-chevron-circle-left"></i> Prototype-based learning. Part II: LVQ family of models in Pytorch</a>
         </li>
         
         
