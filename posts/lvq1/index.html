@@ -187,10 +187,8 @@ d({\bf x},{\bf w}_k,{\bf Q})=({\bf x}-{\bf w}_k) {\bf R} ({\bf x}-{\bf w}_k)^\in
 $$</p>
 <p>Here, ${\bf R}$ is relevance matrix. In GMLVQ, it&rsquo;s a dense symmetric matrix of relevance/attention weights given to features  where $tr({\bf R}) = 1$. If diagonal, the model will be Relevance LVQ (RLVQ) and won&rsquo;t account for correlations between features. If identity matrix, we have the Generalized LVQ (GLVQ). When there is one matrix per prototype, we are working with localized versions of the model. In this first part of the project only GMLVQ and LGMLVQ are implemented. Also, this relevance matrix (or matrices) are expressed as ${\bf R}={\bf Q}^\intercal{\bf Q}$, so the dissimilarity becomes:</p>
 <p>$$
-\begin{aligned}
-d({\bf x},{\bf w}_k,{\bf Q})&amp;=({\bf x}-{\bf w}_k) {\bf Q}^\intercal{\bf Q} ({\bf x}-{\bf w}_k)^\intercal \ 
-&amp;=\lVert {\bf Q}({\bf x}-{\bf w}_k)^\intercal \rVert_2^2
-\end{aligned}
+d({\bf x},{\bf w}_k,{\bf Q})=({\bf x}-{\bf w}_k) {\bf Q}^\intercal{\bf Q} ({\bf x}-{\bf w}_k)^\intercal \ 
+=\lVert {\bf Q}({\bf x}-{\bf w}_k)^\intercal \rVert_2^2
 $$</p>
 <p>The decision rule is to assign to the exemplar the class corresponding to the closest prototype:</p>
 <p>$$
