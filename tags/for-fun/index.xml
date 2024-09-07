@@ -17,7 +17,10 @@
        <pubDate>Sun, 18 Aug 2024 00:00:00 +0200</pubDate>
        
        <guid>https://diego-hernandez-jimenez.github.io/web/posts/lvq2/</guid>
-       <description>&lt;p&gt;Coming Soon&amp;hellip;&lt;/p&gt;
+       <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;In my journey to bridge psychology and data science, I discovered Learning Vector Quantization (LVQ) and immediately saw its potential connection to human category learning. This realization led me to dive deeper, implementing LVQ from scratch, initially by coding all the operations using PyTorch, and then by abstracting the optimization and learning processes to fully leverage PyTorch&amp;rsquo;s features.&lt;/p&gt;
+&lt;p&gt;In the previous part we showed how to create an (L)GMLVQ model totally from scratch, but it lacked several important features. Let&amp;rsquo;s now go one step further and try to re-implement it taking advantage of all PyTorch utilities.&lt;/p&gt;
+&lt;p&gt;Work in progress&amp;hellip;&lt;/p&gt;
 &lt;p&gt;Link to code &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/prototype_learning_LVQ/blob/main/LVQ_pytorch.ipynb&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
      </item>
