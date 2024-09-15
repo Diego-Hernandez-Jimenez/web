@@ -12,7 +12,7 @@
    
    
      <item>
-       <title>Prototype-based learning. Part II: LVQ family of models in Pytorch</title>
+       <title>Prototype-based learning. Part II: LVQ family of models in PyTorch</title>
        <link>https://diego-hernandez-jimenez.github.io/web/posts/lvq2/</link>
        <pubDate>Sun, 18 Aug 2024 00:00:00 +0200</pubDate>
        
@@ -20,8 +20,416 @@
        <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
 &lt;p&gt;In my journey to bridge psychology and data science, I discovered Learning Vector Quantization (LVQ) and immediately saw its potential connection to human category learning. This realization led me to dive deeper, implementing LVQ from scratch, initially by coding all the operations using PyTorch, and then by abstracting the optimization and learning processes to fully leverage PyTorch&amp;rsquo;s features.&lt;/p&gt;
 &lt;p&gt;In the previous part we showed how to create an (L)GMLVQ model totally from scratch, but it lacked several important features. Let&amp;rsquo;s now go one step further and try to re-implement it taking advantage of all PyTorch utilities.&lt;/p&gt;
-&lt;p&gt;Work in progress&amp;hellip;&lt;/p&gt;
+&lt;h3 id=&#34;from-a-set-of-independent-functions-to-a-pytorch-module&#34;&gt;From a set of independent functions to a PyTorch module&lt;/h3&gt;
+&lt;p&gt;What we needed to do with several function calls, now is comfortably done just by instantiating an &lt;code&gt;LVQ&lt;/code&gt; object with some parameters. The inner workings, however, remain practically the same. The most difficult part was that of integrating all LVQ variants functionalities within the same class. For instance, the same class should be able to instantiate an GLVQ model, which doesn&amp;rsquo;t require a relevance matrix, and also be capable of creating an GMLVQ model, which does require it. Other nuances were also taken into account, e.g. localized versions of LVQ require a slightly different distance function.&lt;/p&gt;
+&lt;p&gt;Finally, as a novel change, the possibility of using a limited rank pseudo-relevance matrix was implemented for (L)GMLVQ. By default, ${\bf R}&lt;em&gt;{p\times p}={\bf Q}{\bf Q}^\intercal$, with ${\bf Q}&lt;/em&gt;{p \times p}$ , but we can reduce the number of parameters to be estimated (and, in a way, perform some kind of dimensionality reduction) by making ${\bf Q}_{p \times r}$, with $r \ll p$.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;LVQ&lt;/span&gt;(nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Module):
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    A class representing a Learning Vector Quantization (LVQ) model with various modes (GLVQ, GMLVQ, GRLVQ, LGMLVQ, etc.).
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    The class supports different prototype initialization strategies and relevance matrices for generalized and local LVQ variants.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Args:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        lvq_mode (str): The LVQ mode to use. Supported modes include:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        - &amp;#39;glvq&amp;#39;: Generalized LVQ.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        - &amp;#39;gmlvq&amp;#39;: Generalized Matrix LVQ.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        - &amp;#39;grlvq&amp;#39;: Generalized Relevance LVQ.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        - &amp;#39;lgmlvq&amp;#39;: Local Generalized Matrix LVQ.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        - &amp;#39;lgrlvq&amp;#39;: Local Generalized Relevance LVQ.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        data (torch.utils.data.TensorDataset): The dataset used for training, containing feature vectors and class labels.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        n_prototypes_per_class (list): A list where each element indicates the number of prototypes assigned to each class.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        naive_init (bool, optional): Whether to initialize the prototypes randomly (`True`) or based on class averages (`False`).
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        Default is `False`.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;       Q_rank (int, optional): The rank of the relevance matrix (Q) for local relevance LVQ variants. Default is `None`.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Attributes:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        W (nn.ParameterList): The list of prototype tensors.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        prototype_labels (torch.Tensor): The class labels associated with each prototype.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        Q (nn.Parameter or nn.ParameterList): The relevance matrix/matrices used to compute distances between inputs and prototypes.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        distance_to_prototypes (callable): The distance function to compute distances between inputs and prototypes.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, lvq_mode, data, n_prototypes_per_class, naive_init&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;False, Q_rank&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;None):
+    super(LVQ, self)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__init__()
+    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lvq_mode
+    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_features &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tensors[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;shape[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]
+    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sum(n_prototypes_per_class)
+    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes_per_class &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n_prototypes_per_class
+    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;W, self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;prototype_labels &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;init_prototypes(data, naive_init)
+    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;init_pseudorelevance_matrix(Q_rank)
+    self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;distance_to_prototypes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;choose_dist_function()
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;init_prototypes&lt;/span&gt;(self, data, naive_init):
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Initializes the prototype vectors. Prototypes can be initialized either randomly (naive) or
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    by averaging subsets of data points for each class.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Args:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        data (torch.utils.data.TensorDataset): The dataset containing feature vectors and class labels.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        naive_init (bool): If `True`, prototypes are initialized randomly around the global average of the dataset.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        If `False`, they are initialized as class averages.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Returns:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        nn.ParameterList: A list of initialized prototype vectors as parameters.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        torch.Tensor: A tensor containing the class labels associated with each prototype.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+    X, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; data&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tensors
+    W &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    Wclasses &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [[class_id] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; times_each_proto &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; class_id, times_each_proto &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes_per_class)]
+    Wclasses &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sum(Wclasses, []) &lt;span style=&#34;color:#75715e&#34;&gt;# flattens nested list&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; naive_init:
+      global_avg &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; X&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+      W &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [global_avg &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randn_like(global_avg) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; _ &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes)]
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; class_id, times_each_proto &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes_per_class):
+        &lt;span style=&#34;color:#75715e&#34;&gt;# get prototypes as avg of class&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; _ &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(times_each_proto):
+          ids &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nonzero(y &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; class_id)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;squeeze()
+          subset_size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;times_each_proto) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; len(ids)
+          subset_ids &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ids[torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randperm(len(ids))[:int(subset_size)]]
+          w &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; X[subset_ids]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+          W&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(w)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ParameterList(W), torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tensor(Wclasses)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to(device)
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;init_pseudorelevance_matrix&lt;/span&gt;(self, Q_rank):
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Initializes the (pseudo)relevance matrix (Q) based on the LVQ mode. In &amp;#39;gmlvq&amp;#39; and &amp;#39;grlvq&amp;#39;, a global matrix is used, while
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    in &amp;#39;lgmlvq&amp;#39; and &amp;#39;lgrlvq&amp;#39;, local relevance matrices are used for each prototype.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Returns:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        nn.Parameter or nn.ParameterList: The relevance matrix/matrices depending on the LVQ mode.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; Q_rank &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; None:
+      Q_rank &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_features
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;glvq&amp;#39;&lt;/span&gt;:
+      &lt;span style=&#34;color:#75715e&#34;&gt;# Q = torch.sqrt(torch.eye(self.n_features))&lt;/span&gt;
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;eye(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_features)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;grlvq&amp;#39;&lt;/span&gt;:
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sqrt(torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;eye(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_features))
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Parameter(Q)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;gmlvq&amp;#39;&lt;/span&gt;:
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randn((self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_features, Q_rank))
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Q &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sqrt((Q &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;@&lt;/span&gt; Q&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;T)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum())
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Parameter(Q)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lgrlvq&amp;#39;&lt;/span&gt;:
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sqrt(torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;eye(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_features)) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; _ &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes)]
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ParameterList(Q)
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lgmlvq&amp;#39;&lt;/span&gt;:
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randn((self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_features, Q_rank))
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [Q &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sqrt((Q &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;@&lt;/span&gt; Q&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;T)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum()) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; _ &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes)]
+      Q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ParameterList(Q)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;choose appropiate lvq model&amp;#39;&lt;/span&gt;)
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; None
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Q
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;choose_dist_function&lt;/span&gt;(self):
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Selects the distance function based on the LVQ mode. The function computes the distance between input
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    vectors and the prototypes, using either a global or local relevance matrix.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Returns:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        callable: A function to compute the distances between input vectors and prototypes.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+    dists &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;glvq&amp;#39;&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;distance_to_prototypes&lt;/span&gt;(x):
+        dists &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes):
+          raw_diff &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;W[j]
+          d &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;linalg&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;vector_norm(raw_diff, ord&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, keepdim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)&lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+          dists&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(d)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cat(dists, dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;gmlvq&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;grlvq&amp;#39;&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;distance_to_prototypes&lt;/span&gt;(x):
+        dists &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes):
+          raw_diff &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;W[j]
+          d &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;linalg&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;vector_norm(raw_diff &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;@&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q, ord&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, keepdim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)&lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+          &lt;span style=&#34;color:#75715e&#34;&gt;# d = torch.linalg.multi_dot([raw_diff, self.Q.t(), self.Q, raw_diff.t()])&lt;/span&gt;
+          dists&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(d)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cat(dists, dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lgrlvq&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lgmlvq&amp;#39;&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;distance_to_prototypes&lt;/span&gt;(x):
+        dists &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;n_prototypes):
+          raw_diff &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;W[j]
+          d &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;linalg&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;vector_norm(raw_diff &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;@&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j], ord&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, keepdim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)&lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+          &lt;span style=&#34;color:#75715e&#34;&gt;# d = torch.linalg.multi_dot([raw_diff, self.Q[j].t(), self.Q[j], raw_diff.t()])&lt;/span&gt;
+          dists&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(d)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cat(dists, dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;choose appropiate lvq model&amp;#39;&lt;/span&gt;)
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; distance_to_prototypes
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;forward&lt;/span&gt;(self, x):
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;     Forward pass for the LVQ model. Computes the distances between the input samples and the prototypes.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;     Args:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;         x (torch.Tensor): The input data, a tensor of shape (n_samples, n_features).
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;     Returns:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;         torch.Tensor: A tensor containing the distances between each input sample and the prototypes.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+    dists &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;distance_to_prototypes(x)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; dists
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;how-does-the-model-learn&#34;&gt;How does the model learn?&lt;/h4&gt;
+&lt;p&gt;The implementation of the training algorithm has undergone significant changes. The most notable improvement is the elimination of the manual calculation of derivatives and updates. With the integration of autograd, we no longer need to explicitly code these calculations. Autograd automates the differentiation process, streamlining the training procedure and allowing us to focus on higher-level aspects of model design and optimization. This enhancement not only simplifies the implementation but also reduces the risk of errors in gradient calculations, leading to more reliable and efficient training.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;train_lvq&lt;/span&gt;(model, data_loader, epochs, loss_function, optimizer, scheduler&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;None, verbose&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True):
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Trains a Learning Vector Quantization (LVQ) model over a specified number of epochs using the provided
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  data, loss function, and optimization strategy.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Args:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      model (LVQ): An instance of the LVQ model that is being trained. The model contains prototypes,
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      relevance matrices (Q), and the mode of training (e.g., &amp;#39;gmlvq&amp;#39;, &amp;#39;lgmlvq&amp;#39;, etc.).
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      data_loader (torch.utils.data.DataLoader): A DataLoader object providing mini-batches of data (features `x`
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      and labels `lab`) during training.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      epochs (int): The number of epochs to train the model for.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      loss_function (torch.nn.Module): The loss function to be used during training. Typically, this would be an instance
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      of `GLVQLoss`, which computes the relative distance loss.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      optimizer (torch.optim.Optimizer): The optimizer responsible for updating the model parameters (prototypes and
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      relevance matrices) based on the computed gradients.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      scheduler (torch.optim.lr_scheduler, optional): A learning rate scheduler that adjusts the learning rate during
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      training, if provided. Defaults to `None`.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      verbose (bool, optional): Whether to print loss information after each epoch. If `True`, prints the average loss for each epoch.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      Defaults to `True`.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Returns:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      None: The function updates the model parameters in place and prints loss information during training.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Training Procedure:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      - For each mini-batch of data:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          1. Compute the distances between the input samples and the prototypes using the model.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          2. Identify the closest correct prototype (`d_pos`) and the closest incorrect prototype (`d_neg`) for each sample.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          3. Compute the loss using the provided `loss_function` (e.g., GLVQ loss).
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          4. Perform backpropagation to compute the gradients.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          5. Update the model parameters (prototypes and relevance matrices) using the `optimizer`.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          6. If a `scheduler` is provided, adjust the learning rate after each step.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          7. Normalize the relevance matrices (`Q`) after each update to maintain their constraints.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      - After each epoch, print the average loss if `verbose` is set to `True`.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Example:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      &amp;gt;&amp;gt;&amp;gt; model = LVQ(&amp;#39;gmlvq&amp;#39;, data, n_prototypes_per_class)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      &amp;gt;&amp;gt;&amp;gt; optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      &amp;gt;&amp;gt;&amp;gt; loss_fn = GLVQLoss(torch.nn.Identity())
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      &amp;gt;&amp;gt;&amp;gt; train_lvq(model, data_loader, epochs=100, loss_function=loss_fn, optimizer=optimizer)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Notes:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      - Different normalization steps are applied to the relevance matrix `Q` depending on the chosen LVQ mode:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          - &amp;#39;gmlvq&amp;#39; and &amp;#39;grlvq&amp;#39;: Normalizes `Q` globally.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          - &amp;#39;lgmlvq&amp;#39; and &amp;#39;lgrlvq&amp;#39;: Normalizes each relevance matrix individually.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+  model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;train()
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; epoch &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(epochs):
+    total_loss &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; x, lab &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; data_loader:
+      x, lab &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to(device), lab&lt;span style=&#34;color:#75715e&#34;&gt;#.to(device)&lt;/span&gt;
+      optimizer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zero_grad()
+
+      dists &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model(x)
+      d_pos &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;stack([torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;min(dists[i, model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;prototype_labels &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; lab[i]]) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(lab))])
+      d_neg &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;stack([torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;min(dists[i, model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;prototype_labels &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; lab[i]]) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(lab))])
+
+      loss &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; loss_function(d_pos, d_neg)
+      total_loss &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; loss&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;item()
+      loss&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;backward()
+      optimizer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;step()
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; scheduler &lt;span style=&#34;color:#f92672&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; None:
+        scheduler&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;step()
+
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;no_grad():
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;gmlvq&amp;#39;&lt;/span&gt;:
+          model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sqrt((model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;@&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;T)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum())
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;grlvq&amp;#39;&lt;/span&gt;:
+          model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag(torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data))
+          model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sqrt((model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;@&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;T)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum())
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lgrlvq&amp;#39;&lt;/span&gt;:
+          &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q)):
+            model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag(torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data))
+            model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j] &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sqrt((model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j] &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;@&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;T)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum())
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lvq_mode &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lgmlvq&amp;#39;&lt;/span&gt;:
+          &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(len(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q)):
+            model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j] &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sqrt((model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j] &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;@&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q[j]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;T)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;diag()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum())
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+          &lt;span style=&#34;color:#66d9ef&#34;&gt;pass&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; verbose:
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Epoch {epoch+1}/{epochs}, Loss: {total_loss/len(data_loader)}&amp;#34;&lt;/span&gt;)
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; None
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;validation-with-artificial-data&#34;&gt;Validation with artificial data&lt;/h3&gt;
+&lt;p&gt;With this new implementation, we are ready to revisit the artificial dataset from Schneider et al. (2009). This time, we can evaluate all the LVQ models as was done in the original experiments. Below are the results from our own LVQ implementation:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/all_models_decision_area.png&#34; alt=&#34;decision area for all models&#34;&gt;&lt;/p&gt;
+&lt;p&gt;And this is what the authors obtained with their own (and a slightly different dataset)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/all_models_paper.png&#34; alt=&#34;decision area for all models Schneider et al.&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;validation-with-artificial-data-1&#34;&gt;Validation with artificial data&lt;/h3&gt;
+&lt;p&gt;The first challenge has been successfully overcome, but now we need to return to our primary objective: assessing the effectiveness of LVQ as a machine learning classifier.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Breast cancer&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The breast cancer dataset serves as a critical benchmark for assessing the performance of LVQ in a practical and medically relevant setting. The dataset comprises 30 numeric features derived from diagnostic measurements, such as cell characteristics and histological attributes, to classify tumors into malignant or benign categories. This binary classification task presents a rigorous test for LVQ’s capability to not only classify instances accurately but also to discern meaningful patterns in the data.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; LVQ(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;gmlvq&amp;#39;&lt;/span&gt;, train_data, [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;])
+loss_function &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GLVQLoss(nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ReLU()) &lt;span style=&#34;color:#75715e&#34;&gt;# instead of the identity, we are now using ReLU&lt;/span&gt;
+optimizer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;optim&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;SGD([
+      {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;params&amp;#39;&lt;/span&gt;: model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;W, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lr&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0.01&lt;/span&gt;},
+      {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;params&amp;#39;&lt;/span&gt;: model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lr&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0.01&lt;/span&gt;}
+  ])
+scheduler &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;optim&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lr_scheduler&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;StepLR(optimizer, step_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, gamma&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt;)
+train_lvq(model, train_dl, &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;, loss_function, optimizer, scheduler, verbose&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;False)
+
+acc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lvq_accuracy(model, Xtest, ytest)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;Accuracy: 0.9386
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Very good indeed! Very close to linear SVM (0.9649) and without much tweaking.&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Iris&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Ok, this one is easy, but it has one property that shouldn&amp;rsquo;t be overlooked, it has more than two classes. LVQ can be naturally extended to a multiclass setting, let&amp;rsquo;s see if that also happens with out implementation.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; LVQ(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;grlvq&amp;#39;&lt;/span&gt;, train_data, [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]) &lt;span style=&#34;color:#75715e&#34;&gt;# here is the little change to incorporate more than two classes&lt;/span&gt;
+loss_function &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GLVQLoss(nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Identity())
+optimizer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;optim&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;SGD(model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;parameters(), lr&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.01&lt;/span&gt;)
+train_lvq(model, train_dl, &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, loss_function, optimizer)
+
+acc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lvq_accuracy(model, Xtest, ytest)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;Epoch 1/10, Loss: -0.6931396275758743
+Epoch 2/10, Loss: -0.7052224278450012
+Epoch 3/10, Loss: -0.6970410794019699
+Epoch 4/10, Loss: -0.7202270850539207
+Epoch 5/10, Loss: -0.7116026654839516
+Epoch 6/10, Loss: -0.7305767238140106
+Epoch 7/10, Loss: -0.7281564772129059
+Epoch 8/10, Loss: -0.7446763068437576
+Epoch 9/10, Loss: -0.7445089370012283
+Epoch 10/10, Loss: -0.7374046295881271
+Accuracy: 1.0000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Well, you can&amp;rsquo;t do better than that&amp;hellip;&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Apple quality&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This &lt;a href=&#34;https://www.kaggle.com/datasets/nelgiriyewithana/apple-quality&#34;&gt;dataset&lt;/a&gt; is not widely known, but I&amp;rsquo;ve chosen it because it illustrates problems where prototype learning, and LVQ in particular, can be highly beneficial. The dataset contains a few thousand apples, and the goal is to determine their quality (good vs. bad) based on numerical features such as size, weight, sweetness&amp;hellip; Most classifiers can predict an apple&amp;rsquo;s quality given its characteristics, but they only provide this binary classification. In contrast, LVQ not only learns to distinguish between good and bad apples but also identifies prototypes for each quality category. From a company&amp;rsquo;s perspective, these prototypes can serve as valuable benchmarks or objectives.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; LVQ(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lgmlvq&amp;#39;&lt;/span&gt;, train_data, [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;])
+loss_function &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; GLVQLoss(nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Sigmoid())
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# check this out, we are not forced to always use vanilla gradient descent!&lt;/span&gt;
+optimizer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;optim&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;RMSprop([
+    {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;params&amp;#39;&lt;/span&gt;: model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;W, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lr&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0.01&lt;/span&gt;},
+    {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;params&amp;#39;&lt;/span&gt;: model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lr&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0.001&lt;/span&gt;}
+])
+train_lvq(model, train_dl, &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;, loss_function, optimizer, scheduler&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;None, verbose&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;False)
+
+acc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lvq_accuracy(model, Xtest, ytest)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;Accuracy: 0.8275
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Not bad, but it&amp;rsquo;s also true that other algorithms like SVM with radial basis function kernel perform better (0.9075).&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;Digits (&lt;a href=&#34;https://scikit-learn.org/stable/datasets/toy_dataset.html#digits-dataset&#34;&gt;this digits dataset&lt;/a&gt;, not to be confused with MNIST)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;How does the model work with images? Do we get useful prototypes? By applying prototype learning methods such as LVQ to this dataset, we can investigate if the model not only achieves high accuracy but also generates prototypes that offer clear, interpretable representations of each digit. These prototypes could be beneficial for understanding how the model perceives and distinguishes between different digits, providing deeper insights into the image classification process.&lt;/p&gt;
+&lt;p&gt;For this task we used the simpler GLVQ model first and achieved 0.9194 accuracy, far from the 0.9778 of SVM. However, the LVQ model allowed ourselves to get this interesting plot:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/lvq_digits.png&#34; alt=&#34;prototype evolution&#34;&gt;&lt;/p&gt;
+&lt;p&gt;See that? Our &amp;ldquo;machine&amp;rdquo; began with a vague understanding of digits (we actually forced a naive initialization), but as it processed numerous examples from the dataset, it developed clear representations (prototypes) for each digit. Whenever it encounters a new digit, it retrieves these prototypes from memory and compares the new digit to them. By learning what digits like &amp;ldquo;2&amp;rdquo; or &amp;ldquo;5&amp;rdquo; typically look like, the machine can accurately classify new digits most of the time.&lt;/p&gt;
+&lt;p&gt;For those of you who might be disappointed with the initial performance of LVQ, don’t lose faith just yet. I also implemented a more complex LGMLVQ model and achieved an accuracy of 0.9806 (see the notebook for details).&lt;/p&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;MNIST&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Will the model work with high dimensional data and medium/large datasets? The model (at least some of the versions) work well with well with small datasets and less than 100 features, but in many situations we would need to deal with big datasets with way more features. Theoretical analysis anticipates that GMLVQ models are not a reasonable option in this cases because &amp;ldquo;computational costs [which] scale quadratically with the data dimensionality. Thus, quadratic instead of linear effort can be observed in every update step. Obviously, the method becomes computationally infeasible for very high dimensional data, i.e. 50 or more dimensions&amp;rdquo; (Schneider et al., 2009). In those situations, what can be done is adapt the matrix by &amp;ldquo;enforcing e.g. a limited rank of the matrix&amp;rdquo;. This means that ${\bf Q}$ is not $p \times p$, but $p \times r$, with $r \ll p$ ($p$ is the number of features).&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s try what happens with the MNIST dataset when using both GMLVQ alternatives&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# full rank model: Q matrix is 784 x 784!&lt;/span&gt;
+model_full &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; LVQ(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;gmlvq&amp;#39;&lt;/span&gt;, train_data, prototypes_per_class, naive_init&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;False)
+optimizer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;optim&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Adam([
+    {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;params&amp;#39;&lt;/span&gt;: model_full&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;W, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lr&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0.01&lt;/span&gt;},
+    {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;params&amp;#39;&lt;/span&gt;: model_full&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lr&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0.001&lt;/span&gt;}
+])
+
+start &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; time()
+train_lvq(model_full, train_dl, &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, loss_function, optimizer, scheduler&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;None, verbose&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
+end &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; time()
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Training time full rank model:&amp;#39;&lt;/span&gt;, (end &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; start)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt;)
+acc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lvq_accuracy(model_full, Xtest, ytest)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;Epoch 1/10, Loss: 0.060383220231555366
+Epoch 2/10, Loss: 0.05668102145648154
+Epoch 3/10, Loss: 0.05341387030132755
+Epoch 4/10, Loss: 0.05151383971192797
+Epoch 5/10, Loss: 0.04835201078282426
+Epoch 6/10, Loss: 0.04789026859532654
+Epoch 7/10, Loss: 0.04565780558801198
+Epoch 8/10, Loss: 0.04361076997780862
+Epoch 9/10, Loss: 0.04217445535974693
+Epoch 10/10, Loss: 0.04022293095990996
+Training time full rank model: 30.693514502048494
+Accuracy: 0.7034
+&lt;/code&gt;&lt;/pre&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# limited rank model: Q matrix is just 784 x 20&lt;/span&gt;
+model_lim &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; LVQ(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;gmlvq&amp;#39;&lt;/span&gt;, train_data, prototypes_per_class, naive_init&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;False, Q_rank&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;)
+optimizer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;optim&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Adam([
+    {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;params&amp;#39;&lt;/span&gt;: model_lim&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;W, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lr&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0.01&lt;/span&gt;},
+    {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;params&amp;#39;&lt;/span&gt;: model_lim&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Q, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;lr&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0.001&lt;/span&gt;}
+])
+
+start &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; time()
+train_lvq(model_lim, train_dl, &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, loss_function, optimizer, scheduler&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;None, verbose&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
+end &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; time()
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Training time limited rank model:&amp;#39;&lt;/span&gt;, (end &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; start)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt;)
+acc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; lvq_accuracy(model_lim, Xtest, ytest)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre&gt;&lt;code&gt;Epoch 1/10, Loss: 0.024052356710682624
+Epoch 2/10, Loss: 0.019638755955913377
+Epoch 3/10, Loss: 0.01786137058915677
+Epoch 4/10, Loss: 0.01705550442239619
+Epoch 5/10, Loss: 0.016361485048631826
+Epoch 6/10, Loss: 0.01622419576663912
+Epoch 7/10, Loss: 0.015414749924490859
+Epoch 8/10, Loss: 0.014833231707938103
+Epoch 9/10, Loss: 0.014462069061403841
+Epoch 10/10, Loss: 0.01393588647092062
+Training time limited rank model: 7.635886398951213
+Accuracy: 0.8059
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That&amp;rsquo;s impressive. Although neither of the models had fully converged yet and both still have room for improvement, we can draw some conclusions. Having fewer parameters not only drastically reduces computation time but also improves performance or, at the very least, increases the convergence rate.&lt;/p&gt;
+&lt;p&gt;Unfortunately, the limited-rank model is still somewhat slow and likely cannot compete with neural networks in terms of speed and scalability.&lt;/p&gt;
+&lt;h3 id=&#34;known-limitations&#34;&gt;Known limitations&lt;/h3&gt;
+&lt;p&gt;Even though we have managed to make the model work well in many situations, it is evident that it has some significant limitations as a machine learning model.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Tuning Complexity: Despite comparable performance with other machine learning models, LVQ requires much more extensive tuning. It demands adjustments similar to those needed for feedforward neural networks, such as batch size, learning rate, and training epochs. Furthermore, the results can be significantly influenced by these parameters, making careful tuning crucial for optimal performance.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Computational Cost: For GMLVQ, the computational effort grows quadratically rather than linearly with each update step. This poses a challenge, as the model is best suited for relatively small problems, typically with 10 to 50 features. However, this limitation may be less problematic upon further consideration. LVQ and its variants offer the advantage of providing prototypes learned from the data, which can be highly interpretable, especially when dealing with fewer features. Additionally, there is the option to work with rectangular matrices ${\bf Q}$ that have far fewer free parameters (as discussed in Bunte et al. (2008) and the final section of the notebook), which could mitigate some of the computational issues.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;Link to code &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/prototype_learning_LVQ/blob/main/LVQ_pytorch.ipynb&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
+&lt;p&gt;Bunte, K., Schneider, P., Hammer, B., Schleif, F. M., Villmann, T., &amp;amp; Biehl, M. (2008). Discriminative visualization by limited rank matrix learning. &lt;em&gt;Machine Learning Reports&lt;/em&gt;, 2, 37-51.&lt;/p&gt;
+&lt;p&gt;Schneider, P., Biehl, M. &amp;amp; Hammer, B. (2009). Adaptive relevance matrices in Learning Vector
+Quantization, &lt;em&gt;Neural computation&lt;/em&gt;, 21(12), 3532-3561.&lt;/p&gt;
 </description>
      </item>
    
@@ -47,7 +455,7 @@
 &lt;p&gt;$$
 d({\bf x},{\bf w}_k,{\bf Q})=({\bf x}-{\bf w}_k) {\bf R} ({\bf x}-{\bf w}_k)^\intercal
 $$&lt;/p&gt;
-&lt;p&gt;Here, ${\bf R}$ is relevance matrix. In GMLVQ, it&amp;rsquo;s a dense symmetric matrix of relevance/attention weights given to features  where $tr({\bf R}) = 1$. If diagonal, the model will be Relevance LVQ (RLVQ) and won&amp;rsquo;t account for correlations between features. If identity matrix, we have the Generalized LVQ (GLVQ). When there is one matrix per prototype, we are working with localized versions of the model. In this first part of the project only GMLVQ and LGMLVQ are implemented. Also, this relevance matrix (or matrices) are expressed as ${\bf R}={\bf Q}^\intercal{\bf Q}$, so the dissimilarity becomes:&lt;/p&gt;
+&lt;p&gt;Here, ${\bf R}_{p\times p}$ is relevance matrix. In GMLVQ, it&amp;rsquo;s a dense symmetric matrix of relevance/attention weights given to features  where $tr({\bf R}) = 1$. If diagonal, the model will be Relevance LVQ (RLVQ) and won&amp;rsquo;t account for correlations between features. If identity matrix, we have the Generalized LVQ (GLVQ). When there is one matrix per prototype, we are working with localized versions of the model. In this first part of the project only GMLVQ and LGMLVQ are implemented. Also, this relevance matrix (or matrices) are expressed as ${\bf R}={\bf Q}^\intercal{\bf Q}$, so the dissimilarity becomes:&lt;/p&gt;
 &lt;p&gt;$$
 d({\bf x},{\bf w}_k,{\bf Q})=({\bf x}-{\bf w}_k) {\bf Q}^\intercal{\bf Q} ({\bf x}-{\bf w}_k)^\intercal \ 
 =\lVert {\bf Q}({\bf x}-{\bf w}_k)^\intercal \rVert_2^2

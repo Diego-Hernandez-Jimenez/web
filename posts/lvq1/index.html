@@ -185,7 +185,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>$$
 d({\bf x},{\bf w}_k,{\bf Q})=({\bf x}-{\bf w}_k) {\bf R} ({\bf x}-{\bf w}_k)^\intercal
 $$</p>
-<p>Here, ${\bf R}$ is relevance matrix. In GMLVQ, it&rsquo;s a dense symmetric matrix of relevance/attention weights given to features  where $tr({\bf R}) = 1$. If diagonal, the model will be Relevance LVQ (RLVQ) and won&rsquo;t account for correlations between features. If identity matrix, we have the Generalized LVQ (GLVQ). When there is one matrix per prototype, we are working with localized versions of the model. In this first part of the project only GMLVQ and LGMLVQ are implemented. Also, this relevance matrix (or matrices) are expressed as ${\bf R}={\bf Q}^\intercal{\bf Q}$, so the dissimilarity becomes:</p>
+<p>Here, ${\bf R}_{p\times p}$ is relevance matrix. In GMLVQ, it&rsquo;s a dense symmetric matrix of relevance/attention weights given to features  where $tr({\bf R}) = 1$. If diagonal, the model will be Relevance LVQ (RLVQ) and won&rsquo;t account for correlations between features. If identity matrix, we have the Generalized LVQ (GLVQ). When there is one matrix per prototype, we are working with localized versions of the model. In this first part of the project only GMLVQ and LGMLVQ are implemented. Also, this relevance matrix (or matrices) are expressed as ${\bf R}={\bf Q}^\intercal{\bf Q}$, so the dissimilarity becomes:</p>
 <p>$$
 d({\bf x},{\bf w}_k,{\bf Q})=({\bf x}-{\bf w}_k) {\bf Q}^\intercal{\bf Q} ({\bf x}-{\bf w}_k)^\intercal \ 
 =\lVert {\bf Q}({\bf x}-{\bf w}_k)^\intercal \rVert_2^2
@@ -229,7 +229,7 @@ Quantization, <em>Neural computation</em>, 21(12), 3532-3561.</p>
         
         
         <li>
-            <a href="https://diego-hernandez-jimenez.github.io/web/posts/lvq2/">Prototype-based learning. Part II: LVQ family of models in Pytorch <i class="fa fa-chevron-circle-right"></i> </a>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/lvq2/">Prototype-based learning. Part II: LVQ family of models in PyTorch <i class="fa fa-chevron-circle-right"></i> </a>
         </li>
         
     </ul>
