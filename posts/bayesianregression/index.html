@@ -199,7 +199,7 @@ $$</p>
 $$</p>
 <h3 id="parameter-estimation-simplistic-explanation">Parameter estimation (simplistic explanation)</h3>
 <p>In essence, Bayesian reasoning is about updating prior beliefs as more data is gathered. In our case, we want to update the different beliefs $p(\beta_j)$ to the posterior beliefs $p(\beta_j|data)$. One way to estimate this posterior distribution is by using Markov Chain Monte Carlo (MCMC) methods.They are approximate only</p>
-<p>To see more about how MCMC was implemented you can check the [report](/projects/bayes logistic reg.pdf) I made.</p>
+<p>To see more about how MCMC was implemented you can check the <a href="https://diego-hernandez-jimenez.github.io/web/projects/bayeslogistic.pdf">report</a> I made.</p>
 <h3 id="summary-of-results">Summary of results</h3>
 <p>The result of the Bayesian inference can be easily visualized. In the next plot we see the case of the distraction effect. The blue curve represents prior &ldquo;allocation of credibility across possibilities&rdquo; (Kruschke, 2015). We chose a weakly informative prior, meaning that we didn&rsquo;t assign much weight to any of the values possible for the effect of the distraction. However, after seeing the data, our belief about that variable changes. The red line represents the posterior density function, after the reallocation of credibility. Most probable values are around 0.2.</p>
 <p><img src="https://diego-hernandez-jimenez.github.io/web/images/pripostbeta1ENG.jpg" alt="prior vs posterior"></p>
@@ -213,7 +213,7 @@ $$</p>
 </ul>
 <p>In terms of classification performance, the accuracy obtained was 0.73. But that value might not be reliable enough. It was computed using all the data available and taking the mean parameter values. The risk of overfitting is high. Assessing the performance of the model wasn&rsquo;t the main goal though. In any case, this is the plot generated with some of the decision boundaries we would get with different values for the regression coefficients.</p>
 <p><img src="https://diego-hernandez-jimenez.github.io/web/images/decbound_bayesEN.jpg" alt="decision boundaries"></p>
-<p>I know I&rsquo;ve left out important information and results but you can check the complete report [here](/projects/bayes logistic reg.pdf). Also the appendix with the code and figures can be found <a href="https://diego-hernandez-jimenez.github.io/web/projects/appendixbayes.pdf">here</a></p>
+<p>I know I&rsquo;ve left out important information and results but you can check the complete report <a href="https://diego-hernandez-jimenez.github.io/web/projects/bayeslogistic.pdf">here</a>. Also the appendix with the code and figures can be found <a href="https://diego-hernandez-jimenez.github.io/web/projects/appendixbayes.pdf">here</a></p>
 <h3 id="references">References</h3>
 <p>Gelman, A., Jakulin, A., Pittau, M. G., &amp; Su, Y. S. (2008). A weakly informative default prior 
 distribution for logistic and other regression models. The annals of applied 
