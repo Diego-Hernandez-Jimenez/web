@@ -861,7 +861,7 @@ df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;to_csv(&lt;span style=
 On the other hand, the existence of a positive relationship between importance and the probability that the event is real is suggested. This hypothesis is based on the intuitive idea that it is more reasonable to attribute relevance to events or memories that are real, rather than simply imagined.&lt;/p&gt;
 &lt;p&gt;A convenient way to test our hypotheses is by fitting a logistic regression model. However, we are going to doing from a Bayesian perspective. Among other things that means we are going to consider the effects as random variables, not fixed constants. One benefit is that we can build probability (not confidence) intervals around the parameters. We will see later examples of this.&lt;/p&gt;
 &lt;p&gt;The complete model specification:&lt;/p&gt;
-&lt;p&gt;Each observation $i$ can correspond either to a a real event ($y_i=1$) or an imagined event ($y_i=0$) with probabilities $\pi_i$ and $1-\pi_i$ respectively. Note here that ${\bf y}$ and $\boldsymbol{\pi}$ are n-dimensional vectors because we have $n$ observations in the dataset. 
+&lt;p&gt;Each observation $i$ can correspond either to a a real event ($y_i=1$) or an imagined event ($y_i=0$) with probabilities $\pi_i$ and $1-\pi_i$ respectively. Note here that ${\bf y}$ and $\mathbf{\pi}$ are n-dimensional vectors because we have $n$ observations in the dataset. 
 $$
 y_i \sim Bernoulli(\pi_i)
 $$&lt;/p&gt;
@@ -883,7 +883,7 @@ $$&lt;/p&gt;
 $$&lt;/p&gt;
 &lt;h3 id=&#34;parameter-estimation-simplistic-explanation&#34;&gt;Parameter estimation (simplistic explanation)&lt;/h3&gt;
 &lt;p&gt;In essence, Bayesian reasoning is about updating prior beliefs as more data is gathered. In our case, we want to update the different beliefs $p(\beta_j)$ to the posterior beliefs $p(\beta_j|data)$. One way to estimate this posterior distribution is by using Markov Chain Monte Carlo (MCMC) methods.They are approximate only&lt;/p&gt;
-&lt;p&gt;To see more about how MCMC was implemented you can check the &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/bayeslogistic.pdf&#34;&gt;report&lt;/a&gt; I made.&lt;/p&gt;
+&lt;p&gt;To see more about how MCMC was implemented you can check the [report](/projects/bayes logistic reg.pdf) I made.&lt;/p&gt;
 &lt;h3 id=&#34;summary-of-results&#34;&gt;Summary of results&lt;/h3&gt;
 &lt;p&gt;The result of the Bayesian inference can be easily visualized. In the next plot we see the case of the distraction effect. The blue curve represents prior &amp;ldquo;allocation of credibility across possibilities&amp;rdquo; (Kruschke, 2015). We chose a weakly informative prior, meaning that we didn&amp;rsquo;t assign much weight to any of the values possible for the effect of the distraction. However, after seeing the data, our belief about that variable changes. The red line represents the posterior density function, after the reallocation of credibility. Most probable values are around 0.2.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/pripostbeta1ENG.jpg&#34; alt=&#34;prior vs posterior&#34;&gt;&lt;/p&gt;
@@ -897,7 +897,7 @@ $$&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;In terms of classification performance, the accuracy obtained was 0.73. But that value might not be reliable enough. It was computed using all the data available and taking the mean parameter values. The risk of overfitting is high. Assessing the performance of the model wasn&amp;rsquo;t the main goal though. In any case, this is the plot generated with some of the decision boundaries we would get with different values for the regression coefficients.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/decbound_bayesEN.jpg&#34; alt=&#34;decision boundaries&#34;&gt;&lt;/p&gt;
-&lt;p&gt;I know I&amp;rsquo;ve left out important information and results but you can check the complete report &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/bayeslogistic.pdf&#34;&gt;here&lt;/a&gt;. Also the appendix with the code and figures can be found &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/appendixbayes.pdf&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I know I&amp;rsquo;ve left out important information and results but you can check the complete report [here](/projects/bayes logistic reg.pdf). Also the appendix with the code and figures can be found &lt;a href=&#34;https://diego-hernandez-jimenez.github.io/web/projects/appendixbayes.pdf&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
 &lt;p&gt;Gelman, A., Jakulin, A., Pittau, M. G., &amp;amp; Su, Y. S. (2008). A weakly informative default prior 
 distribution for logistic and other regression models. The annals of applied 
