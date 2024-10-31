@@ -177,14 +177,14 @@ Description In 2020, Sap et al. made an study in which they analyzed the content
 On the other hand, the existence of a positive relationship between importance and the probability that the event is real is suggested. This hypothesis is based on the intuitive idea that it is more reasonable to attribute relevance to events or memories that are real, rather than simply imagined.</p>
 <p>A convenient way to test our hypotheses is by fitting a logistic regression model. However, we are going to doing from a Bayesian perspective. Among other things that means we are going to consider the effects as random variables, not fixed constants. One benefit is that we can build probability (not confidence) intervals around the parameters. We will see later examples of this.</p>
 <p>The complete model specification:</p>
-<p>Each observation $i$ can correspond either to a a real event (${\bf y}_i=1$) or an imagined event (${\bf y}_i=0$) with probabilities $\boldsymbol{\pi}_i$ and $1-\boldsymbol{\pi}_i$ respectively. Note here that ${\bf y}$ and $\boldsymbol{\pi}$ are n-dimensional vectors because we have $n$ observations in the dataset. 
+<p>Each observation $i$ can correspond either to a a real event ($y_i=1$) or an imagined event ($y_i=0$) with probabilities $\pi_i$ and $1-\pi_i$ respectively. Note here that ${\bf y}$ and $\boldsymbol{\pi}$ are n-dimensional vectors because we have $n$ observations in the dataset. 
 $$
-{\bf y}_i \sim Bernoulli(\boldsymbol{\pi}_i)
+y_i \sim Bernoulli(\pi_i)
 $$</p>
 <p><strong>Likelihood</strong>
 The probability of the type of event can be modeled by the logistic function. The predictors are ${\bf z}_1$ and ${\bf z}_2$, the standardized values of the attributes distraction and importance.</p>
 <p>$$
-\boldsymbol{\pi}_i \sim Logistic({\bf z}_1^{(i)},{\bf z}_2^{(i)};\beta_0,\beta_1,\beta_2)
+\pi_i \sim Logistic(z_{1i},z_{2i};\beta_0,\beta_1,\beta_2)
 $$</p>
 <p><strong>Priors</strong>
 The specification of the prior beliefs about the parameters involved in regression is what makes the Bayesian approach different. Here I follow the recommendations of Gelman et al. (2008) to define weak informative prior distributions for the effect/slope of each variable and the intercept. It&rsquo;s important to note that the scale parameter is a standard deviation, not a precision (the reciprocal).</p>
