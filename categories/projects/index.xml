@@ -6,10 +6,23 @@
    <description>Recent content in Projects on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2023 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Sun, 18 Aug 2024 00:00:00 +0200</lastBuildDate>
+   <lastBuildDate>Wed, 11 Dec 2024 00:00:00 +0100</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/categories/projects/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Enhancing decision making with RAG chatbot</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/rag_nato/</link>
+       <pubDate>Wed, 11 Dec 2024 00:00:00 +0100</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/rag_nato/</guid>
+       <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
+&lt;p&gt;AI powered virtual assistant speacialized in the AltA methodology (Alternative Analysis) of NATO. It combines Large Language Models (langchain, groq) with Retrieval Augmented Generation (Chroma) to provide responses to specific questions related with the topic that &amp;ldquo;general purpose&amp;rdquo; models cannot provide.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/rag_nato_preview.png&#34; alt=&#34;Coming soon&amp;hellip;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Currently under construction&amp;hellip; 👷‍♂️&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>Prototype-based learning. Part II: LVQ family of models in PyTorch</title>
