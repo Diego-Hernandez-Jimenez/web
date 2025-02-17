@@ -17,10 +17,105 @@
        <pubDate>Wed, 11 Dec 2024 00:00:00 +0100</pubDate>
        
        <guid>https://diego-hernandez-jimenez.github.io/web/posts/rag_nato/</guid>
-       <description>&lt;h3 id=&#34;description&#34;&gt;Description&lt;/h3&gt;
-&lt;p&gt;AI powered virtual assistant speacialized in the AltA methodology (Alternative Analysis) of NATO. It combines Large Language Models (langchain, groq) with Retrieval Augmented Generation (Chroma) to provide responses to specific questions related with the topic that &amp;ldquo;general purpose&amp;rdquo; models cannot provide.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/rag_nato_preview.png&#34; alt=&#34;Coming soon&amp;hellip;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Currently under construction&amp;hellip; 👷‍♂️&lt;/p&gt;
+       <description>&lt;h4 id=&#34;description&#34;&gt;Description&lt;/h4&gt;
+&lt;p&gt;I recently built an AI-powered virtual assistant specializing in NATO&amp;rsquo;s Alternative Analysis (AltA) methodology. This chatbot leverages Large Language Models (LLMs) combined with Retrieval-Augmented Generation (RAG) to provide accurate responses to questions that general-purpose models might struggle with. The system is built using LangChain, Chroma, and the Groq API, while the user interface is developed with Streamlit. The application is deployed on Hugging Face Spaces as a Docker container. &lt;a href=&#34;https://huggingface.co/spaces/malkara-ai/RAG-NATO-chatbot&#34;&gt;Check it out here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/rag_nato_preview2.png&#34; alt=&#34;Chatbot Preview&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;keeping-up-with-ai-developments&#34;&gt;Keeping Up with AI Developments&lt;/h3&gt;
+&lt;p&gt;The field of LLMs is evolving rapidly, with advancements emerging almost weekly. Rather than attempting to keep pace with every new development, I focus on continuous learning at my own speed.&lt;/p&gt;
+&lt;h3 id=&#34;why-this-project&#34;&gt;Why This Project?&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Challenging and Niche&lt;/strong&gt; – The specificity of this topic made the project uniquely demanding. A standard chatbot using only an LLM would struggle due to the lack of specialized knowledge.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Background in Psychology&lt;/strong&gt; – My interest in human decision-making naturally led me to this project.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Interest in Technology &amp;amp; Military Topics&lt;/strong&gt; – This project provided an opportunity to explore NATO methodologies while enhancing my technical skills.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;development-workflow&#34;&gt;Development Workflow&lt;/h3&gt;
+&lt;h4 id=&#34;1-extracting-and-preprocessing-text&#34;&gt;1. Extracting and Preprocessing Text&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The first step was obtaining and converting the AltA methodology handbook from PDF to plain text.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Parsing the PDF was particularly challenging due to its structured content but complex formatting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/example_alta_handbook_format.png&#34; alt=&#34;Original PDF Format&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Initially, I used PyPDF with custom preprocessing functions, but the results were suboptimal—some words were broken due to line breaks, and the hierarchical structure was lost.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fortunately, I discovered &lt;strong&gt;MinerU&lt;/strong&gt;, a recently developed tool for PDF parsing, which significantly improved extraction quality. This tool preserved the original structure and formatted content into markdown, making the next steps much smoother (chek it out &lt;a href=&#34;https://mineru.readthedocs.io/en/latest/&#34;&gt;here&lt;/a&gt;, it&amp;rsquo;s pretty good!).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/minerU_demo_hf.png&#34; alt=&#34;MinerU demo in Hugging Face&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;2-chunking--vectorization&#34;&gt;2. Chunking &amp;amp; Vectorization&lt;/h4&gt;
+&lt;p&gt;The extracted text needed to be divided into meaningful chunks before being transformed into vector representations for retrieval. Early on, this was a complex process:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Splitter applied to chapters dedicated to techniques&lt;/span&gt;
+techniques_splitter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; RecursiveCharacterTextSplitter(
+    separators&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;What to use it for&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Application&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Example&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Challenges&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Hints and tips&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Further reading&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;],
+    keep_separator&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;start&amp;#39;&lt;/span&gt;,
+    chunk_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;300&lt;/span&gt;,
+    chunk_overlap&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;,
+    length_function&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;len,
+    add_start_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True,
+)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Splitter applied to chapter dedicated to glossary&lt;/span&gt;
+glossary_splitter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; RecursiveCharacterTextSplitter(
+    separators&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;],
+    keep_separator&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;end&amp;#39;&lt;/span&gt;,
+    chunk_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;300&lt;/span&gt;,
+    chunk_overlap&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,
+    length_function&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;len,
+    add_start_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True,
+)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;However, with &lt;strong&gt;MinerU&lt;/strong&gt;, the process was dramatically simplified:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;headers_to_split_on &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [
+    (&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Topic 1&amp;#34;&lt;/span&gt;),
+    (&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;##&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Topic 2&amp;#34;&lt;/span&gt;),
+    (&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;###&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Topic 3&amp;#34;&lt;/span&gt;),
+]
+
+markdown_splitter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; MarkdownHeaderTextSplitter(headers_to_split_on, strip_headers&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;False)
+md_header_splits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; markdown_splitter&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;split_text(markdown_document)[&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;:] &lt;span style=&#34;color:#75715e&#34;&gt;# Discard first 6 chunks (cover, index)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This improved retrieval quality, especially for single-topic queries. Additionally, switching to &lt;strong&gt;Gemini 1.5&lt;/strong&gt; for embeddings further enhanced performance, replacing initial attempts with Sentence Transformers models.&lt;/p&gt;
+&lt;h4 id=&#34;3-building-the-rag-system&#34;&gt;3. Building the RAG System&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;The user query is used to search for the &lt;strong&gt;k&lt;/strong&gt; most relevant vectors in the database.&lt;/li&gt;
+&lt;li&gt;These retrieved vectors serve as context for the LLM, ensuring accurate responses.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Prompt tuning&lt;/strong&gt; was crucial for improving results.&lt;/li&gt;
+&lt;li&gt;I selected &lt;strong&gt;Mixtral-8x7B&lt;/strong&gt; (from Groq API) as the core LLM due to its strong performance (there other models available in the app if you want to play with them).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;One key challenge was &lt;strong&gt;chat memory&lt;/strong&gt;. In a naive RAG implementation, the chatbot does not retain conversational context. For example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;User:&lt;/strong&gt; &amp;ldquo;What is AltA?&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;User:&lt;/strong&gt; &amp;ldquo;How can I apply it?&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;The system fails to understand that &amp;ldquo;it&amp;rdquo; refers to AltA.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To fix this, I implemented &lt;strong&gt;memory-aware retrieval&lt;/strong&gt; using a rephraser LLM that reformulated queries by incorporating recent conversation history.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;rephrase_template &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;You are a query rephraser. Given a chat history and the latest user query, rephrase the query if it implicitly references topics in the chat history.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;If the query does not reference the chat history, return it as is. Do not provide explanations, just return the rephrased or original query.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Chat history:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{chat_history}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Latest user query:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{input}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With this improvement, the chatbot correctly reformulates ambiguous queries before retrieving relevant information.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;deployment--ui&#34;&gt;Deployment &amp;amp; UI&lt;/h3&gt;
+&lt;p&gt;I used &lt;strong&gt;Streamlit&lt;/strong&gt; for the UI, making development straightforward despite some challenges when testing in Google Colab.&lt;/p&gt;
+&lt;p&gt;For deployment, I opted for an approach with intermediate difficulty:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I created a dockerfile uploaded all the necessary files to &lt;strong&gt;Hugging Face Spaces&lt;/strong&gt;, where a docker container with the packaged application was automatically built and deployed.&lt;/li&gt;
+&lt;li&gt;This approach offers more flexibility than &lt;strong&gt;Streamlit Cloud&lt;/strong&gt;, making it reusable for future projects.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;final-thoughts&#34;&gt;Final Thoughts&lt;/h3&gt;
+&lt;p&gt;This project was an exciting dive into RAG-based chatbots, PDF parsing, and deployment strategies. It also reinforced the importance of structuring and preprocessing text efficiently for high-quality retrieval. Future improvements could include fine-tuning models further and experimenting with alternative memory mechanisms.&lt;/p&gt;
+&lt;p&gt;🚀 Try the chatbot &lt;a href=&#34;https://huggingface.co/spaces/malkara-ai/RAG-NATO-chatbot&#34;&gt;here&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;The source code, data and notebooks using for this project can be found &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/RAG_NATO_streamlit&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 </description>
      </item>
    
