@@ -162,8 +162,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <h4 id="description">Description</h4>
 <p>I recently built an AI-powered virtual assistant specializing in NATO&rsquo;s Alternative Analysis (AltA) methodology. This chatbot leverages Large Language Models (LLMs) combined with Retrieval-Augmented Generation (RAG) to provide accurate responses to questions that general-purpose models might struggle with. The system is built using LangChain, Chroma, and the Groq API, while the user interface is developed with Streamlit. The application is deployed on Hugging Face Spaces as a Docker container. <a href="https://huggingface.co/spaces/malkara-ai/RAG-NATO-chatbot">Check it out here</a>.</p>
 <p><img src="https://diego-hernandez-jimenez.github.io/web/images/rag_nato_preview2.png" alt="Chatbot Preview"></p>
-<h3 id="keeping-up-with-ai-developments">Keeping Up with AI Developments</h3>
-<p>The field of LLMs is evolving rapidly, with advancements emerging almost weekly. Rather than attempting to keep pace with every new development, I focus on continuous learning at my own speed.</p>
 <h3 id="why-this-project">Why This Project?</h3>
 <ol>
 <li><strong>Challenging and Niche</strong> – The specificity of this topic made the project uniquely demanding. A standard chatbot using only an LLM would struggle due to the lack of specialized knowledge.</li>
@@ -171,8 +169,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><strong>Interest in Technology &amp; Military Topics</strong> – This project provided an opportunity to explore NATO methodologies while enhancing my technical skills.</li>
 </ol>
 <hr>
-<h3 id="development-workflow">Development Workflow</h3>
-<h4 id="1-extracting-and-preprocessing-text">1. Extracting and Preprocessing Text</h4>
+<h3 id="development-workflow">Development workflow</h3>
+<h4 id="1-extracting-and-preprocessing-text">1. Extracting and preprocessing text</h4>
 <ul>
 <li>
 <p>The first step was obtaining and converting the AltA methodology handbook from PDF to plain text.</p>
@@ -191,7 +189,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </li>
 </ul>
 <p><img src="https://diego-hernandez-jimenez.github.io/web/images/minerU_demo_hf.png" alt="MinerU demo in Hugging Face"></p>
-<h4 id="2-chunking--vectorization">2. Chunking &amp; Vectorization</h4>
+<h4 id="2-chunking--vectorization">2. Chunking &amp; vectorization</h4>
 <p>The extracted text needed to be divided into meaningful chunks before being transformed into vector representations for retrieval. Early on, this was a complex process:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Splitter applied to chapters dedicated to techniques</span>
 techniques_splitter <span style="color:#f92672">=</span> RecursiveCharacterTextSplitter(
@@ -223,7 +221,7 @@ glossary_splitter <span style="color:#f92672">=</span> RecursiveCharacterTextSpl
 markdown_splitter <span style="color:#f92672">=</span> MarkdownHeaderTextSplitter(headers_to_split_on, strip_headers<span style="color:#f92672">=</span>False)
 md_header_splits <span style="color:#f92672">=</span> markdown_splitter<span style="color:#f92672">.</span>split_text(markdown_document)[<span style="color:#ae81ff">6</span>:] <span style="color:#75715e"># Discard first 6 chunks (cover, index)</span>
 </code></pre></div><p>This improved retrieval quality, especially for single-topic queries. Additionally, switching to <strong>Gemini 1.5</strong> for embeddings further enhanced performance, replacing initial attempts with Sentence Transformers models.</p>
-<h4 id="3-building-the-rag-system">3. Building the RAG System</h4>
+<h4 id="3-building-the-rag-system">3. Building the RAG system</h4>
 <ul>
 <li>The user query is used to search for the <strong>k</strong> most relevant vectors in the database.</li>
 <li>These retrieved vectors serve as context for the LLM, ensuring accurate responses.</li>
@@ -254,7 +252,7 @@ md_header_splits <span style="color:#f92672">=</span> markdown_splitter<span sty
 <li>This approach offers more flexibility than <strong>Streamlit Cloud</strong>, making it reusable for future projects.</li>
 </ul>
 <hr>
-<h3 id="final-thoughts">Final Thoughts</h3>
+<h3 id="final-thoughts">Final thoughts</h3>
 <p>This project was an exciting dive into RAG-based chatbots, PDF parsing, and deployment strategies. It also reinforced the importance of structuring and preprocessing text efficiently for high-quality retrieval. Future improvements could include fine-tuning models further and experimenting with alternative memory mechanisms.</p>
 <p>🚀 Try the chatbot <a href="https://huggingface.co/spaces/malkara-ai/RAG-NATO-chatbot">here</a>!</p>
 <p>The source code, data and notebooks using for this project can be found <a href="https://github.com/Diego-Hernandez-Jimenez/RAG_NATO_streamlit">here</a></p>
