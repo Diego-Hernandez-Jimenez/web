@@ -18,7 +18,7 @@
        
        <guid>https://diego-hernandez-jimenez.github.io/web/posts/rag_nato/</guid>
        <description>&lt;h4 id=&#34;description&#34;&gt;Description&lt;/h4&gt;
-&lt;p&gt;I recently built an AI-powered virtual assistant specializing in NATO&amp;rsquo;s Alternative Analysis (AltA) methodology. This chatbot leverages Large Language Models (LLMs) combined with Retrieval-Augmented Generation (RAG) to provide accurate responses to questions that general-purpose models might struggle with. The system is built using LangChain, Chroma, and the Groq API, while the user interface is developed with Streamlit. The application is deployed on Hugging Face Spaces as a Docker container. &lt;a href=&#34;https://huggingface.co/spaces/malkara-ai/RAG-NATO-chatbot&#34;&gt;Check it out here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I recently built an AI-powered virtual assistant specializing in NATO&amp;rsquo;s Alternative Analysis (AltA) methodology. This chatbot leverages Large Language Models (LLMs) combined with Retrieval-Augmented Generation (RAG) to provide accurate responses to questions that general-purpose models might struggle with. The system is built using LangChain, Chroma, and the Groq API, while the user interface is developed with Streamlit. The application is deployed on Hugging Face Spaces as a Docker container. &lt;a href=&#34;https://huggingface.co/spaces/bumbledeep/RAG-NATO-chatbot&#34;&gt;Check it out here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/rag_nato_preview2.png&#34; alt=&#34;Chatbot Preview&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;why-this-project&#34;&gt;Why This Project?&lt;/h3&gt;
 &lt;ol&gt;
@@ -112,7 +112,7 @@ md_header_splits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; markdo
 &lt;hr&gt;
 &lt;h3 id=&#34;final-thoughts&#34;&gt;Final thoughts&lt;/h3&gt;
 &lt;p&gt;This project was an exciting dive into RAG-based chatbots, PDF parsing, and deployment strategies. It also reinforced the importance of structuring and preprocessing text efficiently for high-quality retrieval. Future improvements could include fine-tuning models further and experimenting with alternative memory mechanisms.&lt;/p&gt;
-&lt;p&gt;🚀 Try the chatbot &lt;a href=&#34;https://huggingface.co/spaces/malkara-ai/RAG-NATO-chatbot&#34;&gt;here&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;🚀 Try the chatbot &lt;a href=&#34;https://huggingface.co/spaces/bumbledeep/RAG-NATO-chatbot&#34;&gt;here&lt;/a&gt;!&lt;/p&gt;
 &lt;p&gt;The source code, data and notebooks using for this project can be found &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/RAG_NATO_streamlit&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 </description>
      </item>
