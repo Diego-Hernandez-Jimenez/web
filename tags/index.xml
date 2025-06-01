@@ -6,10 +6,173 @@
    <description>Recent content in Tags on Diego Hernández Jiménez</description>
    <generator>Hugo -- gohugo.io</generator>
    <copyright>Copyright &amp; copy; 2023 - Diego Hernández Jiménez</copyright>
-   <lastBuildDate>Wed, 11 Dec 2024 00:00:00 +0100</lastBuildDate>
+   <lastBuildDate>Fri, 23 May 2025 00:00:00 +0200</lastBuildDate>
    
        <atom:link href="https://diego-hernandez-jimenez.github.io/web/tags/index.xml" rel="self" type="application/rss+xml" />
    
+   
+     <item>
+       <title>Monitor and analyze brands using language models</title>
+       <link>https://diego-hernandez-jimenez.github.io/web/posts/brand_monitoring/</link>
+       <pubDate>Fri, 23 May 2025 00:00:00 +0200</pubDate>
+       
+       <guid>https://diego-hernandez-jimenez.github.io/web/posts/brand_monitoring/</guid>
+       <description>&lt;h4 id=&#34;description&#34;&gt;Description&lt;/h4&gt;
+&lt;p&gt;I have built a brand monitoring application that leverages both large and specialized smaller language models. The entire application runs on CPU, relying on external APIs for specific tasks, making it a cost-free solution for users. While this minimizes monetary cost, the reliance on API limits and the absence of GPU acceleration naturally impose limitations on scalability.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/demo_app_video_x2.gif&#34; alt=&#34;brand monitoring tool in action&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;why-this-project&#34;&gt;Why This Project?&lt;/h3&gt;
+&lt;p&gt;It all started with an exercise I did some time ago where I explored the capabilities of &lt;code&gt;langchain&lt;/code&gt; and &lt;code&gt;langgraph&lt;/code&gt; and developed an arbitrary text length summarizer using a small language model on scraped news articles. This experience ignited a desire to expand upon that initial concept, leading to the creation of an app that showcases the versatility and lightweight nature of specialized language models. The result is an effective OSINT (Open-Source Intelligence) tool designed for brand monitoring.&lt;/p&gt;
+&lt;h3 id=&#34;development-workflow&#34;&gt;Development Workflow&lt;/h3&gt;
+&lt;h4 id=&#34;1-collecting-articles-from-the-web&#34;&gt;1. Collecting Articles from the Web&lt;/h4&gt;
+&lt;p&gt;My primary tool for gathering news articles was the &lt;em&gt;NewsAPI&lt;/em&gt;. It offers a highly useful set of filters, allowing for granular control over searches, such as excluding specific media sources, filtering by language, and focusing on matches within titles, descriptions, or the body of articles. However, a notable limitation is its &amp;ldquo;black box&amp;rdquo; nature; there&amp;rsquo;s no transparency regarding the internal search processes or how relevance is calculated when sorting articles. The problem with this is that I loose some control over the generated results. As an example, in the demo app you can see that when searching for &amp;ldquo;Tesla&amp;rdquo; articles, some completely irrelevant articles were included.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# API endpoint and parameters&lt;/span&gt;
+newsapi_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;https://newsapi.org/v2/everything?&amp;#39;&lt;/span&gt;
+      f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;q={search_query}&amp;#39;&lt;/span&gt;
+      f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;language={LANG}&amp;#39;&lt;/span&gt;
+      f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;searchIn={search_in}&amp;#39;&lt;/span&gt;
+      f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;from={from_date}&amp;#39;&lt;/span&gt;
+      f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;to={today}&amp;#39;&lt;/span&gt;
+      f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;excludeDomains={EXCLUDED_SOURCES}&amp;#39;&lt;/span&gt;
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;sortBy=relevancy&amp;#39;&lt;/span&gt;
+      f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;apiKey={NEWS_API_KEY}&amp;#39;&lt;/span&gt;
+      )
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;2-extracting-content-from-articles&#34;&gt;2. Extracting Content from Articles&lt;/h4&gt;
+&lt;p&gt;A significant discovery during this project was the &lt;em&gt;Diffbot API&lt;/em&gt;. Beyond its core functionality of extracting content from a given URL, it also provides robust NLP capabilities, including summarization and sentiment scoring. This streamlined my workflow considerably.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# API endpoint and parameters&lt;/span&gt;
+diffbot_api_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (
+        f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;https://api.diffbot.com/v3/article?url={url}&amp;#39;&lt;/span&gt;
+        f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;token={DIFFBOT_API_KEY}&amp;#39;&lt;/span&gt;
+        f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;naturalLanguage=categories,sentiment,summary&amp;#39;&lt;/span&gt;
+        f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;summaryNumSentences=4&amp;#39;&lt;/span&gt;
+        f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;discussion=false&amp;#39;&lt;/span&gt;
+    )
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;3-sentiment-analysis&#34;&gt;3. Sentiment Analysis&lt;/h4&gt;
+&lt;p&gt;Initially, I planned to implement the summarization and sentiment scoring steps myself. However, upon discovering the Diffbot NLP API, I opted to integrate it due to its convenience. By simply adding a few extra parameters to the existing content extraction requests, I obtained excellent results. The major drawback, however, is Diffbot&amp;rsquo;s lack of transparency regarding its NLP API&amp;rsquo;s internal workings. The models used, the processing of full articles versus subsets, and any preprocessing steps remain undisclosed. Besides, there is not much room for customization, something that reduced the possibility of adapting the process to my usecase. Despite this, the quality of the results and the time saved made this a worthwhile compromise.&lt;/p&gt;
+&lt;h4 id=&#34;4-topic-analysis&#34;&gt;4. Topic Analysis&lt;/h4&gt;
+&lt;p&gt;This was arguably one of the most challenging aspects of the project, primarily because I had to make a lot of decisions in terms of implementation. I adopted the &lt;em&gt;BERTopic&lt;/em&gt; framework, another valuable discovery. This powerful framework comprises several stages:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Embed documents: Converting text into numerical representations.&lt;/li&gt;
+&lt;li&gt;Dimensionality reduction: Reducing the complexity of these embeddings.&lt;/li&gt;
+&lt;li&gt;Cluster documents: Grouping similar documents together.&lt;/li&gt;
+&lt;li&gt;Bag-of-words: Creating a representation of word frequency within clusters.&lt;/li&gt;
+&lt;li&gt;Topic representation: Identifying the set of representative terms and documents of each cluster, as well as assigning meaningful labels to the identified clusters.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;CustomTokenizer&lt;/span&gt;(BaseTokenizer):
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tokenize&lt;/span&gt;(self, text: str) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; list[str]:
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;Apply sklearn regex pattern to extract words&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+      words &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; findall(&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;(?u)\b\w\w+\b&amp;#34;&lt;/span&gt;, text)
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; words
+      
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;custom_tokenizer&lt;/span&gt;(text) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; list:
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;Custom tokenizer to remove plural nouns (with exceptions) and lemmatize verbs&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+  plural_exceptions &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;police&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fish&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sheep&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;species&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;news&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;media&amp;#34;&lt;/span&gt;} &lt;span style=&#34;color:#75715e&#34;&gt;# exceptions suggested by chatgpt&lt;/span&gt;
+  blob &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; TextBlob(text, tokenizer&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;CustomTokenizer())
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; [
+      word&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;singularize() &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; tag &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;NNS&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; word &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; plural_exceptions
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; word&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lemmatize(pos&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;v&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; tag&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;startswith(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;V&amp;#39;&lt;/span&gt;)
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; word
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; word,tag &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; blob&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tags
+  ]
+
+
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;initialize_bertopic_components&lt;/span&gt;(n_docs: int, random_seed: int) &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; dict:
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;Initializes and returns a dictionary of BERTopic model components.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  This function sets up the various models required for BERTopic, including
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  the embedding model, dimensionality reduction, clustering, vectorization,
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  c-TF-IDF, and representation models.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Args:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      n_docs (int): The number of documents to be processed, used to determine
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;                    the minimum cluster size for HDBSCAN.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      random_seed (int): A seed for reproducibility in models that involve
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;                          randomness, such as UMAP.
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Returns:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      dict: A dictionary containing initialized instances of the BERTopic components:
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#39;embedding_model&amp;#39; (SentenceTransformer),
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#39;dimensionality_reduction_model&amp;#39; (UMAP),
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#39;clustering_model&amp;#39; (HDBSCAN),
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#39;vectorizer_model&amp;#39; (CountVectorizer),
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#39;ctfidf_model&amp;#39; (ClassTfidfTransformer), and
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            &amp;#39;representation_model&amp;#39; (MaximalMarginalRelevance).
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+
+  &lt;span style=&#34;color:#75715e&#34;&gt;# Pre-calculate embeddings&lt;/span&gt;
+  embedding_model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; SentenceTransformer(EMBEDDING_MODEL)
+
+  &lt;span style=&#34;color:#75715e&#34;&gt;# Dimensionality Reduction&lt;/span&gt;
+  dimensionality_reduction_model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; UMAP(
+      n_neighbors&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;,
+      n_components&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;,
+      min_dist&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.0&lt;/span&gt;,
+      metric&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cosine&amp;#39;&lt;/span&gt;,
+      random_state&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;random_seed
+  )
+
+  &lt;span style=&#34;color:#75715e&#34;&gt;# Clustering&lt;/span&gt;
+  min_size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; max(int(n_docs &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)
+  clustering_model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; HDBSCAN(
+      min_cluster_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;min_size,
+      metric&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;euclidean&amp;#39;&lt;/span&gt;,
+      cluster_selection_method&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;eom&amp;#39;&lt;/span&gt;,
+      prediction_data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True
+  )
+
+  &lt;span style=&#34;color:#75715e&#34;&gt;# Vectorize&lt;/span&gt;
+  vectorizer_model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; CountVectorizer(
+      stop_words&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;english&amp;#39;&lt;/span&gt;,
+      ngram_range&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;),
+      tokenizer&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;custom_tokenizer,
+      max_df&lt;span style=&#34;color:#f92672&#34;&gt;=.&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;95&lt;/span&gt;,
+      min_df&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.05&lt;/span&gt;
+  )
+
+  &lt;span style=&#34;color:#75715e&#34;&gt;# c-TF-IDF&lt;/span&gt;
+  ctfidf_model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ClassTfidfTransformer(bm25_weighting&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True, reduce_frequent_words&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;True)
+
+  &lt;span style=&#34;color:#75715e&#34;&gt;# Representation Model&lt;/span&gt;
+  representation_model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; MaximalMarginalRelevance(diversity&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.3&lt;/span&gt;)
+
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;embedding_model&amp;#39;&lt;/span&gt;: embedding_model,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;dimensionality_reduction_model&amp;#39;&lt;/span&gt;: dimensionality_reduction_model,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;clustering_model&amp;#39;&lt;/span&gt;: clustering_model,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;vectorizer_model&amp;#39;&lt;/span&gt;: vectorizer_model,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ctfidf_model&amp;#39;&lt;/span&gt;: ctfidf_model,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;representation_model&amp;#39;&lt;/span&gt;: representation_model
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Generating high-quality topics on the first attempt is rarely straightforward. To maximize the likelihood of obtaining discriminative and relevant topics, I meticulously tweaked parameters across all stages of the BERTopic process. Furthermore, for generating clear and concise topic titles, I leveraged the capabilities of Gemma 2 via the Groq API. Take a look to the prompt I wrote for this task to better understand my approach:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;You are given a topic described by the following keywords: {keywords}. Here are some representative documents related to this topic:&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{representative_docs}
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Based on the keywords and documents, provide a concise topic description and nothing else. Keep it under ten words&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;4-displaying-results-with-interactive-plots-and-styled-dataframes&#34;&gt;4. Displaying Results with Interactive Plots and Styled DataFrames&lt;/h4&gt;
+&lt;p&gt;The application, despite its limitations, is primarily designed to enhance the visual analysis of brands. Therefore, I focused on presenting the search, sentiment, and topic analysis results in a clear and informative manner, utilizing both tables and plots. For instance, to allow users to access the original source material, I formatted the table displaying article headlines to include clickable URLs. For sentiment results, I used color-coded cells to provide an immediate visual understanding of the overall sentiment.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/colored_sentiments.png&#34; alt=&#34;formatted table&#34;&gt;&lt;/p&gt;
+&lt;p&gt;For plotting, I initially considered using matplotlib or seaborn. However, I quickly realized the importance of interactivity for data exploration. This led me to pivot towards Gradio Plots and finally &lt;em&gt;Altair&lt;/em&gt;, which allowed me to create more engaging and interactive visualizations.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/sentiment_evolution.png&#34; alt=&#34;sentiment evolution&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/scores_and_clusters.png&#34; alt=&#34;plots of topic scores and clusters&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;deployment--ui&#34;&gt;Deployment &amp;amp; UI&lt;/h3&gt;
+&lt;p&gt;For the application&amp;rsquo;s user interface, I chose Gradio. Its simplicity in syntax for layout organization and its intuitive event handling with Blocks made development efficient. However, after extensive use, I encountered some limitations. Gradio&amp;rsquo;s native plotting options are relatively restricted, and the level of graph customization is limited. While embedding plots generated by other libraries is straightforward, these external plots don&amp;rsquo;t integrate as seamlessly as native Gradio components.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://diego-hernandez-jimenez.github.io/web/images/brand_monitoring_preview.png&#34; alt=&#34;App Preview&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The entire application and its dependencies are containerized using Docker and deployed to Hugging Face Spaces. My experience with Docker for this project involved navigating some changes since my last container creation. Notably, I adopted uv as the Python package manager. Additionally, integrating libraries that require downloading data (such as nltk or Hugging Face models) presented initial challenges. While these issues ultimately proved solvable, they required persistent troubleshooting for a beginner like myself.&lt;/p&gt;
+&lt;h3 id=&#34;final-thoughts&#34;&gt;Final Thoughts&lt;/h3&gt;
+&lt;p&gt;This project sparked several new ideas. One direction involves developing more nuanced methods for analyzing news bias, which could lead to deeper insight into media narratives. Another is expanding the scope of searches beyond specific brands to cover any topic of interest—an approach that holds great potential for OSINT analysts seeking broader situational awareness.&lt;/p&gt;
+&lt;p&gt;Smaller, specialized language models are very powerful when they&amp;rsquo;re used for tasks perfectly suited to their strengths. It became clear during the project that you don&amp;rsquo;t always need the largest, most complex models like GPT or Gemini. Sometimes, a smaller, focused model is more efficient, and there are even times when traditional NLP methods work best without any LLM at all.&lt;/p&gt;
+&lt;p&gt;A significant practical limitation was working within API usage quotas and limited hardware resources. Because the app depends on free API plans and CPU-only processing, there are strict caps on the number of requests and the volume of data it can handle. This naturally limits scalability.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;🚀 Try the chatbot &lt;a href=&#34;https://huggingface.co/spaces/bumbledeep/brand-monitoring-tool&#34;&gt;here&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;The source code in the form of notebook and the data examples can be found &lt;a href=&#34;https://github.com/Diego-Hernandez-Jimenez/brand-monitoring-tool/tree/main&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+     </item>
    
      <item>
        <title>Enhancing decision making with RAG chatbot</title>
@@ -84,7 +247,7 @@ md_header_splits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; markdo
 &lt;li&gt;The user query is used to search for the &lt;strong&gt;k&lt;/strong&gt; most relevant vectors in the database.&lt;/li&gt;
 &lt;li&gt;These retrieved vectors serve as context for the LLM, ensuring accurate responses.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Prompt tuning&lt;/strong&gt; was crucial for improving results.&lt;/li&gt;
-&lt;li&gt;I selected &lt;strong&gt;Mixtral-8x7B&lt;/strong&gt; (from Groq API) as the core LLM due to its strong performance (there other models available in the app if you want to play with them).&lt;/li&gt;
+&lt;li&gt;I selected &lt;strong&gt;Mixtral-8x7B&lt;/strong&gt; (from Groq API) as the core LLM due to its strong performance (there other models available in the app if you want to play with them). (*Update: a few weeks after deploying the app, Mixtral-8x7B was deprecated in Groq, so it no longer appears as an option)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;One key challenge was &lt;strong&gt;chat memory&lt;/strong&gt;. In a naive RAG implementation, the chatbot does not retain conversational context. For example:&lt;/p&gt;
 &lt;ul&gt;
@@ -106,7 +269,7 @@ md_header_splits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; markdo
 &lt;p&gt;I used &lt;strong&gt;Streamlit&lt;/strong&gt; for the UI, making development straightforward despite some challenges when testing in Google Colab.&lt;/p&gt;
 &lt;p&gt;For deployment, I opted for an approach with intermediate difficulty:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;I created a dockerfile uploaded all the necessary files to &lt;strong&gt;Hugging Face Spaces&lt;/strong&gt;, where a docker container with the packaged application was automatically built and deployed.&lt;/li&gt;
+&lt;li&gt;I created a dockerfile and uploaded all the necessary files to &lt;strong&gt;Hugging Face Spaces&lt;/strong&gt;, where a docker container with the packaged application was automatically built and deployed.&lt;/li&gt;
 &lt;li&gt;This approach offers more flexibility than &lt;strong&gt;Streamlit Cloud&lt;/strong&gt;, making it reusable for future projects.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;

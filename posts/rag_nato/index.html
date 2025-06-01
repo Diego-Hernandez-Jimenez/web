@@ -226,7 +226,7 @@ md_header_splits <span style="color:#f92672">=</span> markdown_splitter<span sty
 <li>The user query is used to search for the <strong>k</strong> most relevant vectors in the database.</li>
 <li>These retrieved vectors serve as context for the LLM, ensuring accurate responses.</li>
 <li><strong>Prompt tuning</strong> was crucial for improving results.</li>
-<li>I selected <strong>Mixtral-8x7B</strong> (from Groq API) as the core LLM due to its strong performance (there other models available in the app if you want to play with them).</li>
+<li>I selected <strong>Mixtral-8x7B</strong> (from Groq API) as the core LLM due to its strong performance (there other models available in the app if you want to play with them). (*Update: a few weeks after deploying the app, Mixtral-8x7B was deprecated in Groq, so it no longer appears as an option)</li>
 </ul>
 <p>One key challenge was <strong>chat memory</strong>. In a naive RAG implementation, the chatbot does not retain conversational context. For example:</p>
 <ul>
@@ -248,7 +248,7 @@ md_header_splits <span style="color:#f92672">=</span> markdown_splitter<span sty
 <p>I used <strong>Streamlit</strong> for the UI, making development straightforward despite some challenges when testing in Google Colab.</p>
 <p>For deployment, I opted for an approach with intermediate difficulty:</p>
 <ul>
-<li>I created a dockerfile uploaded all the necessary files to <strong>Hugging Face Spaces</strong>, where a docker container with the packaged application was automatically built and deployed.</li>
+<li>I created a dockerfile and uploaded all the necessary files to <strong>Hugging Face Spaces</strong>, where a docker container with the packaged application was automatically built and deployed.</li>
 <li>This approach offers more flexibility than <strong>Streamlit Cloud</strong>, making it reusable for future projects.</li>
 </ul>
 <hr>
@@ -268,6 +268,10 @@ md_header_splits <span style="color:#f92672">=</span> markdown_splitter<span sty
             <a href="https://diego-hernandez-jimenez.github.io/web/posts/lvq2/"><i class="fa fa-chevron-circle-left"></i> Prototype-based learning. Part II: LVQ family of models in PyTorch</a>
         </li>
         
+        
+        <li>
+            <a href="https://diego-hernandez-jimenez.github.io/web/posts/brand_monitoring/">Monitor and analyze brands using language models <i class="fa fa-chevron-circle-right"></i> </a>
+        </li>
         
     </ul>
 </section>
